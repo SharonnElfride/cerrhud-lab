@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import CFieldHint from "@/components/ui/custom/cfield-hint";
 import CFieldLabel from "@/components/ui/custom/cfield-label";
+import CStringArrayField from "@/components/ui/custom/cstring-array-field";
 import {
   Field,
   FieldError,
@@ -47,6 +48,10 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
 
   const [isFree, setIsFree] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [conditions, setConditions] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [sampleInstructions, setSampleInstructions] = useState<string[]>([]);
+  const [customDetails, setCustomDetails] = useState<JSON>();
 
   const onSubmit = async (data: AddMedicalTestFormValues) => {
     setTimeout(() => {
@@ -90,10 +95,13 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
                 >
                   Titre
                 </CFieldLabel>
+                <CFieldHint>
+                  
+                </CFieldHint>
                 <Input
                   {...register("title")}
                   id="title"
-                  placeholder="Titre de l'examen médical"
+                  placeholder="Examen de la glycémie à jeun"
                   type="text"
                   aria-invalid={!!errors.title}
                 />
@@ -158,7 +166,9 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
                   Prix de l'examen
                 </CFieldLabel>
                 <Input
-                  {...register("price")}
+                  {...register("price", {
+                    valueAsNumber: true,
+                  })}
                   id="price"
                   placeholder="0"
                   type="number"
@@ -196,7 +206,30 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
                 )}
               </Field>
 
-              {/* Conditions */}
+              <Field data-invalid={!!errors.conditions}>
+                <CStringArrayField
+                  label="Conditions"
+                  htmlId="conditions"
+                  values={conditions}
+                  onChange={(vals) => {
+                    setValue("conditions", Array.from(vals), {
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    });
+                    setConditions(Array.from(vals));
+                  }}
+                  hint="Les conditions à remplir pour pouvoir effectuer l'examen médical."
+                  hasErrors={!!errors.conditions}
+                  hasSentences
+                  required
+                />
+
+                {errors.conditions && (
+                  <FieldError>{errors.conditions.message}</FieldError>
+                )}
+              </Field>
+
+              <FieldSeparator />
 
               <Field data-invalid={!!errors.acronym}>
                 <CFieldLabel htmlFor="acronym" aria-invalid={!!errors.acronym}>
@@ -248,6 +281,51 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
                   <FieldError>{errors.image.message}</FieldError>
                 )}
               </Field>
+
+              <Field data-invalid={!!errors.keywords}>
+                <CStringArrayField
+                  label="Mots clés"
+                  htmlId="keywords"
+                  values={keywords}
+                  onChange={(vals) => {
+                    setValue("keywords", Array.from(vals), {
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    });
+                    setKeywords(Array.from(vals));
+                  }}
+                  hint="Les mots clés associés à l'examen médical."
+                  hasErrors={!!errors.keywords}
+                />
+
+                {errors.keywords && (
+                  <FieldError>{errors.keywords.message}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!errors.sample_instructions}>
+                <CStringArrayField
+                  label="Instructions de prélèvements"
+                  htmlId="sample_instructions"
+                  values={sampleInstructions}
+                  onChange={(vals) => {
+                    setValue("sample_instructions", Array.from(vals), {
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    });
+                    setSampleInstructions(Array.from(vals));
+                  }}
+                  hint="Les instructions pour un prélèvement bien fait (si l'on souhaite l'effectuer soi-même)."
+                  hasErrors={!!errors.sample_instructions}
+                  hasSentences
+                />
+
+                {errors.sample_instructions && (
+                  <FieldError>{errors.sample_instructions.message}</FieldError>
+                )}
+              </Field>
+
+              {/* Custom details */}
             </FieldSet>
 
             <Field orientation="horizontal">
@@ -259,7 +337,7 @@ const AddMedicalTest = ({ displayHeader, onCancel }: AddMedicalTestProps) => {
               >
                 {isSubmitting ? (
                   <>
-                    <Spinner /> Submittng
+                    <Spinner /> Submitting
                   </>
                 ) : (
                   "Submit"
