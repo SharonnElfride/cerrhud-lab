@@ -7,9 +7,11 @@ export const addMedicalTestSchema = z.object({
   is_free: z.boolean("Champ requis"),
   price: z.number().min(0, "Champ requis"),
   mobile_id: z.string().min(1, "Champ requis").lowercase(),
-  conditions: z.array(z.string()).min(1, "Champ requis - au moins une condition"),
+  conditions: z
+    .array(z.string())
+    .min(1, "Champ requis - au moins une condition"),
   acronym: z.string().optional(),
-  image: zodImageChecker.optional(),
+  image: zodImageChecker({ required: false }),
   keywords: z.array(z.string()).optional(),
   sample_instructions: z.array(z.string()).optional(),
   custom_details: z.json().optional(),
@@ -25,7 +27,7 @@ export const editMedicalTestSchema = z.object({
   mobile_id: z.string().lowercase().optional(),
   conditions: z.array(z.string()).optional(),
   acronym: z.string().optional(),
-  image: zodImageChecker.optional(),
+  image: zodImageChecker({ required: false }),
   keywords: z.array(z.string()).optional(),
   sample_instructions: z.array(z.string()).optional(),
   custom_details: z.json().optional(),
