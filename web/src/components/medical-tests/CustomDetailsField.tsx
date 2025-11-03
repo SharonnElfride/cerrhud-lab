@@ -10,6 +10,7 @@ import CFieldLabel from "@/components/ui/custom/cfield-label";
 import { Input } from "@/components/ui/input";
 import { Plus, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { Textarea } from "../ui/textarea";
 
 export interface CustomDetail {
   title: string;
@@ -103,18 +104,17 @@ const CustomDetailsField = ({
       <Accordion type="multiple" className="w-full">
         {details.map((detail, detailIndex) => (
           <AccordionItem key={detailIndex} value={`detail-${detailIndex}`}>
-            <AccordionTrigger>
+            <AccordionTrigger className="bg-primary/15 hover:bg-primary/10 px-2">
               {detail.title || `Détail ${detailIndex + 1}`}
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-3 p-2 border-l border-accent">
+              <div className="space-y-3 p-2 border-l border-primary">
                 <Input
                   value={detail.title}
                   placeholder="Titre du détail (ex: Préparation avant le test)"
                   onChange={(e) =>
                     handleTitleChange(detailIndex, e.target.value)
                   }
-                  aria-invalid={hasErrors}
                 />
 
                 {detail.values.map((v, valueIndex) => (
@@ -122,8 +122,9 @@ const CustomDetailsField = ({
                     key={valueIndex}
                     className="flex items-center gap-2 w-full"
                   >
-                    <Input
+                    <Textarea
                       value={v}
+                      className="resize-y"
                       placeholder={`Valeur ${valueIndex + 1}`}
                       onChange={(e) =>
                         handleValueChange(
@@ -132,12 +133,11 @@ const CustomDetailsField = ({
                           e.target.value
                         )
                       }
-                      aria-invalid={hasErrors}
                     />
                     <Button
                       type="button"
                       size="icon"
-                      variant="ghost"
+                      variant="destructive"
                       onClick={() => handleRemoveValue(detailIndex, valueIndex)}
                     >
                       <Trash2 size={16} />
@@ -149,7 +149,7 @@ const CustomDetailsField = ({
                   <Button
                     type="button"
                     size="sm"
-                    variant="outline"
+                    variant="secondary"
                     className="text-xs mt-2"
                     onClick={() => handleAddValue(detailIndex)}
                   >
@@ -174,7 +174,7 @@ const CustomDetailsField = ({
 
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         className="text-xs"
         onClick={handleAddDetail}
       >
