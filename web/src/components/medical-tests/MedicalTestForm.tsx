@@ -2,7 +2,11 @@ import {
   medicalTestSchema,
   type MedicalTestFormValues,
 } from "@/forms/medical-test-schema";
-import type { TablesInsert, TablesUpdate } from "@/lib/supabase/supabase";
+import type {
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from "@/lib/supabase/supabase";
 import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -29,13 +33,13 @@ interface MedicalTestFormProps {
     medicalTest: TablesInsert<"medical_tests"> | TablesUpdate<"medical_tests">
   ) => Promise<void>;
   onCancel?: () => void;
-  isUpdate?: boolean;
+  medicalTest?: Tables<"medical_tests">;
 }
 
 const MedicalTestForm = ({
   onSubmit,
   onCancel,
-  isUpdate = false,
+  medicalTest,
 }: MedicalTestFormProps) => {
   const {
     register,
@@ -46,16 +50,27 @@ const MedicalTestForm = ({
   } = useForm<MedicalTestFormValues>({
     resolver: zodResolver(medicalTestSchema),
     defaultValues: {
-      is_free: false,
-      conditions: [],
+      is_free: medicalTest ? medicalTest.price <= 0 : false,
+      conditions: medicalTest?.conditions ?? [],
     },
   });
 
-  const [isFree, setIsFree] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [conditions, setConditions] = useState<string[]>([]);
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [sampleInstructions, setSampleInstructions] = useState<string[]>([]);
+  const [isFree, setIsFree] = useState(
+    medicalTest ? medicalTest.price <= 0 : false
+  );
+  const [preview, setPreview] = useState<string | null>(
+    medicalTest?.image ?? null
+  );
+  const [conditions, setConditions] = useState<string[]>(
+    medicalTest?.conditions ?? []
+  );
+  const [keywords, setKeywords] = useState<string[]>(
+    medicalTest?.keywords ?? []
+  );
+  const [sampleInstructions, setSampleInstructions] = useState<string[]>(
+    medicalTest?.sample_instructions ?? []
+  );
+  //   const [customDetails, setCustomDetails] = useState<CustomDetail[]>(medicalTest?.custom_details);
   const [customDetails, setCustomDetails] = useState<CustomDetail[]>();
 
   const onSubmitForm = async (data: MedicalTestFormValues) => {
@@ -96,6 +111,7 @@ const MedicalTestForm = ({
               {...register("title")}
               id="title"
               placeholder={MedicalTestFormFieldsInfo.title.placeholder}
+              defaultValue={medicalTest?.title ?? undefined}
               type="text"
               aria-invalid={!!errors.title}
             />
@@ -118,6 +134,7 @@ const MedicalTestForm = ({
               id="description"
               className="resize-none"
               placeholder={MedicalTestFormFieldsInfo.description.placeholder}
+              defaultValue={medicalTest?.description ?? undefined}
               aria-invalid={!!errors.description}
             />
             {errors.description && (
@@ -163,6 +180,7 @@ const MedicalTestForm = ({
               })}
               id="price"
               placeholder={MedicalTestFormFieldsInfo.price.placeholder}
+              defaultValue={medicalTest?.price ?? undefined}
               type="number"
               min={0}
               aria-invalid={!!errors.price}
@@ -182,6 +200,7 @@ const MedicalTestForm = ({
               {...register("mobile_id")}
               id="mobile_id"
               placeholder={MedicalTestFormFieldsInfo.mobile_id.placeholder}
+              defaultValue={medicalTest?.mobile_id ?? undefined}
               type="text"
               aria-invalid={!!errors.mobile_id}
             />
@@ -227,6 +246,7 @@ const MedicalTestForm = ({
               {...register("acronym")}
               id="acronym"
               placeholder={MedicalTestFormFieldsInfo.acronym.placeholder}
+              defaultValue={medicalTest?.acronym ?? undefined}
               type="text"
               aria-invalid={!!errors.acronym}
             />

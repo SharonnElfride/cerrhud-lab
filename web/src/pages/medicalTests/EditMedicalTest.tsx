@@ -1,3 +1,4 @@
+import MedicalTestForm from "@/components/medical-tests/MedicalTestForm";
 import type { Tables } from "@/lib/supabase/supabase";
 
 const EditMedicalTestData = {
@@ -24,9 +25,16 @@ const EditMedicalTest = ({
         </div>
       )}
 
-      <div className="px-5">
-        Med test: <br />
-        <b>{medicalTest.id}</b>
+      <div className="px-4 mb-5">
+        <MedicalTestForm
+          onSubmit={async (medicalTestZ) => {
+            console.log("medicalTestZ");
+            console.log(medicalTestZ);
+            // onSubmit(medicalTest);
+          }}
+          // onCancel={onCancel}
+          medicalTest={medicalTest}
+        />
       </div>
     </div>
   );
