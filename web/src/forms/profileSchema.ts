@@ -28,7 +28,7 @@ export const profileSchema = z.object({
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export const avatarUploadSchema = z.object({
-  avatar: zodImageChecker,
+  avatar: zodImageChecker({}),
 });
 
 export type AvatarUploadFormValues = z.infer<typeof avatarUploadSchema>;

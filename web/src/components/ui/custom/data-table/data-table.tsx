@@ -40,13 +40,13 @@ interface TableButtons<TData> {
   isDataLoading: boolean;
   refreshFunction: () => void;
   canAdd?: boolean;
-  addForm?: (onCancelAdd: () => void) => ReactNode;
+  addForm?: (onEnded: () => void) => ReactNode;
   addSheet?: {
     title: string;
     description: string;
   };
   canEdit?: boolean;
-  editForm?: (row: TData) => ReactNode;
+  editForm?: (row: TData, onEnded: () => void) => ReactNode;
   editSheet?: {
     title: string;
     description: string;
@@ -293,7 +293,10 @@ export function DataTable<TData, TValue>({
               sheetTitle={editSheet.title}
               sheetDescription={editSheet.description}
             >
-              {editForm(table.getRow(Object.keys(rowSelection)[0]).original)}
+              {editForm(
+                table.getRow(Object.keys(rowSelection)[0]).original,
+                () => setOpenEditSheet(false)
+              )}
             </DataTableSheet>
           )}
 

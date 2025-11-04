@@ -44,7 +44,7 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
   };
 
   const handleUploadAvatar = async (data: AvatarUploadFormValues) => {
-    if (!user) return toast.error("User not found");
+    if (!user || !data.avatar) return toast.error("User or Image not found");
     const file = data.avatar[0];
 
     try {

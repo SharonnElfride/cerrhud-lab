@@ -265,7 +265,7 @@ const ProfileForm = ({
           <Button
             variant="outline"
             type="button"
-            disabled={isSubmitting || Object.keys(touchedFields).length === 0}
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
