@@ -8,14 +8,10 @@ import { Button } from "@/components/ui/button";
 import CFieldHint from "@/components/ui/custom/cfield-hint";
 import CFieldLabel from "@/components/ui/custom/cfield-label";
 import { Input } from "@/components/ui/input";
+import { type CustomDetail } from "@/models/CustomDetail";
 import { Plus, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
-
-export interface CustomDetail {
-  title: string;
-  values: string[];
-}
 
 interface CustomDetailsFieldProps {
   label: string;
@@ -104,7 +100,7 @@ const CustomDetailsField = ({
       <Accordion type="multiple" className="w-full">
         {details.map((detail, detailIndex) => (
           <AccordionItem key={detailIndex} value={`detail-${detailIndex}`}>
-            <AccordionTrigger className="bg-primary/15 hover:bg-primary/10 px-2">
+            <AccordionTrigger className="hover:bg-primary/10 px-2 py-2">
               {detail.title || `Détail ${detailIndex + 1}`}
             </AccordionTrigger>
             <AccordionContent>

@@ -7,6 +7,12 @@ import type {
   TablesInsert,
   TablesUpdate,
 } from "@/lib/supabase/supabase";
+import {
+  fromCustomDetailObject,
+  toCustomDetailObject,
+  type CustomDetail,
+} from "@/models/CustomDetail";
+import { uploadMedicalTestImage } from "@/services/MedicalTestsService";
 import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -26,20 +32,30 @@ import {
 import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
-import CustomDetailsField, { type CustomDetail } from "./CustomDetailsField";
+import CustomDetailsField from "./CustomDetailsField";
 
-interface MedicalTestFormProps {
-  onSubmit: (
-    medicalTest: TablesInsert<"medical_tests"> | TablesUpdate<"medical_tests">
-  ) => Promise<void>;
-  onCancel?: () => void;
-  medicalTest?: Tables<"medical_tests">;
-}
+type MedicalTestFormProps =
+  | {
+      mode: "create";
+      initialData?: null;
+      onSubmit: (
+        values: TablesInsert<"medical_tests">,
+        images?: FileList
+      ) => Promise<void>;
+      onEnded?: () => void;
+    }
+  | {
+      mode: "edit";
+      initialData: Tables<"medical_tests">;
+      onSubmit: (values: TablesUpdate<"medical_tests">) => Promise<void>;
+      onEnded?: () => void;
+    };
 
 const MedicalTestForm = ({
+  mode,
+  initialData,
   onSubmit,
-  onCancel,
-  medicalTest,
+  onEnded,
 }: MedicalTestFormProps) => {
   const {
     register,
@@ -50,50 +66,98 @@ const MedicalTestForm = ({
   } = useForm<MedicalTestFormValues>({
     resolver: zodResolver(medicalTestSchema),
     defaultValues: {
-      is_free: medicalTest ? medicalTest.price <= 0 : false,
-      conditions: medicalTest?.conditions ?? [],
+      is_free: initialData ? initialData.price <= 0 : false,
+      conditions: initialData?.conditions ?? [],
     },
   });
 
   const [isFree, setIsFree] = useState(
-    medicalTest ? medicalTest.price <= 0 : false
+    initialData ? initialData.price <= 0 : false
   );
   const [preview, setPreview] = useState<string | null>(
-    medicalTest?.image ?? null
+    initialData?.image ?? null
   );
   const [conditions, setConditions] = useState<string[]>(
-    medicalTest?.conditions ?? []
+    initialData?.conditions ?? []
   );
   const [keywords, setKeywords] = useState<string[]>(
-    medicalTest?.keywords ?? []
+    initialData?.keywords ?? []
   );
   const [sampleInstructions, setSampleInstructions] = useState<string[]>(
-    medicalTest?.sample_instructions ?? []
+    initialData?.sample_instructions ?? []
   );
-  //   const [customDetails, setCustomDetails] = useState<CustomDetail[]>(medicalTest?.custom_details);
-  const [customDetails, setCustomDetails] = useState<CustomDetail[]>();
-
-  const onSubmitForm = async (data: MedicalTestFormValues) => {
-    setTimeout(() => {
-      console.log("data");
-      console.log(data);
-      console.log("OUT the onSubmit");
-    }, 10000);
-
-    // TODO: Make a difference between add and edit
-
-    await onSubmit({});
-  };
+  const [customDetails, setCustomDetails] = useState<CustomDetail[]>(
+    initialData ? toCustomDetailObject(initialData.custom_details) : []
+  );
+  //   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setPreview(URL.createObjectURL(file));
+
+    // if (file) {
+    //   setFileList(e.target.files);
+    //   setPreview(URL.createObjectURL(file));
+    //   // Mark the field as touched for RHF validation
+    //   setValue("image", e.target.files as any, { shouldTouch: true });
+    // }
   };
 
   const handleCancel = () => {
     setPreview(null);
     reset();
-    onCancel?.();
+    onEnded?.();
+  };
+
+  const onSubmitForm = async (data: MedicalTestFormValues) => {
+    console.log("Mode:", mode);
+    console.log("Form data before submit:", data);
+    console.log("data.image", data.image);
+
+    try {
+      const touchedData: Partial<MedicalTestFormValues> = {};
+      (Object.keys(data) as (keyof MedicalTestFormValues)[]).forEach((key) => {
+        if (touchedFields[key]) {
+          touchedData[key as keyof MedicalTestFormValues] =
+            data[key as keyof MedicalTestFormValues];
+        }
+      });
+
+      const { is_free, price, image, custom_details, ...testData } = data;
+      let transformedData = {
+        ...testData,
+        price: is_free ? 0 : price,
+        image: "",
+        custom_details: custom_details
+          ? fromCustomDetailObject(custom_details)
+          : [],
+      };
+
+      console.log("Transformed Data");
+      console.log(transformedData);
+
+      if (mode === "create") {
+        await onSubmit(transformedData as TablesInsert<"medical_tests">, image);
+      } else {
+        if (touchedFields.image && image) {
+          const imageUrl = await uploadMedicalTestImage(
+            initialData.id,
+            image[0]
+          );
+
+          transformedData = {
+            ...transformedData,
+            image: imageUrl,
+          };
+        }
+
+        await onSubmit(transformedData as TablesUpdate<"medical_tests">);
+      }
+
+      handleCancel();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -111,7 +175,7 @@ const MedicalTestForm = ({
               {...register("title")}
               id="title"
               placeholder={MedicalTestFormFieldsInfo.title.placeholder}
-              defaultValue={medicalTest?.title ?? undefined}
+              defaultValue={initialData?.title ?? undefined}
               type="text"
               aria-invalid={!!errors.title}
             />
@@ -134,7 +198,7 @@ const MedicalTestForm = ({
               id="description"
               className="resize-none"
               placeholder={MedicalTestFormFieldsInfo.description.placeholder}
-              defaultValue={medicalTest?.description ?? undefined}
+              defaultValue={initialData?.description ?? undefined}
               aria-invalid={!!errors.description}
             />
             {errors.description && (
@@ -180,7 +244,7 @@ const MedicalTestForm = ({
               })}
               id="price"
               placeholder={MedicalTestFormFieldsInfo.price.placeholder}
-              defaultValue={medicalTest?.price ?? undefined}
+              defaultValue={initialData?.price ?? undefined}
               type="number"
               min={0}
               aria-invalid={!!errors.price}
@@ -200,7 +264,7 @@ const MedicalTestForm = ({
               {...register("mobile_id")}
               id="mobile_id"
               placeholder={MedicalTestFormFieldsInfo.mobile_id.placeholder}
-              defaultValue={medicalTest?.mobile_id ?? undefined}
+              defaultValue={initialData?.mobile_id ?? undefined}
               type="text"
               aria-invalid={!!errors.mobile_id}
             />
@@ -246,7 +310,7 @@ const MedicalTestForm = ({
               {...register("acronym")}
               id="acronym"
               placeholder={MedicalTestFormFieldsInfo.acronym.placeholder}
-              defaultValue={medicalTest?.acronym ?? undefined}
+              defaultValue={initialData?.acronym ?? undefined}
               type="text"
               aria-invalid={!!errors.acronym}
             />
@@ -266,7 +330,7 @@ const MedicalTestForm = ({
                 <img
                   src={preview}
                   alt="Medical test's image preview"
-                  className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                  className="w-full rounded-md object-cover border-2 border-gray-300"
                 />
               </div>
             )}
@@ -355,10 +419,13 @@ const MedicalTestForm = ({
           >
             {isSubmitting ? (
               <>
-                <Spinner /> En ajout...
+                <Spinner />{" "}
+                {mode === "create" ? "En ajout..." : "Enrégistrement en cours"}
               </>
-            ) : (
+            ) : mode === "create" ? (
               "Ajouter"
+            ) : (
+              "Enrégistrer les modifications"
             )}
           </Button>
 

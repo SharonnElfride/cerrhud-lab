@@ -76,7 +76,7 @@ const Login = () => {
             <div className="flex md:hidden w-[200px] items-center m-auto">
               <img
                 src="https://cdn.pixabay.com/photo/2025/09/17/11/18/medical-laboratory-9839358_1280.png"
-                alt="Lab"
+                alt="Cerrhud Lab logo"
               />
             </div>
 

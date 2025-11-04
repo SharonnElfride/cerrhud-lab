@@ -4,7 +4,11 @@ import type {
   TablesInsert,
   TablesUpdate,
 } from "@/lib/supabase/supabase";
-import { MEDICAL_TESTS_TABLENAME } from "@/shared/constants";
+import {
+  MEDICAL_TESTS_STORAGE_PATH,
+  MEDICAL_TESTS_TABLENAME,
+  STORAGE_BUCKET_ID,
+} from "@/shared/constants";
 
 function fromDatabase(data: any): Tables<"medical_tests"> {
   return {
@@ -31,7 +35,11 @@ export async function getMedicalTests() {
   let { data: medicalTests, error } = await supabase
     .from(MEDICAL_TESTS_TABLENAME)
     .select("*")
-    .eq("deleted", false);
+    .eq("deleted", false)
+    .order("created_at", {
+      ascending: false
+    });
+    // .eq("deleted", false);
 
   if (error) throw error;
 
@@ -57,7 +65,7 @@ export async function addSingleMedicalTest(
     .from(MEDICAL_TESTS_TABLENAME)
     .insert(medicalTestData)
     .select()
-    .eq("id", medicalTestData.id)
+    // .eq("id", medicalTestData.id)
     .single();
 
   if (error) throw error;
@@ -100,3 +108,39 @@ export async function deleteMedicalTests(medicalTestIds: string[]) {
 //   if (error) throw error;
 //   return true;
 // }
+
+export async function uploadMedicalTestImage(
+  medicalTestId: string,
+  file: File
+) {
+  const ext = file.name.split(".").pop();
+  const filePath = `${MEDICAL_TESTS_STORAGE_PATH}/${medicalTestId}.${ext}`;
+
+  const { data: existing, error: listError } = await supabase.storage
+    .from(STORAGE_BUCKET_ID)
+    .list(`${MEDICAL_TESTS_STORAGE_PATH}`);
+
+  if (listError) console.error("Error listing files:", listError);
+
+  const oldAvatar = existing?.find((f) => f.name.startsWith(medicalTestId));
+  if (oldAvatar) {
+    await supabase.storage
+      .from(STORAGE_BUCKET_ID)
+      .remove([`${MEDICAL_TESTS_STORAGE_PATH}/${oldAvatar.name}`]);
+  }
+
+  const { error: uploadError } = await supabase.storage
+    .from(STORAGE_BUCKET_ID)
+    .upload(filePath, file, {
+      cacheControl: "0",
+      upsert: true,
+      contentType: file.type,
+    });
+
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage
+    .from(STORAGE_BUCKET_ID)
+    .getPublicUrl(filePath);
+  return data.publicUrl;
+}

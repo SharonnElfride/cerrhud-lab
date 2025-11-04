@@ -28,7 +28,7 @@ export const zodImageChecker = ({
   }
 
   return z
-    .union([z.undefined(), z.null(), fileSchema])
+    .union([z.undefined(), fileSchema])
     .refine(
       (val) =>
         !val ||
