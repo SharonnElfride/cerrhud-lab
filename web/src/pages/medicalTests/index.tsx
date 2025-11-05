@@ -80,7 +80,11 @@ const MedicalTests = ({}) => {
             "medical_tests.update",
           ])}
           editForm={(row, onEnded) => (
-            <EditMedicalTest displayHeader={false} medicalTest={row} onEnded={onEnded} />
+            <EditMedicalTest
+              displayHeader={false}
+              medicalTest={row}
+              onEnded={onEnded}
+            />
           )}
           editSheet={{
             title: EditMedicalTestData.title,
