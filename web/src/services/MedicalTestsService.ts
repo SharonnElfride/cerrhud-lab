@@ -37,9 +37,8 @@ export async function getMedicalTests() {
     .select("*")
     .eq("deleted", false)
     .order("created_at", {
-      ascending: false
+      ascending: false,
     });
-    // .eq("deleted", false);
 
   if (error) throw error;
 

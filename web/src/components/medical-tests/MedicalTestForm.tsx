@@ -17,6 +17,7 @@ import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import CFieldHint from "../ui/custom/cfield-hint";
@@ -89,18 +90,17 @@ const MedicalTestForm = ({
   const [customDetails, setCustomDetails] = useState<CustomDetail[]>(
     initialData ? toCustomDetailObject(initialData.custom_details) : []
   );
-  //   const [fileList, setFileList] = useState<FileList | null>(null);
+  const [fileList, setFileList] = useState<FileList | null>(null);
 
   const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setPreview(URL.createObjectURL(file));
 
-    // if (file) {
-    //   setFileList(e.target.files);
-    //   setPreview(URL.createObjectURL(file));
-    //   // Mark the field as touched for RHF validation
-    //   setValue("image", e.target.files as any, { shouldTouch: true });
-    // }
+    if (file) {
+      setFileList(e.target.files);
+      setPreview(URL.createObjectURL(file));
+      //   setValue("image", e.target.files as any, { shouldTouch: true, shouldValidate: true });
+      setValue("image", e.target.files as any, { shouldTouch: true });
+    }
   };
 
   const handleCancel = () => {
@@ -110,27 +110,50 @@ const MedicalTestForm = ({
   };
 
   const onSubmitForm = async (data: MedicalTestFormValues) => {
-    console.log("Mode:", mode);
-    console.log("Form data before submit:", data);
-    console.log("data.image", data.image);
-
     try {
       const touchedData: Partial<MedicalTestFormValues> = {};
       (Object.keys(data) as (keyof MedicalTestFormValues)[]).forEach((key) => {
         if (touchedFields[key]) {
-          touchedData[key as keyof MedicalTestFormValues] =
-            data[key as keyof MedicalTestFormValues];
+          touchedData[key] = data[key] as any;
         }
       });
 
-      const { is_free, price, image, custom_details, ...testData } = data;
-      let transformedData = {
+      if (Object.keys(touchedData).length === 0) {
+        toast.error("Aucun champ n'a été modifié.");
+        return;
+      }
+
+      let transformedData: Partial<TablesUpdate<"medical_tests">> = {};
+
+      const { is_free, price, image, custom_details, ...testData } =
+        touchedData;
+
+      if (is_free || price) {
+        transformedData = {
+          ...transformedData,
+          price: is_free ? 0 : price,
+        };
+      }
+
+      if (custom_details) {
+        transformedData = {
+          ...transformedData,
+          custom_details: custom_details
+            ? fromCustomDetailObject(custom_details)
+            : [],
+        };
+      }
+
+      if (image) {
+        transformedData = {
+          ...transformedData,
+          image: null,
+        };
+      }
+
+      transformedData = {
+        ...transformedData,
         ...testData,
-        price: is_free ? 0 : price,
-        image: "",
-        custom_details: custom_details
-          ? fromCustomDetailObject(custom_details)
-          : [],
       };
 
       console.log("Transformed Data");
@@ -139,6 +162,11 @@ const MedicalTestForm = ({
       if (mode === "create") {
         await onSubmit(transformedData as TablesInsert<"medical_tests">, image);
       } else {
+        console.log("touchedFields");
+        console.log(touchedFields);
+        console.log("image");
+        console.log(image);
+
         if (touchedFields.image && image) {
           const imageUrl = await uploadMedicalTestImage(
             initialData.id,
@@ -336,7 +364,6 @@ const MedicalTestForm = ({
             )}
 
             <Input
-              {...register("image")}
               id="image"
               type="file"
               accept="image/*"

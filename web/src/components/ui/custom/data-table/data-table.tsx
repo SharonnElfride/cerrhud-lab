@@ -280,7 +280,10 @@ export function DataTable<TData, TValue>({
           sheetTitle={addSheet.title}
           sheetDescription={addSheet.description}
         >
-          {addForm(() => setOpenAddSheet(false))}
+          {addForm(() => {
+            setOpenAddSheet(false);
+            refreshFunction();
+          })}
         </DataTableSheet>
       )}
 
@@ -295,7 +298,10 @@ export function DataTable<TData, TValue>({
             >
               {editForm(
                 table.getRow(Object.keys(rowSelection)[0]).original,
-                () => setOpenEditSheet(false)
+                () => {
+                  setOpenEditSheet(false);
+                  refreshFunction();
+                }
               )}
             </DataTableSheet>
           )}
