@@ -36,7 +36,7 @@ export async function getMedicalTests() {
     .from(MEDICAL_TESTS_TABLENAME)
     .select("*")
     .eq("deleted", false)
-    .order("created_at", {
+    .order("updated_at", {
       ascending: false,
     });
 
