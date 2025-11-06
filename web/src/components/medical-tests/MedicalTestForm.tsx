@@ -15,6 +15,7 @@ import {
 import { uploadMedicalTestImage } from "@/services/MedicalTestsService";
 import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
+import isEqual from "lodash/isEqual";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -66,10 +67,25 @@ const MedicalTestForm = ({
     reset,
   } = useForm<MedicalTestFormValues>({
     resolver: zodResolver(medicalTestSchema),
-    defaultValues: {
-      is_free: initialData ? initialData.price <= 0 : false,
-      conditions: initialData?.conditions ?? [],
-    },
+    defaultValues:
+      mode === "edit" && initialData
+        ? {
+            title: initialData.title,
+            description: initialData.description ?? undefined,
+            price: initialData.price,
+            mobile_id: initialData.mobile_id,
+            conditions: initialData.conditions,
+            acronym: initialData.acronym ?? undefined,
+            keywords: initialData.keywords ?? undefined,
+            sample_instructions: initialData.sample_instructions ?? undefined,
+            custom_details: toCustomDetailObject(initialData.custom_details),
+            is_free: initialData.price <= 0,
+            image: undefined,
+          }
+        : {
+            is_free: false,
+            conditions: [],
+          },
   });
 
   const [isFree, setIsFree] = useState(
@@ -110,6 +126,9 @@ const MedicalTestForm = ({
   };
 
   const onSubmitForm = async (data: MedicalTestFormValues) => {
+    debugger;
+    console.log("Mode onSubmitForm");
+
     try {
       const touchedData: Partial<MedicalTestFormValues> = {};
       (Object.keys(data) as (keyof MedicalTestFormValues)[]).forEach((key) => {
@@ -120,6 +139,22 @@ const MedicalTestForm = ({
 
       if (Object.keys(touchedData).length === 0) {
         toast.error("Aucun champ n'a été modifié.");
+        return;
+      }
+
+      const hasRealChanges = (
+        Object.keys(touchedData) as (keyof MedicalTestFormValues)[]
+      ).some((key) => {
+        if (key === "is_free") return true;
+
+        const newValue = touchedData[key];
+        const oldValue = initialData?.[key];
+
+        return !isEqual(newValue, oldValue);
+      });
+
+      if (!hasRealChanges) {
+        toast.warning("Aucune donnée n'a été réellement modifiée.");
         return;
       }
 
@@ -156,17 +191,14 @@ const MedicalTestForm = ({
         ...testData,
       };
 
-      console.log("Transformed Data");
-      console.log(transformedData);
-
       if (mode === "create") {
+        console.log("Mode CREATE");
+
+        console.log("Transformed Data");
+        console.log(transformedData);
+
         await onSubmit(transformedData as TablesInsert<"medical_tests">, image);
       } else {
-        console.log("touchedFields");
-        console.log(touchedFields);
-        console.log("image");
-        console.log(image);
-
         if (touchedFields.image && image) {
           const imageUrl = await uploadMedicalTestImage(
             initialData.id,
@@ -203,7 +235,6 @@ const MedicalTestForm = ({
               {...register("title")}
               id="title"
               placeholder={MedicalTestFormFieldsInfo.title.placeholder}
-              defaultValue={initialData?.title ?? undefined}
               type="text"
               aria-invalid={!!errors.title}
             />
@@ -226,7 +257,6 @@ const MedicalTestForm = ({
               id="description"
               className="resize-none"
               placeholder={MedicalTestFormFieldsInfo.description.placeholder}
-              defaultValue={initialData?.description ?? undefined}
               aria-invalid={!!errors.description}
             />
             {errors.description && (
@@ -272,7 +302,6 @@ const MedicalTestForm = ({
               })}
               id="price"
               placeholder={MedicalTestFormFieldsInfo.price.placeholder}
-              defaultValue={initialData?.price ?? undefined}
               type="number"
               min={0}
               aria-invalid={!!errors.price}
@@ -292,7 +321,6 @@ const MedicalTestForm = ({
               {...register("mobile_id")}
               id="mobile_id"
               placeholder={MedicalTestFormFieldsInfo.mobile_id.placeholder}
-              defaultValue={initialData?.mobile_id ?? undefined}
               type="text"
               aria-invalid={!!errors.mobile_id}
             />
@@ -338,7 +366,6 @@ const MedicalTestForm = ({
               {...register("acronym")}
               id="acronym"
               placeholder={MedicalTestFormFieldsInfo.acronym.placeholder}
-              defaultValue={initialData?.acronym ?? undefined}
               type="text"
               aria-invalid={!!errors.acronym}
             />
