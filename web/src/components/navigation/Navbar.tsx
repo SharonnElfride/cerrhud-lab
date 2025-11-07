@@ -9,7 +9,7 @@ const Navbar = ({}) => {
   const { user, loading } = useAuth();
 
   return (
-    <div className="flex flex-col items-center justify-between max-w-1/3 px-2 py-5 text-sm">
+    <div className="flex flex-col items-center justify-between px-2 py-5 text-sm">
       <div className="flex flex-col gap-2 w-full">
         <div className="flex gap-2 items-center">
           <img src={logoIcon} className="rounded-full w-8 h-8" />
@@ -26,10 +26,7 @@ const Navbar = ({}) => {
       <div className="flex flex-col gap-2 w-full text-primary">
         <div className="flex flex-col gap-2">
           {LabLinks.map((item, idx) => (
-            <NavbarLink
-              key={`${item.title.toKeyCase(idx)}`}
-              linkItem={item}
-            />
+            <NavbarLink key={`${item.title.toKeyCase(idx)}`} linkItem={item} />
           ))}
         </div>
 

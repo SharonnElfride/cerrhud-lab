@@ -4,7 +4,7 @@ import {
   PROFILES_STORAGE_PATH,
   PROFILES_TABLENAME,
   STORAGE_BUCKET_ID,
-} from "@/utils/constants";
+} from "@/shared/constants";
 
 export async function getProfiles() {
   let { data: profiles, error } = await supabase

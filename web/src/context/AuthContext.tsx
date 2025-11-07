@@ -1,33 +1,48 @@
 import { useProfileSubscription } from "@/hooks/useProfileSubscription";
 import { supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/supabase";
-import { PROFILES_TABLENAME } from "@/utils/constants";
+import { RolePermissions } from "@/models/RolePermissions";
+import { FromJson, type UserPermissions } from "@/models/UserPermissions";
+import { PROFILES_TABLENAME } from "@/shared/constants";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
   user: Tables<"profiles"> | null;
+  userPermissions: UserPermissions;
   loading: boolean;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  userPermissions: RolePermissions["user"],
   loading: true,
   logout: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<Tables<"profiles"> | null>(null);
+  const [userPermissions, setUserPermissions] = useState<UserPermissions>(
+    RolePermissions["user"]
+  );
   const [loading, setLoading] = useState(true);
 
   useProfileSubscription({
     userId: user?.id,
-    onProfileUpdate: (updated) => {
+    onProfileUpdate: (updatedUser) => {
       setUser((prev) => ({
         ...prev,
-        ...updated,
-        avatar: updated.avatar ? `${updated.avatar}?v=${Date.now()}` : null,
+        ...updatedUser,
+        avatar: updatedUser.avatar
+          ? `${updatedUser.avatar}?v=${Date.now()}`
+          : null,
       }));
+
+      setUserPermissions(
+        updatedUser
+          ? FromJson(updatedUser.permissions, updatedUser.role)
+          : RolePermissions["user"]
+      );
     },
   });
 
@@ -42,8 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.session?.user) {
         await loadUserData(data.session.user.id);
       } else {
-        setUser(null);
-        setLoading(false);
+        noUserData();
       }
     };
 
@@ -54,8 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (session?.user) {
           await loadUserData(session.user.id);
         } else {
-          setUser(null);
-          setLoading(false);
+          noUserData();
         }
       }
     );
@@ -67,6 +80,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       listener?.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    setUserPermissions(
+      user ? FromJson(user.permissions, user.role) : RolePermissions["user"]
+    );
+  }, [user]);
 
   const loadUserData = async (userId: string) => {
     const { data, error } = await supabase
@@ -80,7 +99,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         ...data,
         avatar: data.avatar ? `${data.avatar}?v=${Date.now()}` : null,
       });
+
+      setUserPermissions(
+        user ? FromJson(user.permissions, user.role) : RolePermissions["user"]
+      );
     }
+    setLoading(false);
+  };
+
+  const noUserData = () => {
+    setUser(null);
+    setUserPermissions(RolePermissions["user"]);
     setLoading(false);
   };
 
@@ -90,7 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, userPermissions, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
