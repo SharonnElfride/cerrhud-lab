@@ -16,13 +16,18 @@ const AddMedicalTestData = {
 
 interface AddMedicalTestProps {
   displayHeader?: boolean;
-  onEnded?: () => void;
+  onSubmit: () => void;
+  onCancel?: () => void;
 }
 
-const AddMedicalTest = ({ displayHeader, onEnded }: AddMedicalTestProps) => {
+const AddMedicalTest = ({
+  displayHeader,
+  onSubmit,
+  onCancel,
+}: AddMedicalTestProps) => {
   const { user } = useAuth();
 
-  const onSubmit = async (
+  const onSubmitForm = async (
     data: TablesInsert<"medical_tests">,
     images?: FileList
   ) => {
@@ -47,6 +52,8 @@ const AddMedicalTest = ({ displayHeader, onEnded }: AddMedicalTestProps) => {
         });
       }
 
+      onSubmit();
+
       toast.success("L'examen a bien été ajouté.");
     } catch (error: any) {
       toast.error(
@@ -68,10 +75,8 @@ const AddMedicalTest = ({ displayHeader, onEnded }: AddMedicalTestProps) => {
       <div className="px-4 mb-5">
         <MedicalTestForm
           mode="create"
-          onSubmit={async (data, images) => {
-            await onSubmit(data, images);
-          }}
-          onEnded={onEnded}
+          onSubmit={onSubmitForm}
+          onCancel={onCancel}
         />
       </div>
     </div>

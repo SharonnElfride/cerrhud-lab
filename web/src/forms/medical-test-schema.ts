@@ -60,6 +60,11 @@ export const medicalTestSchema = z.object({
   keywords: baseMedicalTestFields.keywords,
   sample_instructions: baseMedicalTestFields.sample_instructions,
   custom_details: baseMedicalTestFields.custom_details,
+}).refine((data) => {
+  return data.is_free || data.price > 0;
+}, {
+  error: MEDICAL_TEST_ERRORS.PRICE_CANNOT_BE_ZERO,
+  path: ["price"]
 });
 
 export type MedicalTestFormValues = z.infer<typeof medicalTestSchema>;
