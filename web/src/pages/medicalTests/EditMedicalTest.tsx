@@ -13,17 +13,19 @@ const EditMedicalTestData = {
 interface EditMedicalTestProps {
   displayHeader?: boolean;
   medicalTest: Tables<"medical_tests">;
-  onEnded?: () => void;
+  onSubmit: () => void,
+  onCancel?: () => void;
 }
 
 const EditMedicalTest = ({
   displayHeader = true,
   medicalTest,
-  onEnded,
+  onSubmit,
+  onCancel,
 }: EditMedicalTestProps) => {
   const { user } = useAuth();
 
-  const onSubmit = async (data: TablesUpdate<"medical_tests">) => {
+  const onSubmitForm = async (data: TablesUpdate<"medical_tests">) => {
     try {
       data = {
         ...data,
@@ -32,6 +34,7 @@ const EditMedicalTest = ({
       };
 
       await updateSingleMedicalTest(medicalTest.id, data);
+      onSubmit()
 
       toast.success("L'examen a été mis à jour.");
     } catch (error: any) {
@@ -55,10 +58,8 @@ const EditMedicalTest = ({
         <MedicalTestForm
           mode="edit"
           initialData={medicalTest}
-          onSubmit={async (medicalTestUpdate) => {
-            await onSubmit(medicalTestUpdate);
-          }}
-          onEnded={onEnded}
+          onSubmit={onSubmitForm}
+          onCancel={onCancel}
         />
       </div>
     </div>

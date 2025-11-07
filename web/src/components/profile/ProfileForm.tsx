@@ -40,7 +40,7 @@ const ProfileForm = ({
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting, touchedFields },
+    formState: { errors, isSubmitting, dirtyFields },
     reset,
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -56,19 +56,19 @@ const ProfileForm = ({
     if (!user) return;
 
     try {
-      const touchedData: Partial<ProfileFormValues> = {};
+      const modifiedData: Partial<ProfileFormValues> = {};
       (Object.keys(data) as (keyof ProfileFormValues)[]).forEach((key) => {
-        if (touchedFields[key]) {
-          touchedData[key as keyof ProfileFormValues] =
+        if (dirtyFields[key]) {
+          modifiedData[key as keyof ProfileFormValues] =
             data[key as keyof ProfileFormValues];
         }
       });
 
-      // if (touchedData.email || touchedData.password) {
-      if (touchedData.email && touchedData.email !== user.email) {
+      // if (modifiedData.email || modifiedData.password) {
+      if (modifiedData.email && modifiedData.email !== user.email) {
         const authUserData: SupabaseAuthUser = {};
-        if (touchedData.email) authUserData.email = touchedData.email;
-        // if (touchedData.password) userData.password = touchedData.password;
+        if (modifiedData.email) authUserData.email = modifiedData.email;
+        // if (modifiedData.password) userData.password = modifiedData.password;
 
         if (Object.keys(authUserData).length > 0) {
           await updateSupabaseAuthUser(authUserData);
@@ -80,10 +80,10 @@ const ProfileForm = ({
       //   ["password"]: rmv,
       //   ["confirm_password"]: rmv2,
       //   ...profileData
-      // } = touchedData;
+      // } = modifiedData;
 
-      if (Object.keys(touchedData).length > 0) {
-        await updateSingleProfile(user.id, touchedData);
+      if (Object.keys(modifiedData).length > 0) {
+        await updateSingleProfile(user.id, modifiedData);
       }
 
       toast.success("Profile updated!");
@@ -257,16 +257,12 @@ const ProfileForm = ({
         <Field orientation="horizontal">
           <Button
             type="submit"
-            disabled={isSubmitting || Object.keys(touchedFields).length === 0}
+            disabled={isSubmitting || Object.keys(dirtyFields).length === 0}
           >
             {isSubmitting ? <Spinner /> : "Save changes"}
           </Button>
 
-          <Button
-            variant="outline"
-            type="button"
-            disabled={isSubmitting}
-          >
+          <Button variant="outline" type="button" disabled={isSubmitting}>
             Cancel
           </Button>
         </Field>

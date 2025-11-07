@@ -60,23 +60,6 @@ export const MedicalTestsColumns = (
     header: "Acronyme",
     enableSorting: false,
   },
-  // {
-  //   accessorKey: "deleted",
-  //   header: "Supprimé",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex justify-center">
-  //         {row.original.deleted ? (
-  //           <CheckIcon size={18} color="var(--color-primary)" />
-  //         ) : null}
-  //       </div>
-  //     );
-  //   },
-  //   enableSorting: false,
-  //   meta: {
-  //     filterType: "boolean",
-  //   },
-  // },
   {
     accessorKey: "title",
     header: "Titre",
@@ -138,7 +121,7 @@ export const MedicalTestsColumns = (
     accessorKey: "created_by",
     header: "Créé par",
     cell: ({ row }) => {
-      return <p>{displayUserName(row.original.id)}</p>;
+      return <p>{displayUserName(row.original.created_by!)}</p>;
     },
     enableColumnFilter: false,
     enableSorting: false,
@@ -155,7 +138,7 @@ export const MedicalTestsColumns = (
     accessorKey: "updated_by",
     header: "Mis à jour par",
     cell: ({ row }) => {
-      return <p>{displayUserName(row.original.id)}</p>;
+      return <p>{displayUserName(row.original.updated_by!)}</p>;
     },
     enableColumnFilter: false,
     enableSorting: false,

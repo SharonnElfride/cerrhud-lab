@@ -40,13 +40,17 @@ interface TableButtons<TData> {
   isDataLoading: boolean;
   refreshFunction: () => void;
   canAdd?: boolean;
-  addForm?: (onEnded: () => void) => ReactNode;
+  addForm?: (onSubmit: () => void, onCancel: () => void) => ReactNode;
   addSheet?: {
     title: string;
     description: string;
   };
   canEdit?: boolean;
-  editForm?: (row: TData, onEnded: () => void) => ReactNode;
+  editForm?: (
+    row: TData,
+    onSubmit: () => void,
+    onCancel: () => void
+  ) => ReactNode;
   editSheet?: {
     title: string;
     description: string;
@@ -121,6 +125,11 @@ export function DataTable<TData, TValue>({
     onExpandedChange: setExpanded,
   });
 
+  function refreshTable() {
+    table.resetRowSelection();
+    refreshFunction();
+  }
+
   return (
     <div className="space-y-5">
       <div className="flex w-full justify-between">
@@ -156,7 +165,7 @@ export function DataTable<TData, TValue>({
           )}
         </div>
 
-        <Button size={"sm"} onClick={refreshFunction}>
+        <Button size={"sm"} onClick={refreshTable}>
           <RefreshCwIcon />
           <p>Rafraîchir</p>
         </Button>
@@ -280,10 +289,13 @@ export function DataTable<TData, TValue>({
           sheetTitle={addSheet.title}
           sheetDescription={addSheet.description}
         >
-          {addForm(() => {
-            setOpenAddSheet(false);
-            refreshFunction();
-          })}
+          {addForm(
+            () => {
+              setOpenAddSheet(false);
+              refreshTable();
+            },
+            () => setOpenAddSheet(false)
+          )}
         </DataTableSheet>
       )}
 
@@ -300,8 +312,9 @@ export function DataTable<TData, TValue>({
                 table.getRow(Object.keys(rowSelection)[0]).original,
                 () => {
                   setOpenEditSheet(false);
-                  refreshFunction();
-                }
+                  refreshTable();
+                },
+                () => setOpenEditSheet(false)
               )}
             </DataTableSheet>
           )}

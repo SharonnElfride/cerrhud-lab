@@ -15,10 +15,8 @@ import {
 import { uploadMedicalTestImage } from "@/services/MedicalTestsService";
 import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
-import isEqual from "lodash/isEqual";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import CFieldHint from "../ui/custom/cfield-hint";
@@ -44,26 +42,26 @@ type MedicalTestFormProps =
         values: TablesInsert<"medical_tests">,
         images?: FileList
       ) => Promise<void>;
-      onEnded?: () => void;
+      onCancel?: () => void;
     }
   | {
       mode: "edit";
       initialData: Tables<"medical_tests">;
       onSubmit: (values: TablesUpdate<"medical_tests">) => Promise<void>;
-      onEnded?: () => void;
+      onCancel?: () => void;
     };
 
 const MedicalTestForm = ({
   mode,
   initialData,
   onSubmit,
-  onEnded,
+  onCancel,
 }: MedicalTestFormProps) => {
   const {
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting, touchedFields },
+    formState: { errors, isSubmitting, dirtyFields, defaultValues },
     reset,
   } = useForm<MedicalTestFormValues>({
     resolver: zodResolver(medicalTestSchema),
@@ -72,6 +70,7 @@ const MedicalTestForm = ({
         ? {
             title: initialData.title,
             description: initialData.description ?? undefined,
+            is_free: initialData.price <= 0,
             price: initialData.price,
             mobile_id: initialData.mobile_id,
             conditions: initialData.conditions,
@@ -79,7 +78,6 @@ const MedicalTestForm = ({
             keywords: initialData.keywords ?? undefined,
             sample_instructions: initialData.sample_instructions ?? undefined,
             custom_details: toCustomDetailObject(initialData.custom_details),
-            is_free: initialData.price <= 0,
             image: undefined,
           }
         : {
@@ -108,60 +106,41 @@ const MedicalTestForm = ({
   );
   const [fileList, setFileList] = useState<FileList | null>(null);
 
+  const dirtyManagedField = {
+    shouldDirty: true,
+    shouldTouch: true,
+    shouldValidate: true,
+  };
+
   const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
       setFileList(e.target.files);
       setPreview(URL.createObjectURL(file));
-      //   setValue("image", e.target.files as any, { shouldTouch: true, shouldValidate: true });
-      setValue("image", e.target.files as any, { shouldTouch: true });
+      setValue("image", e.target.files as any, dirtyManagedField);
     }
   };
 
   const handleCancel = () => {
     setPreview(null);
     reset();
-    onEnded?.();
+    onCancel?.();
   };
 
   const onSubmitForm = async (data: MedicalTestFormValues) => {
-    debugger;
-    console.log("Mode onSubmitForm");
-
     try {
-      const touchedData: Partial<MedicalTestFormValues> = {};
+      const modifiedData: Partial<MedicalTestFormValues> = {};
       (Object.keys(data) as (keyof MedicalTestFormValues)[]).forEach((key) => {
-        if (touchedFields[key]) {
-          touchedData[key] = data[key] as any;
+        if (dirtyFields[key]) {
+          modifiedData[key] = data[key] as any;
         }
       });
-
-      if (Object.keys(touchedData).length === 0) {
-        toast.error("Aucun champ n'a été modifié.");
-        return;
-      }
-
-      const hasRealChanges = (
-        Object.keys(touchedData) as (keyof MedicalTestFormValues)[]
-      ).some((key) => {
-        if (key === "is_free") return true;
-
-        const newValue = touchedData[key];
-        const oldValue = initialData?.[key];
-
-        return !isEqual(newValue, oldValue);
-      });
-
-      if (!hasRealChanges) {
-        toast.warning("Aucune donnée n'a été réellement modifiée.");
-        return;
-      }
 
       let transformedData: Partial<TablesUpdate<"medical_tests">> = {};
 
       const { is_free, price, image, custom_details, ...testData } =
-        touchedData;
+        modifiedData;
 
       if (is_free || price) {
         transformedData = {
@@ -192,14 +171,9 @@ const MedicalTestForm = ({
       };
 
       if (mode === "create") {
-        console.log("Mode CREATE");
-
-        console.log("Transformed Data");
-        console.log(transformedData);
-
         await onSubmit(transformedData as TablesInsert<"medical_tests">, image);
       } else {
-        if (touchedFields.image && image) {
+        if (dirtyFields.image && image) {
           const imageUrl = await uploadMedicalTestImage(
             initialData.id,
             image[0]
@@ -271,7 +245,17 @@ const MedicalTestForm = ({
               onCheckedChange={(checked) => {
                 if (checked !== "indeterminate") {
                   setIsFree(checked);
-                  setValue("is_free", checked);
+                  setValue("is_free", checked, dirtyManagedField);
+
+                  if (checked) {
+                    setValue("price", 0, dirtyManagedField);
+                  } else {
+                    setValue(
+                      "price",
+                      defaultValues?.price ?? 0,
+                      dirtyManagedField
+                    );
+                  }
                 }
               }}
               aria-invalid={!!errors.is_free}
@@ -338,10 +322,7 @@ const MedicalTestForm = ({
               htmlId="conditions"
               values={conditions}
               onChange={(vals) => {
-                setValue("conditions", Array.from(vals), {
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
+                setValue("conditions", Array.from(vals), dirtyManagedField);
                 setConditions(Array.from(vals));
               }}
               hint={MedicalTestFormFieldsInfo.conditions.hint}
@@ -407,10 +388,7 @@ const MedicalTestForm = ({
               htmlId="keywords"
               values={keywords}
               onChange={(vals) => {
-                setValue("keywords", Array.from(vals), {
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
+                setValue("keywords", Array.from(vals), dirtyManagedField);
                 setKeywords(Array.from(vals));
               }}
               hint={MedicalTestFormFieldsInfo.keywords.hint}
@@ -428,10 +406,11 @@ const MedicalTestForm = ({
               htmlId="sample_instructions"
               values={sampleInstructions}
               onChange={(vals) => {
-                setValue("sample_instructions", Array.from(vals), {
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
+                setValue(
+                  "sample_instructions",
+                  Array.from(vals),
+                  dirtyManagedField
+                );
                 setSampleInstructions(Array.from(vals));
               }}
               hint={MedicalTestFormFieldsInfo.sample_instructions.hint}
@@ -450,10 +429,7 @@ const MedicalTestForm = ({
               htmlId="custom_details"
               values={customDetails ?? []}
               onChange={(vals) => {
-                setValue("custom_details", vals, {
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
+                setValue("custom_details", vals, dirtyManagedField);
                 setCustomDetails(vals);
               }}
               hint={MedicalTestFormFieldsInfo.custom_details.hint}
@@ -469,7 +445,7 @@ const MedicalTestForm = ({
         <Field orientation="horizontal">
           <Button
             type="submit"
-            disabled={isSubmitting || Object.keys(touchedFields).length === 0}
+            disabled={isSubmitting || Object.keys(dirtyFields).length === 0}
           >
             {isSubmitting ? (
               <>

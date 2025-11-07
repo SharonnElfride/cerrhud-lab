@@ -15,6 +15,7 @@ export const MEDICAL_TEST_ERRORS = {
   TITLE_REQUIRED: "Le titre de l'examen est requis.",
   DESCRIPTION_REQUIRED: "La description de l'examen est requise.",
   PRICE_REQUIRED: "Le prix de l'examen est requis.",
+  PRICE_CANNOT_BE_ZERO: "Le prix de l'examen doit-être supérieur à 0.",
   CONDITIONS_REQUIRED: "Veuillez ajouter au moins une condition.",
   MOBILE_ID_REQUIRED: "L'identifiant mobile est requis.",
   MOBILE_ID_FORMAT:

@@ -69,8 +69,8 @@ const MedicalTests = ({}) => {
           canAdd={hasRequiredPermissions(userPermissions, [
             "medical_tests.create",
           ])}
-          addForm={(onEnded) => (
-            <AddMedicalTest displayHeader={false} onEnded={onEnded} />
+          addForm={(onSubmit, onCancel) => (
+            <AddMedicalTest displayHeader={false} onSubmit={onSubmit} onCancel={onCancel} />
           )}
           addSheet={{
             title: AddMedicalTestData.title,
@@ -79,11 +79,12 @@ const MedicalTests = ({}) => {
           canEdit={hasRequiredPermissions(userPermissions, [
             "medical_tests.update",
           ])}
-          editForm={(row, onEnded) => (
+          editForm={(row, onSubmit, onCancel) => (
             <EditMedicalTest
               displayHeader={false}
               medicalTest={row}
-              onEnded={onEnded}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
             />
           )}
           editSheet={{

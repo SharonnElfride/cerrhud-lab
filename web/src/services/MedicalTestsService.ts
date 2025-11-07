@@ -81,7 +81,7 @@ export async function updateSingleMedicalTest(
     .update(medicalTestData)
     .eq("id", id)
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
 
