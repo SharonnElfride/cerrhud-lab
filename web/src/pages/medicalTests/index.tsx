@@ -1,4 +1,4 @@
-import { MedicalTestsColumns } from "@/components/medical-tests/Columns";
+import { MedicalTestsColumns } from "@/components/medical-tests/TableColumns";
 import MedicalTestsMasterDetail from "@/components/medical-tests/MasterDetail";
 import ListTitle from "@/components/shared/ListTitle";
 import { DataTable } from "@/components/ui/custom/data-table/data-table";
