@@ -21,6 +21,7 @@ export const MedicalTestFormFieldsInfo = {
     label: "Identifiant mobile",
     placeholder: "glycemie_a_jeun",
     hint: "Utilisé par l'application mobile pour identifier l'examen. Écrire uniquement en minuscules, sans espaces, et utiliser “_” pour séparer les mots.",
+    shortHint: "Utilisé par l'application mobile pour identifier l'examen.",
   },
   conditions: {
     label: "Conditions",
@@ -34,6 +35,7 @@ export const MedicalTestFormFieldsInfo = {
   image: {
     label: "Image",
     hint: "Formats autorisés : .png, .jpg, .jpeg, .svg, .webp — Taille maximale : 1 Mo. L'image sera utilisée pour illustrer l'examen.",
+    shortHint: "Image utilisée pour illustrer l'examen.",
   },
   keywords: {
     label: "Mots clés",

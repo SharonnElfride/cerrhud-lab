@@ -6,6 +6,11 @@ export const VALID_IMAGE_TYPES = [
   "image/svg+xml",
 ];
 
+export const ImagePlaceholder = (text?: string) =>
+  `https://placehold.co/600x400/6e4596/FFF?font=playfair-display${
+    text && !text.isEmpty() ? `&text=${text}` : ""
+  }`;
+
 export const STORAGE_BUCKET_ID = "cerrhud_lab";
 export const PROFILES_TABLENAME = "profiles";
 export const PROFILES_STORAGE_PATH = "users";
