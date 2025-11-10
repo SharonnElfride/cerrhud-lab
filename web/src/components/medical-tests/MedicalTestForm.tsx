@@ -229,7 +229,7 @@ const MedicalTestForm = ({
             <Textarea
               {...register("description")}
               id="description"
-              className="resize-none"
+              className="resize-y"
               placeholder={MedicalTestFormFieldsInfo.description.placeholder}
               aria-invalid={!!errors.description}
             />
