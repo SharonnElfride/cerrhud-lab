@@ -3,16 +3,16 @@ import { canAccessRoute } from "@/navigation/guards";
 import type { AuthProps } from "@/shared/AuthProps";
 import { cva } from "class-variance-authority";
 import { Link, useLocation } from "react-router-dom";
-import { NavigationMenuItem, NavigationMenuLink } from "../ui/navigation-menu";
+import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 const customNavigationMenuLinkStyle = cva(
-  "flex-row items-center gap-2 px-3 py-2 rounded-md transition-colors duration-150",
+  "flex-row items-center gap-2 px-3 py-2 rounded-md transition-colors duration-150 active:bg-primary active:text-primary-foreground active:[&_svg:not([class*='text-'])]:text-primary-foreground focus:bg-primary focus:text-primary-foreground focus:[&_svg:not([class*='text-'])]:text-primary-foreground",
   {
     variants: {
       active: {
-        true: "bg-primary text-primary-foreground [&_svg:not([class*='text-'])]:text-primary-foreground",
+        true: "bg-primary text-primary-foreground [&_svg:not([class*='text-'])]:text-primary-foreground hover:bg-primary hover:text-primary-foreground hover:[&_svg:not([class*='text-'])]:text-primary-foreground",
         false:
-          "text-primary/70 hover:bg-primary/10 hover:text-primary focus:bg-primary focus:text-primary-foreground [&_svg:not([class*='text-'])]:text-primary/70 hover:[&_svg:not([class*='text-'])]:text-primary focus:[&_svg:not([class*='text-'])]:text-primary-foreground",
+          "text-primary/70 hover:bg-primary/10 hover:text-primary [&_svg:not([class*='text-'])]:text-primary/70 hover:[&_svg:not([class*='text-'])]:text-primary",
       },
     },
     defaultVariants: {
@@ -21,7 +21,7 @@ const customNavigationMenuLinkStyle = cva(
   }
 );
 
-const NavMenuItem = ({
+const AppSidebarMenuItem = ({
   route,
   user,
 }: AuthProps & {
@@ -34,8 +34,8 @@ const NavMenuItem = ({
       pathname.startsWith(route.path.split("/:")[0]));
 
   return canAccessRoute(route, user) ? (
-    <NavigationMenuItem className="items-start">
-      <NavigationMenuLink
+    <SidebarMenuItem key={route.label}>
+      <SidebarMenuButton
         asChild
         className={customNavigationMenuLinkStyle({ active: isActive })}
       >
@@ -47,9 +47,9 @@ const NavMenuItem = ({
           {route.icon && <route.icon size={18} />}
           {route.label}
         </Link>
-      </NavigationMenuLink>
-    </NavigationMenuItem>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   ) : null;
 };
 
-export default NavMenuItem;
+export default AppSidebarMenuItem;

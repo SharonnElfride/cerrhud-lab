@@ -19,3 +19,10 @@ export const LabLinks: CerrhudLink[] = [
     url: "https://cerrhud.net/",
   },
 ];
+
+export const CerrhudLabData = {
+  title: "Cerrhud Lab",
+  phoneNumber: "2290199886001",
+  email: "info@cerrhud.org",
+  website: "https://cerrhud.net/",
+};

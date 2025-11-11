@@ -5,7 +5,10 @@ import NotFound from "@/pages/NotFound";
 import Unauthorized from "@/pages/Unauthorized";
 import Dashboard from "@/pages/dashboard";
 import MedicalTests from "@/pages/medicalTests";
-import { AddMedicalTest } from "@/pages/medicalTests/AddMedicalTest";
+import {
+  AddMedicalTest,
+  type AddMedicalTestProps,
+} from "@/pages/medicalTests/AddMedicalTest";
 import {
   EditMedicalTest,
   type EditMedicalTestProps,
@@ -44,9 +47,10 @@ export interface AppRoute<P = {}> {
   requiredPermissions?: PermissionKey[];
   children?: AppRoute<any>[];
   hideNavbar?: boolean;
+  hideSidebarToggle?: boolean;
 }
 
-export const AddMedicalTestRoute: AppRoute = {
+export const AddMedicalTestRoute: AppRoute<AddMedicalTestProps> = {
   path: "/medical-tests/new",
   label: "Add a medical test",
   icon: PlusSquareIcon,
@@ -158,6 +162,7 @@ export const ProfileRoute: AppRoute = {
   label: "Profile",
   route: Profile,
   type: "protected",
+  hideSidebarToggle: true
 };
 
 export const UnauthorizedRoute: AppRoute = {
