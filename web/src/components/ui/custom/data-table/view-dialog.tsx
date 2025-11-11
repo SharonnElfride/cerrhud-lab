@@ -22,7 +22,7 @@ const DataTableViewDialog = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <p className="underline underline-offset-4 decoration-accent cursor-pointer hover:font-medium transition-all duration-300">
+        <p className="underline underline-offset-4 decoration-accent cursor-pointer font-medium transition-all duration-300">
           {title}
         </p>
       </DialogTrigger>

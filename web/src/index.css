@@ -166,8 +166,14 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-app-bg text-foreground overflow-hidden;
+  html {
+    @apply bg-app-bg text-foreground scroll-smooth overflow-x-hidden;
+
+    scrollbar-width: none;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   button:not(:disabled),

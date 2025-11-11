@@ -2,7 +2,7 @@ import ListTitle from "@/components/shared/ListTitle";
 import { useAuth } from "@/context/AuthContext";
 
 const Dashboard = ({}) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="p-5 space-y-5">

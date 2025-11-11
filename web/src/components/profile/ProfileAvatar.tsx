@@ -44,19 +44,19 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
   };
 
   const handleUploadAvatar = async (data: AvatarUploadFormValues) => {
-    if (!user || !data.avatar) return toast.error("User or Image not found");
+    if (!user || !data.avatar) return toast.error("Utilisateur ou image introuvable.");
     const file = data.avatar[0];
 
     try {
       const url = await uploadAvatar(user.id, file);
       await updateSingleProfile(user.id, { avatar: url });
-      toast.success("Avatar updated successfully!");
+      toast.success("Avatar mis à jour avec succès !");
       reset();
       setOpen(false);
       setPreview(`${url}?v=${Date.now()}`);
     } catch (err: any) {
       console.error(err);
-      toast.error(`Failed to update avatar: ${err.message}`);
+      toast.error(`Échec de la mise à jour de l'avatar : ${err.message}`);
     }
   };
 
@@ -109,11 +109,11 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
           className="flex flex-col gap-5"
         >
           <DialogHeader>
-            <DialogTitle>Upload an avatar</DialogTitle>
+            <DialogTitle>Téléverser un avatar</DialogTitle>
             <DialogDescription>
-              Allowed files extensions: <b>.png, .jpg, .jpeg, .svg, .webp</b>
+              Extensions de fichiers autorisées : <b>.png, .jpg, .jpeg, .svg, .webp</b>
               <br />
-              Max file size: <b>1MB</b>
+              Taille maximale du fichier : <b>1 Mo</b>
             </DialogDescription>
           </DialogHeader>
 
@@ -130,7 +130,7 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
 
           {preview && (
             <div className="mt-2 flex flex-col gap-2 items-center">
-              <p>Preview what your avatar will look like</p>
+              <p>Aperçu de votre avatar</p>
               <img
                 src={preview}
                 alt="preview"
@@ -142,12 +142,12 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline" onClick={() => setPreview(null)}>
-                Cancel
+                Annuler
               </Button>
             </DialogClose>
 
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? <Spinner /> : "Confirm"}
+              {isSubmitting ? <Spinner /> : "Soumettre"}
             </Button>
           </DialogFooter>
         </form>

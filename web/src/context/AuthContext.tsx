@@ -1,4 +1,4 @@
-import { useProfileSubscription } from "@/hooks/useProfileSubscription";
+import { useProfileSubscription } from "@/hooks/use-profile-subscription";
 import { supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/supabase";
 import { RolePermissions } from "@/models/RolePermissions";
