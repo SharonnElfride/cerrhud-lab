@@ -2,6 +2,8 @@ import { formatDate } from "date-fns";
 import { fr } from "date-fns/locale";
 
 function cFormatDate(date: string) {
+  if(date.isEmpty()) return undefined;
+
   return formatDate(new Date(date), "dd MMMM yyyy", {
     locale: fr,
   });
