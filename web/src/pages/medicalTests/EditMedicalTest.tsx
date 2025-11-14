@@ -2,18 +2,13 @@ import MedicalTestForm from "@/components/medical-tests/MedicalTestForm";
 import { useAuth } from "@/context/AuthContext";
 import type { Tables, TablesUpdate } from "@/lib/supabase/supabase";
 import { updateSingleMedicalTest } from "@/services/MedicalTestsService";
+import { MedicalTestsData } from "@/shared/entity-data";
 import { toast } from "sonner";
-
-const EditMedicalTestData = {
-  title: "Éditer un examen",
-  description:
-    "Modifiez les détails d'un examen médical existant, mettez à jour ses informations ou ajustez son prix.",
-};
 
 interface EditMedicalTestProps {
   displayHeader?: boolean;
   medicalTest: Tables<"medical_tests">;
-  onSubmit: () => void,
+  onSubmit: () => void;
   onCancel?: () => void;
 }
 
@@ -34,7 +29,7 @@ const EditMedicalTest = ({
       };
 
       await updateSingleMedicalTest(medicalTest.id, data);
-      onSubmit()
+      onSubmit();
 
       toast.success("L'examen a été mis à jour.");
     } catch (error: any) {
@@ -49,8 +44,8 @@ const EditMedicalTest = ({
     <div>
       {displayHeader && (
         <div>
-          <h2>{EditMedicalTestData.title}</h2>
-          <p>{EditMedicalTestData.description}</p>
+          <h2>{MedicalTestsData.edit.title}</h2>
+          <p>{MedicalTestsData.edit.description}</p>
         </div>
       )}
 
@@ -66,4 +61,4 @@ const EditMedicalTest = ({
   );
 };
 
-export { EditMedicalTest, EditMedicalTestData, type EditMedicalTestProps };
+export { EditMedicalTest, type EditMedicalTestProps };

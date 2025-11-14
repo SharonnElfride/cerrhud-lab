@@ -1,12 +1,10 @@
 import ListTitle from "@/components/shared/ListTitle";
+import { AdminsData } from "@/shared/entity-data";
 
 const Users = ({}) => {
   return (
     <div className="p-5 space-y-5">
-      <ListTitle
-        title="Utilisateurs"
-        description="Gestion des utilisateurs et de leurs droits d'accès."
-      />
+      <ListTitle title={AdminsData.title} description={AdminsData.title} />
     </div>
   );
 };
