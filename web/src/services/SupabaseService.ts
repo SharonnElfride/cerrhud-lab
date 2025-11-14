@@ -14,10 +14,10 @@ export async function updateSupabaseAuthUser(userData: SupabaseAuthUser) {
   return true;
 }
 
-export async function getUserLastConnectionById(userId: string) {
+export async function getUserLastConnectionById() {
   const { data, error } = await supabase.auth.getUser();
 
   if (error) throw error;
-
+  
   return cFormatDate(data.user.last_sign_in_at ?? "");
 }

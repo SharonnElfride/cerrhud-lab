@@ -1,5 +1,5 @@
-import { MedicalTestsColumns } from "@/components/medical-tests/TableColumns";
 import MedicalTestsMasterDetail from "@/components/medical-tests/MasterDetail";
+import { MedicalTestsColumns } from "@/components/medical-tests/TableColumns";
 import ListTitle from "@/components/shared/ListTitle";
 import { DataTable } from "@/components/ui/custom/data-table/data-table";
 import { useAuth } from "@/context/AuthContext";
@@ -13,10 +13,12 @@ import {
   deleteMedicalTests,
   getMedicalTests,
 } from "@/services/MedicalTestsService";
+import { MedicalTestsData } from "@/shared/entity-data";
 import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 import { toast } from "sonner";
-import { AddMedicalTest, AddMedicalTestData } from "./AddMedicalTest";
-import { EditMedicalTest, EditMedicalTestData } from "./EditMedicalTest";
+import { AddMedicalTest } from "./AddMedicalTest";
+import { EditMedicalTest } from "./EditMedicalTest";
 
 const MedicalTests = ({}) => {
   const { user, userPermissions } = useAuth();
@@ -51,8 +53,8 @@ const MedicalTests = ({}) => {
   return (
     <div className="p-5 space-y-5">
       <ListTitle
-        title="Examens médicaux"
-        description="Liste des examens disponibles avec leurs détails et tarifs."
+        title={MedicalTestsData.title}
+        description={MedicalTestsData.description}
       />
 
       <div className="mx-auto overflow-y-hidden">
@@ -70,11 +72,15 @@ const MedicalTests = ({}) => {
             "medical_tests.create",
           ])}
           addForm={(onSubmit, onCancel) => (
-            <AddMedicalTest displayHeader={false} onSubmit={onSubmit} onCancel={onCancel} />
+            <AddMedicalTest
+              displayHeader={false}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
+            />
           )}
           addSheet={{
-            title: AddMedicalTestData.title,
-            description: AddMedicalTestData.description,
+            title: MedicalTestsData.add.title,
+            description: MedicalTestsData.add.description,
           }}
           canEdit={hasRequiredPermissions(userPermissions, [
             "medical_tests.update",
@@ -88,8 +94,8 @@ const MedicalTests = ({}) => {
             />
           )}
           editSheet={{
-            title: EditMedicalTestData.title,
-            description: EditMedicalTestData.description,
+            title: MedicalTestsData.edit.title,
+            description: MedicalTestsData.edit.description,
           }}
           canDelete={hasRequiredPermissions(userPermissions, [
             "medical_tests.update",
@@ -98,6 +104,8 @@ const MedicalTests = ({}) => {
           deleteFunction={handleDelete}
         />
       </div>
+
+      <Outlet />
     </div>
   );
 };

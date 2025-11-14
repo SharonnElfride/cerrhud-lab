@@ -26,8 +26,12 @@ import {
   EditIcon,
   EyeIcon,
   LayoutDashboardIcon,
+  LogInIcon,
   MicroscopeIcon,
   PlusSquareIcon,
+  ShieldBanIcon,
+  TriangleAlertIcon,
+  UserCogIcon,
   UsersIcon,
   type LucideProps,
 } from "lucide-react";
@@ -37,10 +41,11 @@ type RouteType = "auth" | "public" | "protected";
 export interface AppRoute<P = {}> {
   path: string;
   label: string;
-  icon?: React.ForwardRefExoticComponent<
+  icon: React.ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
   >;
   route: React.ComponentType<P>;
+  layout?: React.ComponentType;
   type: RouteType;
   redirectTo?: string;
   requiredRoles?: Enums<"user_role">[];
@@ -135,6 +140,7 @@ export const UsersRoute: AppRoute = {
 export const LoginRoute: AppRoute = {
   path: "/",
   label: "Login",
+  icon: LogInIcon,
   route: Login,
   type: "auth",
   redirectTo: MedicalTestsRoute.path,
@@ -160,14 +166,16 @@ export const DashboardRoute: AppRoute = {
 export const ProfileRoute: AppRoute = {
   path: "/profile",
   label: "Profile",
+  icon: UserCogIcon,
   route: Profile,
   type: "protected",
-  hideSidebarToggle: true
+  hideSidebarToggle: true,
 };
 
 export const UnauthorizedRoute: AppRoute = {
   path: "/unauthorized",
   label: "Unauthorized",
+  icon: ShieldBanIcon,
   route: Unauthorized,
   type: "public",
 };
@@ -175,11 +183,12 @@ export const UnauthorizedRoute: AppRoute = {
 export const NotFoundRoute: AppRoute = {
   path: "*",
   label: "Not found",
+  icon: TriangleAlertIcon,
   route: NotFound,
   type: "public",
 };
 
-export const appRoutes: AppRoute[] = [
+export const appGlobalRoutes: AppRoute[] = [
   LoginRoute,
   DashboardRoute,
   MedicalTestsRoute,
@@ -188,3 +197,7 @@ export const appRoutes: AppRoute[] = [
   UnauthorizedRoute,
   NotFoundRoute,
 ];
+
+export const allRoutes: AppRoute[] = appGlobalRoutes.concat(
+  ...appGlobalRoutes.map((rte) => rte.children ?? [])
+);

@@ -6,22 +6,17 @@ import {
   updateSingleMedicalTest,
   uploadMedicalTestImage,
 } from "@/services/MedicalTestsService";
+import { MedicalTestsData } from "@/shared/entity-data";
 import { toast } from "sonner";
-
-const AddMedicalTestData = {
-  title: "Ajouter un examen",
-  description:
-    "Créez un nouvel examen médical en renseignant ses informations principales, son prix et ses instructions d'échantillonnage.",
-};
 
 interface AddMedicalTestProps {
   displayHeader?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   onCancel?: () => void;
 }
 
 const AddMedicalTest = ({
-  displayHeader,
+  displayHeader = true,
   onSubmit,
   onCancel,
 }: AddMedicalTestProps) => {
@@ -52,7 +47,7 @@ const AddMedicalTest = ({
         });
       }
 
-      onSubmit();
+      onSubmit?.();
 
       toast.success("L'examen a bien été ajouté.");
     } catch (error: any) {
@@ -67,8 +62,8 @@ const AddMedicalTest = ({
     <div>
       {displayHeader && (
         <div>
-          <h2>{AddMedicalTestData.title}</h2>
-          <p>{AddMedicalTestData.description}</p>
+          <h2>{MedicalTestsData.add.title}</h2>
+          <p>{MedicalTestsData.add.description}</p>
         </div>
       )}
 
@@ -83,4 +78,4 @@ const AddMedicalTest = ({
   );
 };
 
-export { AddMedicalTest, AddMedicalTestData, type AddMedicalTestProps };
+export { AddMedicalTest, type AddMedicalTestProps };

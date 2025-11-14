@@ -1,6 +1,20 @@
+import { cn } from "@/lib/utils";
+import {
+  AddMedicalTestRoute,
+  AddUserRoute,
+  MedicalTestsRoute,
+  UsersRoute,
+} from "@/navigation/app_routes";
 import { getMedicalTests } from "@/services/MedicalTestsService";
 import { getProfiles } from "@/services/ProfilesService";
+import {
+  AdminsData,
+  MedicalTestsData,
+  type EntityData,
+} from "@/shared/entity-data";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { buttonVariants } from "../ui/button";
 import {
   Card,
   CardAction,
@@ -10,27 +24,17 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
+import { Spinner } from "../ui/spinner";
 
 interface EntityCardProps {
   entityType: "medical_tests" | "users";
 }
 
-const SkeletonCard = ({}) => {
-  return (
-    <div className="flex flex-col space-y-3">
-      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
-      </div>
-    </div>
-  );
-};
-
 const EntityCard = ({ entityType }: EntityCardProps) => {
   const [loading, setLoading] = useState(false);
   const [totalData, setTotalData] = useState<number>();
+  const entityData: EntityData =
+    entityType === "medical_tests" ? MedicalTestsData : AdminsData;
 
   useEffect(() => {
     setLoading(true);
@@ -57,19 +61,43 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
   }, []);
 
   return (
-    <Card>
+    <Card className="pb-0 justify-between border-t-4 border-t-accent">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-        <CardAction>Card Action</CardAction>
+        <CardTitle>{entityData.title}</CardTitle>
+        <CardDescription>{entityData.description}</CardDescription>
+        <CardAction>
+          <Link
+            to={
+              entityType === "medical_tests"
+                ? MedicalTestsRoute.path
+                : UsersRoute.path
+            }
+            className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+          >
+            Voir tous
+          </Link>
+        </CardAction>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
-        <p>{loading}</p>
-        <p>{totalData}</p>
+        <p>Total d'éléments : {loading ? <Spinner /> : totalData}</p>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
+      <CardFooter className="bg-muted rounded-b-md">
+        <Link
+          to={
+            entityType === "medical_tests"
+              ? AddMedicalTestRoute.path
+              : AddUserRoute.path
+          }
+          className={cn(
+            buttonVariants({
+              variant: "link",
+              size: "sm",
+              className: "px-0 py-2",
+            })
+          )}
+        >
+          <entityData.icon /> {entityData.add.title}
+        </Link>
       </CardFooter>
     </Card>
   );

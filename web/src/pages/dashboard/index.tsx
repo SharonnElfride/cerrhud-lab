@@ -14,12 +14,25 @@ import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
 import { ProfileRoute, UsersRoute } from "@/navigation/app_routes";
 import { canAccessRoute } from "@/navigation/guards";
+import { getUserLastConnectionById } from "@/services/SupabaseService";
 import { UserCogIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = ({}) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+
+  const [lastSignedIn, setLastSignedIn] = useState<string>();
+
+  useEffect(() => {
+    async function getLastSignedIn() {
+      const lsiDate = await getUserLastConnectionById();
+      setLastSignedIn(lsiDate);
+    }
+
+    getLastSignedIn();
+  }, []);
 
   return (
     <div className="p-5 space-y-5">
@@ -28,7 +41,7 @@ const Dashboard = ({}) => {
         description="Vue d'ensemble des statistiques et activités récentes du système."
       />
 
-      <Item variant="outline">
+      <Item variant="outline" className="md:w-1/2">
         <ItemMedia>
           <Avatar className="size-10">
             <AvatarImage src={user?.avatar ?? undefined} alt="avatar" />
@@ -48,7 +61,7 @@ const Dashboard = ({}) => {
             {user?.first_name} {user?.surname}
           </ItemTitle>
           {/* Date / Time lapse */}
-          <ItemDescription>Dernière connexion : XXXX</ItemDescription>
+          <ItemDescription>Dernière connexion : {lastSignedIn}</ItemDescription>
         </ItemContent>
         <ItemActions>
           <Button
@@ -64,7 +77,7 @@ const Dashboard = ({}) => {
         </ItemActions>
       </Item>
 
-      <div className="flex w-full gap-2">
+      <div className="w-full grid md:grid-cols-2 gap-2">
         <EntityCard entityType="medical_tests" />
         {canAccessRoute(UsersRoute, user) && <EntityCard entityType="users" />}
       </div>
