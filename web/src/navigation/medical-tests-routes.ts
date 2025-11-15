@@ -1,28 +1,31 @@
+import MedicalTestsLayout from "@/pages/medicalTests";
 import {
-    type AddMedicalTestProps,
-    AddMedicalTest,
+  type AddMedicalTestProps,
+  AddMedicalTest,
 } from "@/pages/medicalTests/AddMedicalTest";
 import {
-    type EditMedicalTestProps,
-    EditMedicalTest,
+  type EditMedicalTestProps,
+  EditMedicalTest,
 } from "@/pages/medicalTests/EditMedicalTest";
-import {
-    type ViewMedicalTestProps,
-    ViewMedicalTest,
-} from "@/pages/medicalTests/ViewMedicalTest";
-import {
-    EditIcon,
-    EyeIcon,
-    MicroscopeIcon,
-    PlusSquareIcon,
-} from "lucide-react";
-import { type AppRoute, createLeafRoute, createRouteWithChildren } from "./app_routes";
 import MedicalTests from "@/pages/medicalTests/ListMedicalTest";
-import MedicalTestsLayout from "@/pages/medicalTests";
+import {
+  type ViewMedicalTestProps,
+  ViewMedicalTest,
+} from "@/pages/medicalTests/ViewMedicalTest";
+import { MedicalTestsData } from "@/shared/entity-data";
+import {
+  EditIcon,
+  EyeIcon,
+  MicroscopeIcon,
+  PlusSquareIcon,
+} from "lucide-react";
+import { createLeafRoute, createRouteWithChildren } from "./app-routes";
 
-export const AddMedicalTestRoute: AppRoute<AddMedicalTestProps> = createLeafRoute({
-  path: "/medical-tests/new",
-  label: "Add a medical test",
+const MEDICAL_TESTS_ROOT_PATH = "/medical-tests";
+
+export const AddMedicalTestRoute = createLeafRoute<AddMedicalTestProps>({
+  path: `${MEDICAL_TESTS_ROOT_PATH}/new`,
+  label: MedicalTestsData.add.title,
   icon: PlusSquareIcon,
   route: AddMedicalTest,
   type: "protected",
@@ -30,8 +33,8 @@ export const AddMedicalTestRoute: AppRoute<AddMedicalTestProps> = createLeafRout
   requiredPermissions: ["medical_tests.create"],
 });
 
-export const ViewMedicalTestRoute: AppRoute<ViewMedicalTestProps> = createLeafRoute({
-  path: "/medical-tests/:id",
+export const ViewMedicalTestRoute = createLeafRoute<ViewMedicalTestProps>({
+  path: `${MEDICAL_TESTS_ROOT_PATH}/:id`,
   label: "Medical Test Details",
   icon: EyeIcon,
   route: ViewMedicalTest,
@@ -40,9 +43,9 @@ export const ViewMedicalTestRoute: AppRoute<ViewMedicalTestProps> = createLeafRo
   requiredPermissions: ["medical_tests.read"],
 });
 
-export const UpdateMedicalTestRoute: AppRoute<EditMedicalTestProps> = createLeafRoute({
-  path: "/medical-tests/edit/:id",
-  label: "Edit Medical Test Details",
+export const UpdateMedicalTestRoute = createLeafRoute<EditMedicalTestProps>({
+  path: `${MEDICAL_TESTS_ROOT_PATH}/edit/:id`,
+  label: MedicalTestsData.edit.title,
   icon: EditIcon,
   route: EditMedicalTest,
   type: "protected",
@@ -51,8 +54,8 @@ export const UpdateMedicalTestRoute: AppRoute<EditMedicalTestProps> = createLeaf
 });
 
 export const ListMedicalTestsRoute = createLeafRoute({
-  path: "/medical-tests",
-  label: "Medical Tests",
+  path: MEDICAL_TESTS_ROOT_PATH,
+  label: MedicalTestsData.title,
   icon: MicroscopeIcon,
   route: MedicalTests,
   type: "protected",
@@ -61,12 +64,17 @@ export const ListMedicalTestsRoute = createLeafRoute({
 });
 
 export const MedicalTestsRoute = createRouteWithChildren({
-  path: "/medical-tests",
-  label: "Medical Tests",
+  path: MEDICAL_TESTS_ROOT_PATH,
+  label: MedicalTestsData.title,
   icon: MicroscopeIcon,
   type: "protected",
   requiredRoles: ["user", "admin", "super_admin"],
   requiredPermissions: ["medical_tests.read"],
   layout: MedicalTestsLayout,
-  children: [ListMedicalTestsRoute , AddMedicalTestRoute, ViewMedicalTestRoute, UpdateMedicalTestRoute],
+  children: [
+    ListMedicalTestsRoute,
+    AddMedicalTestRoute,
+    ViewMedicalTestRoute,
+    UpdateMedicalTestRoute,
+  ],
 });

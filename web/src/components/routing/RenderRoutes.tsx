@@ -1,16 +1,16 @@
-import type { AppRoute } from "@/navigation/app_routes";
+import type { AppRoute } from "@/navigation/app-routes";
+import type { JSX } from "react";
 import { Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
-import ProtectedRoute from "./ProtectedRoute";
-import type { JSX } from "react";
 import ParentRouteLayoutTemplate from "./ParentRouteLayoutTemplate";
+import ProtectedRoute from "./ProtectedRoute";
 
 function RenderRoutes(routes: AppRoute[]): React.ReactNode {
   return routes.map((rte) => {
     const routeKey = rte.path.substring(1).replace("/:", "-").replace("/", "-");
     let Element: JSX.Element = <></>;
 
-    if (rte.layout || rte.children?.length || !rte.route) {
+    if (rte.layout || rte.children || !rte.route) {
       Element = rte.layout ? <rte.layout /> : <ParentRouteLayoutTemplate />;
     } else {
       Element = <rte.route />;

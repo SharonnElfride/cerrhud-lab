@@ -1,4 +1,4 @@
-import type { AppRoute } from "@/navigation/app_routes";
+import type { AppRouteBase } from "@/navigation/app-routes";
 import { canAccessRoute } from "@/navigation/guards";
 import type { AuthProps } from "@/shared/AuthProps";
 import { cva } from "class-variance-authority";
@@ -25,7 +25,7 @@ const AppSidebarMenuItem = ({
   route,
   user,
 }: AuthProps & {
-  route: AppRoute;
+  route: AppRouteBase;
 }) => {
   const { pathname } = useLocation();
   const isActive =

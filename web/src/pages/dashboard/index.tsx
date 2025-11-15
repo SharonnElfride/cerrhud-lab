@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/item";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
-import { ProfileRoute } from "@/navigation/app_routes";
 import { canAccessRoute } from "@/navigation/guards";
+import { ProfileRoute } from "@/navigation/profile-routes";
 import { UsersRoute } from "@/navigation/users-routes";
 import { getUserLastConnectionById } from "@/services/SupabaseService";
 import { UserCogIcon } from "lucide-react";

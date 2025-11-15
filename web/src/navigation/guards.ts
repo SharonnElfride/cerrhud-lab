@@ -5,7 +5,7 @@ import {
   type PermissionKey,
   type UserPermissions,
 } from "@/models/UserPermissions";
-import type { AppRoute } from "./app_routes";
+import type { AppRouteBase } from "./app-routes";
 
 const hasRequiredRole = (
   userRole: Enums<"user_role">,
@@ -34,7 +34,7 @@ const hasRequiredPermissions = (
 };
 
 function canAccessRoute(
-  route: AppRoute,
+  route: AppRouteBase,
   user?: Tables<"profiles"> | null
 ): boolean {
   if (!user || Object.keys(user).length === 0) return false;

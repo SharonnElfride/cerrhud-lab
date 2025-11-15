@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/context/AuthContext";
 import { displayUserRole } from "@/helpers/user_role_helper";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { DashboardRoute } from "@/navigation/app_routes";
+import { DashboardRoute } from "@/navigation/dashboard-routes";
 import { BadgeCheckIcon, LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import type { AppRoute } from "@/navigation/app_routes";
+import type { AppRouteBase } from "@/navigation/app-routes";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import {
   Empty,
@@ -10,7 +10,7 @@ import {
 import { Spinner } from "../spinner";
 
 interface CLoadingDataProps {
-  appRoute: AppRoute;
+  appRoute: AppRouteBase;
 }
 
 function CLoadingData({ appRoute }: CLoadingDataProps) {
