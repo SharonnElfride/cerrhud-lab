@@ -4,13 +4,14 @@ import EditUser from "@/pages/users/EditUser";
 import Users from "@/pages/users/ListUser";
 import ViewUser from "@/pages/users/ViewUser";
 import { EditIcon, EyeIcon, PlusSquareIcon, UsersIcon } from "lucide-react";
-import {
-  createLeafRoute,
-  createRouteWithChildren,
-  type AppRoute,
-} from "./app_routes";
+import { createLeafRoute, createRouteWithChildren, type AppRoute2 } from "./app-routes-2";
+// import {
+//   createLeafRoute,
+//   createRouteWithChildren,
+//   type AppRoute2,
+// } from "./app_routes";
 
-export const AddUserRoute: AppRoute = createLeafRoute({
+export const AddUserRoute: AppRoute2 = createLeafRoute({
   path: "/users/new",
   label: "Add a user",
   icon: PlusSquareIcon,
@@ -20,7 +21,7 @@ export const AddUserRoute: AppRoute = createLeafRoute({
   requiredPermissions: ["users.create"],
 });
 
-export const ViewUserRoute: AppRoute = createLeafRoute({
+export const ViewUserRoute: AppRoute2 = createLeafRoute({
   path: "/users/:id",
   label: "User's Details",
   icon: EyeIcon,
@@ -30,7 +31,7 @@ export const ViewUserRoute: AppRoute = createLeafRoute({
   requiredPermissions: ["users.read"],
 });
 
-export const UpdateUserRoute: AppRoute = createLeafRoute({
+export const UpdateUserRoute: AppRoute2 = createLeafRoute({
   path: "/users/edit/:id",
   label: "Edit User's Details",
   icon: EditIcon,
@@ -40,7 +41,7 @@ export const UpdateUserRoute: AppRoute = createLeafRoute({
   requiredPermissions: ["users.update"],
 });
 
-export const ListUsersRoute: AppRoute = createLeafRoute({
+export const ListUsersRoute: AppRoute2 = createLeafRoute({
   path: "/users",
   label: "Users",
   icon: UsersIcon,
@@ -50,7 +51,7 @@ export const ListUsersRoute: AppRoute = createLeafRoute({
   requiredPermissions: ["users.read"],
 });
 
-export const UsersRoute: AppRoute = createRouteWithChildren({
+export const UsersRoute: AppRoute2 = createRouteWithChildren({
   path: "/users",
   label: "Users",
   icon: UsersIcon,

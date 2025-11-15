@@ -11,8 +11,8 @@ import {
   ShieldBanIcon,
   TriangleAlertIcon,
   UserCogIcon,
-  type LucideProps,
 } from "lucide-react";
+import type { AppRoute2 } from "./app-routes-2";
 import { MedicalTestsRoute } from "./medical-tests-routes";
 import { UsersRoute } from "./users-routes";
 
@@ -21,9 +21,7 @@ type RouteType = "auth" | "public" | "protected";
 export interface AppRoute<P = {}> {
   path: string;
   label: string;
-  icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-  >;
+  icon: React.FC<any>;
   route?: React.ComponentType<P>;
   layout?: React.ComponentType;
   type: RouteType;
@@ -33,10 +31,6 @@ export interface AppRoute<P = {}> {
   children?: AppRoute<any>[];
   hideNavbar?: boolean;
   hideSidebarToggle?: boolean;
-}
-
-function buildBase(props: AppRoute): AppRoute {
-  return { ...props };
 }
 
 export function createRouteWithChildren(
@@ -58,7 +52,7 @@ export function createLeafRoute<P = {}>(
   };
 }
 
-export const LoginRoute: AppRoute = {
+export const LoginRoute: AppRoute2 = {
   path: "/",
   label: "Login",
   icon: LogInIcon,
@@ -76,7 +70,7 @@ export const LoginRoute: AppRoute = {
 //   hideNavbar: true,
 // };
 
-export const DashboardRoute: AppRoute = {
+export const DashboardRoute: AppRoute2 = {
   path: "/dashboard",
   label: "Dashboard",
   route: Dashboard,
@@ -84,7 +78,7 @@ export const DashboardRoute: AppRoute = {
   type: "protected",
 };
 
-export const ProfileRoute: AppRoute = {
+export const ProfileRoute: AppRoute2 = {
   path: "/profile",
   label: "Profile",
   icon: UserCogIcon,
@@ -93,7 +87,7 @@ export const ProfileRoute: AppRoute = {
   hideSidebarToggle: true,
 };
 
-export const UnauthorizedRoute: AppRoute = {
+export const UnauthorizedRoute: AppRoute2 = {
   path: "/unauthorized",
   label: "Unauthorized",
   icon: ShieldBanIcon,
@@ -101,7 +95,7 @@ export const UnauthorizedRoute: AppRoute = {
   type: "public",
 };
 
-export const NotFoundRoute: AppRoute = {
+export const NotFoundRoute: AppRoute2 = {
   path: "*",
   label: "Not found",
   icon: TriangleAlertIcon,
@@ -109,7 +103,8 @@ export const NotFoundRoute: AppRoute = {
   type: "public",
 };
 
-export const appGlobalRoutes: AppRoute[] = [
+// export const appGlobalRoutes: AppRoute[] = [
+export const appGlobalRoutes: AppRoute2[] = [
   LoginRoute,
   DashboardRoute,
   MedicalTestsRoute,
