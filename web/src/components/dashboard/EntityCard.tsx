@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils";
 import {
   AddMedicalTestRoute,
-  AddUserRoute,
-  MedicalTestsRoute,
-  UsersRoute,
-} from "@/navigation/app_routes";
+  ListMedicalTestsRoute,
+} from "@/navigation/medical-tests-routes";
+import { AddUserRoute, ListUsersRoute } from "@/navigation/users-routes";
 import { getMedicalTests } from "@/services/MedicalTestsService";
 import { getProfiles } from "@/services/ProfilesService";
 import {
@@ -69,8 +68,8 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
           <Link
             to={
               entityType === "medical_tests"
-                ? MedicalTestsRoute.path
-                : UsersRoute.path
+                ? ListMedicalTestsRoute.path
+                : ListUsersRoute.path
             }
             className={cn(buttonVariants({ variant: "default", size: "sm" }))}
           >
