@@ -78,7 +78,9 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p>Total d'éléments : {loading ? <Spinner /> : totalData}</p>
+        <p className="flex gap-2">
+          Total d'éléments : {loading ? <Spinner /> : totalData}
+        </p>
       </CardContent>
       <CardFooter className="bg-muted rounded-b-md">
         <Link

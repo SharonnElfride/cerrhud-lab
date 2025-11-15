@@ -1,11 +1,11 @@
-import type { AppRoute2 } from "@/navigation/app-routes-2";
+import type { AppRoute } from "@/navigation/app-routes";
 import type { JSX } from "react";
 import { Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
 import ParentRouteLayoutTemplate from "./ParentRouteLayoutTemplate";
 import ProtectedRoute from "./ProtectedRoute";
 
-function RenderRoutes(routes: AppRoute2[]): React.ReactNode {
+function RenderRoutes(routes: AppRoute[]): React.ReactNode {
   return routes.map((rte) => {
     const routeKey = rte.path.substring(1).replace("/:", "-").replace("/", "-");
     let Element: JSX.Element = <></>;

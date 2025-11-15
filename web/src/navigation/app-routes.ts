@@ -1,5 +1,10 @@
 import type { Enums } from "@/lib/supabase/supabase";
 import type { PermissionKey } from "@/models/UserPermissions";
+import { DashboardRoute } from "./dashboard-routes";
+import { MedicalTestsRoute } from "./medical-tests-routes";
+import { ProfileRoute } from "./profile-routes";
+import { systemRoutes } from "./system-routes";
+import { UsersRoute } from "./users-routes";
 
 type RouteType = "auth" | "public" | "protected";
 
@@ -17,7 +22,7 @@ export interface AppRouteBase {
 
 export interface AppRouteParent extends AppRouteBase {
   layout: React.ComponentType;
-  children: AppRoute2<any>[];
+  children: AppRoute<any>[];
   route?: never;
 }
 
@@ -27,7 +32,7 @@ export interface AppRouteLeaf<P = {}> extends AppRouteBase {
   children?: never;
 }
 
-export type AppRoute2<P = {}> = AppRouteLeaf<P> | AppRouteParent;
+export type AppRoute<P = {}> = AppRouteLeaf<P> | AppRouteParent;
 
 function buildBase(props: AppRouteBase): AppRouteBase {
   return { ...props };
@@ -51,3 +56,11 @@ export function createLeafRoute<P = {}>(
     route: props.route,
   };
 }
+
+export const appRoutes: AppRoute[] = [
+  ...systemRoutes,
+  DashboardRoute,
+  MedicalTestsRoute,
+  UsersRoute,
+  ProfileRoute,
+];

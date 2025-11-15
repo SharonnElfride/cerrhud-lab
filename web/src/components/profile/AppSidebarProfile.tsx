@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
-import { ProfileRoute } from "@/navigation/app_routes";
+import { ProfileRoute } from "@/navigation/profile-routes";
 import { ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";

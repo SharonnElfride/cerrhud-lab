@@ -3,17 +3,15 @@ import AddUser from "@/pages/users/AddUser";
 import EditUser from "@/pages/users/EditUser";
 import Users from "@/pages/users/ListUser";
 import ViewUser from "@/pages/users/ViewUser";
+import { AdminsData } from "@/shared/entity-data";
 import { EditIcon, EyeIcon, PlusSquareIcon, UsersIcon } from "lucide-react";
-import { createLeafRoute, createRouteWithChildren, type AppRoute2 } from "./app-routes-2";
-// import {
-//   createLeafRoute,
-//   createRouteWithChildren,
-//   type AppRoute2,
-// } from "./app_routes";
+import { createLeafRoute, createRouteWithChildren } from "./app-routes";
 
-export const AddUserRoute: AppRoute2 = createLeafRoute({
-  path: "/users/new",
-  label: "Add a user",
+const USERS_ROOT_PATH = "/users";
+
+export const AddUserRoute = createLeafRoute({
+  path: `${USERS_ROOT_PATH}/new`,
+  label: AdminsData.add.title,
   icon: PlusSquareIcon,
   route: AddUser,
   type: "protected",
@@ -21,8 +19,8 @@ export const AddUserRoute: AppRoute2 = createLeafRoute({
   requiredPermissions: ["users.create"],
 });
 
-export const ViewUserRoute: AppRoute2 = createLeafRoute({
-  path: "/users/:id",
+export const ViewUserRoute = createLeafRoute({
+  path: `${USERS_ROOT_PATH}/:id`,
   label: "User's Details",
   icon: EyeIcon,
   route: ViewUser,
@@ -31,9 +29,9 @@ export const ViewUserRoute: AppRoute2 = createLeafRoute({
   requiredPermissions: ["users.read"],
 });
 
-export const UpdateUserRoute: AppRoute2 = createLeafRoute({
-  path: "/users/edit/:id",
-  label: "Edit User's Details",
+export const UpdateUserRoute = createLeafRoute({
+  path: `${USERS_ROOT_PATH}/edit/:id`,
+  label: AdminsData.edit.title,
   icon: EditIcon,
   route: EditUser,
   type: "protected",
@@ -41,9 +39,9 @@ export const UpdateUserRoute: AppRoute2 = createLeafRoute({
   requiredPermissions: ["users.update"],
 });
 
-export const ListUsersRoute: AppRoute2 = createLeafRoute({
-  path: "/users",
-  label: "Users",
+export const ListUsersRoute = createLeafRoute({
+  path: USERS_ROOT_PATH,
+  label: AdminsData.title,
   icon: UsersIcon,
   route: Users,
   type: "protected",
@@ -51,9 +49,9 @@ export const ListUsersRoute: AppRoute2 = createLeafRoute({
   requiredPermissions: ["users.read"],
 });
 
-export const UsersRoute: AppRoute2 = createRouteWithChildren({
-  path: "/users",
-  label: "Users",
+export const UsersRoute = createRouteWithChildren({
+  path: USERS_ROOT_PATH,
+  label: AdminsData.title,
   icon: UsersIcon,
   type: "protected",
   requiredRoles: ["admin", "super_admin"],

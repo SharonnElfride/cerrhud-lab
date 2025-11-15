@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import { LoginRoute } from "@/navigation/app_routes";
+import { LoginRoute } from "@/navigation/system-routes";
 import { Navigate } from "react-router-dom";
 
 interface AuthRouteProps {
