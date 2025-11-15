@@ -1,9 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
-import {
-  DashboardRoute,
-  MedicalTestsRoute,
-  UsersRoute,
-} from "@/navigation/app_routes";
+import { DashboardRoute } from "@/navigation/app_routes";
+import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
+import { UsersRoute } from "@/navigation/users-routes";
 import { SidebarMenu } from "../ui/sidebar";
 import AppSidebarMenuItem from "./AppSidebarMenuItem";
 

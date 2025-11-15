@@ -12,7 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { supabase } from "@/lib/supabase/client";
-import { LoginRoute, MedicalTestsRoute } from "@/navigation/app_routes";
+import { LoginRoute } from "@/navigation/app_routes";
+import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
 import {
   EyeIcon,
   EyeOffIcon,
