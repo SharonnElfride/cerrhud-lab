@@ -19,7 +19,7 @@ import {
   MicroscopeIcon,
   PlusSquareIcon,
 } from "lucide-react";
-import { createLeafRoute, createRouteWithChildren } from "./app-routes";
+import { createLeafRoute, createRouteWithChildren } from "./app-route-factory";
 
 const MEDICAL_TESTS_ROOT_PATH = "/medical-tests";
 

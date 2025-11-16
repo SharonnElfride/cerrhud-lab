@@ -5,7 +5,7 @@ import {
   type PermissionKey,
   type UserPermissions,
 } from "@/models/UserPermissions";
-import type { AppRouteBase } from "./app-routes";
+import type { AppRouteBase } from "./app-route-types";
 
 const hasRequiredRole = (
   userRole: Enums<"user_role">,

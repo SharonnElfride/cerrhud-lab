@@ -60,7 +60,7 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
   }, []);
 
   return (
-    <Card className="pb-0 justify-between border-t-4 border-t-accent">
+    <Card className="w-full pb-0 justify-between border-t-4 border-t-accent">
       <CardHeader>
         <CardTitle>{entityData.title}</CardTitle>
         <CardDescription>{entityData.description}</CardDescription>

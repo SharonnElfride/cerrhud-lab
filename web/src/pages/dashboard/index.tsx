@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/item";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
+import { displayUserRole } from "@/helpers/user_role_helper";
 import { canAccessRoute } from "@/navigation/guards";
 import { ProfileRoute } from "@/navigation/profile-routes";
 import { UsersRoute } from "@/navigation/users-routes";
@@ -39,7 +40,7 @@ const Dashboard = ({}) => {
     <div className="p-5 space-y-5">
       <ListTitle
         title="Tableau de bord"
-        description="Vue d'ensemble des statistiques et activités récentes du système."
+        description="Vue d'ensemble des statistiques et activités récentes de Cerrhud Lab."
       />
 
       <Item variant="outline" className="md:w-1/2">
@@ -61,8 +62,10 @@ const Dashboard = ({}) => {
           <ItemTitle>
             {user?.first_name} {user?.surname}
           </ItemTitle>
-          {/* Date / Time lapse */}
-          <ItemDescription>Dernière connexion : {lastSignedIn}</ItemDescription>
+          {/* <ItemDescription>Dernière connexion : {lastSignedIn}</ItemDescription> */}
+          <ItemDescription>
+            Rôle : {displayUserRole(user?.role ?? "user")}
+          </ItemDescription>
         </ItemContent>
         <ItemActions>
           <Button
@@ -78,7 +81,7 @@ const Dashboard = ({}) => {
         </ItemActions>
       </Item>
 
-      <div className="w-full grid md:grid-cols-2 gap-2">
+      <div className="w-full flex flex-col md:flex-row gap-2">
         <EntityCard entityType="medical_tests" />
         {canAccessRoute(UsersRoute, user) && <EntityCard entityType="users" />}
       </div>
