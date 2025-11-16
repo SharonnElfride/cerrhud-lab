@@ -1,4 +1,4 @@
-import type { AppRoute } from "./app-routes";
+import type { AppRoute } from "./app-route-types";
 
 export function findCurrentRoute(
   routes: AppRoute[],

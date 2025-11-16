@@ -1,6 +1,6 @@
 import Dashboard from "@/pages/dashboard";
 import { LayoutDashboardIcon } from "lucide-react";
-import { createLeafRoute } from "./app-routes";
+import { createLeafRoute } from "./app-route-factory";
 
 export const DashboardRoute = createLeafRoute({
   path: "/dashboard",

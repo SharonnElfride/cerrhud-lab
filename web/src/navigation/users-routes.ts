@@ -5,7 +5,7 @@ import Users from "@/pages/users/ListUser";
 import ViewUser from "@/pages/users/ViewUser";
 import { AdminsData } from "@/shared/entity-data";
 import { EditIcon, EyeIcon, PlusSquareIcon, UsersIcon } from "lucide-react";
-import { createLeafRoute, createRouteWithChildren } from "./app-routes";
+import { createLeafRoute, createRouteWithChildren } from "./app-route-factory";
 
 const USERS_ROOT_PATH = "/users";
 
