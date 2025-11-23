@@ -231,7 +231,7 @@ const ProfileForm = ({
             <Field className={fieldClassName} data-invalid={!!errors.confirm_password}>
               <ProfileFormFieldInfo>
                 <FieldLabel htmlFor="confirm_password">
-                  Confirm password
+                  Confirmer le mot de passe
                 </FieldLabel>
               </ProfileFormFieldInfo>
 
@@ -259,11 +259,11 @@ const ProfileForm = ({
             type="submit"
             disabled={isSubmitting || Object.keys(dirtyFields).length === 0}
           >
-            {isSubmitting ? <Spinner /> : "Save changes"}
+            {isSubmitting ? <Spinner /> : "Enregistrer les modifications"}
           </Button>
 
           <Button variant="outline" type="button" disabled={isSubmitting}>
-            Cancel
+            Annuler
           </Button>
         </Field>
       </FieldGroup>

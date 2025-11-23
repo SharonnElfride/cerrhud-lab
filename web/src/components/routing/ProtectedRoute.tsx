@@ -1,15 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
-import {
-  LoginRoute,
-  UnauthorizedRoute,
-  type AppRoute,
-} from "@/navigation/app_routes";
+import type { AppRouteBase } from "@/navigation/app-routes";
 import { canAccessRoute } from "@/navigation/guards";
+import { LoginRoute, UnauthorizedRoute } from "@/navigation/system-routes";
 import { Navigate, useLocation } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  route: AppRoute;
+  route: AppRouteBase;
 }
 
 const ProtectedRoute = ({ children, route }: ProtectedRouteProps) => {
@@ -31,7 +28,7 @@ const ProtectedRoute = ({ children, route }: ProtectedRouteProps) => {
     return <Navigate to={UnauthorizedRoute.path} replace />;
   }
 
-  return (<>{children}</>);
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

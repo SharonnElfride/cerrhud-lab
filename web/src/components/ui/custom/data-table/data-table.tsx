@@ -27,7 +27,7 @@ import {
   RefreshCwIcon,
   Trash2Icon,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { Fragment, type ReactNode, useState } from "react";
 import { Button } from "../../button";
 import { CEmptyData, type CEmptyDataProps } from "../cempty-data";
 import { CLoadingData } from "../cloading-data";
@@ -131,7 +131,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 py-2">
       <div className="flex w-full justify-between">
         <div className="flex gap-2">
           {canAdd && addForm && (
@@ -171,7 +171,7 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
 
-      <div className="rounded-md border overflow-x-auto scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none]">
+      <div className="rounded-md border border-white overflow-x-auto scroll-smooth">
         <Table className="min-w-full bg-background">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => {
@@ -240,9 +240,8 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <>
+                <Fragment key={row.id}>
                   <TableRow
-                    key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -262,7 +261,7 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </Fragment>
               ))
             ) : (
               <TableRow>

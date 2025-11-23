@@ -1,4 +1,4 @@
-import type { AppRoute } from "@/navigation/app_routes";
+import type { AppRouteBase } from "@/navigation/app-routes";
 import { Grid2X2XIcon } from "lucide-react";
 import type { MouseEventHandler } from "react";
 import { Button } from "../button";
@@ -12,7 +12,7 @@ import {
 } from "../empty";
 
 interface CEmptyDataProps {
-  appRoute: AppRoute;
+  appRoute: AppRouteBase;
   addDataButtonText: string;
   addDataButtonOnClick?: MouseEventHandler<HTMLButtonElement>;
   canAccessMoreButton?: boolean;

@@ -1,11 +1,20 @@
-import type { AppRoute } from "@/navigation/app_routes";
+import type { AppRoute } from "@/navigation/app-routes";
+import type { JSX } from "react";
 import { Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
+import ParentRouteLayoutTemplate from "./ParentRouteLayoutTemplate";
 import ProtectedRoute from "./ProtectedRoute";
 
 function RenderRoutes(routes: AppRoute[]): React.ReactNode {
   return routes.map((rte) => {
-    const Element = <rte.route />;
+    const routeKey = rte.path.substring(1).replace("/:", "-").replace("/", "-");
+    let Element: JSX.Element = <></>;
+
+    if (rte.layout || rte.children || !rte.route) {
+      Element = rte.layout ? <rte.layout /> : <ParentRouteLayoutTemplate />;
+    } else {
+      Element = <rte.route />;
+    }
 
     const element =
       rte.type === "auth" ? (
@@ -16,14 +25,9 @@ function RenderRoutes(routes: AppRoute[]): React.ReactNode {
         <div className="p-5">{Element}</div>
       );
 
-    const routeKey =
-      rte.path === "/"
-        ? "index"
-        : rte.path.substring(1).replace("/:", "-").replace("/", "-");
-
     return (
       <Route key={routeKey} path={rte.path} element={element}>
-        {rte.children ? RenderRoutes(rte.children) : null}
+        {rte.children && RenderRoutes(rte.children)}
       </Route>
     );
   });

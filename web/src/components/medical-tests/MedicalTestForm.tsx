@@ -362,7 +362,7 @@ const MedicalTestForm = ({
 
             {preview && (
               <div className="mt-2 flex flex-col gap-2 items-center">
-                <p>Preview what the image will look like</p>
+                <p>Aperçu de l'image</p>
                 <img
                   src={preview}
                   alt="Medical test's image preview"

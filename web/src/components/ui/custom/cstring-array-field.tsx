@@ -108,7 +108,7 @@ const CStringArrayField = ({
           {values.map((kw) => (
             <Item
               variant="muted"
-              size="xs"
+              size="2xs"
               className={hasSentences ? "w-full" : ""}
             >
               <ItemContent>

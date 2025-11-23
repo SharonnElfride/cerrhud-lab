@@ -44,6 +44,7 @@ export const MedicalTestsColumns = (
             variant="secondary"
             size="icon-sm"
             onClick={() => row.toggleExpanded()}
+            className="size-6 p-1"
           >
             <ChevronDown
               className={`transition-transform ${
@@ -88,40 +89,16 @@ export const MedicalTestsColumns = (
       return (
         <div className="w-[350px] flex flex-wrap items-center gap-1">
           {row.original.keywords?.map((kw) => (
-            <Badge variant={"outline"} className="capitalize">
+            <Badge
+              key={kw.toKeyCase()}
+              variant={"outline"}
+              className="capitalize"
+            >
               {kw}
             </Badge>
           ))}
         </div>
       );
-    },
-    enableColumnFilter: false,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "created_at",
-    header: "Créé le",
-    // header: ({ column }) => {
-    //   return (
-    //     <Button
-    //       variant="ghost"
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    //     >
-    //       Créé le
-    //       <ArrowUpDown className="ml-2 h-4 w-4" />
-    //     </Button>
-    //   );
-    // },
-    cell: ({ row }) => {
-      return <p>{cFormatDate(row.original.created_at!)}</p>;
-    },
-    meta: { filterType: "date" },
-  },
-  {
-    accessorKey: "created_by",
-    header: "Créé par",
-    cell: ({ row }) => {
-      return <p>{displayUserName(row.original.created_by!)}</p>;
     },
     enableColumnFilter: false,
     enableSorting: false,
