@@ -1,12 +1,15 @@
 import MedicalTestForm from "@/components/medical-tests/MedicalTestForm";
+import PageHeadline from "@/components/shared/PageHeadline";
 import { useAuth } from "@/context/AuthContext";
 import type { TablesInsert } from "@/lib/supabase/supabase";
+import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
 import {
   addSingleMedicalTest,
   updateSingleMedicalTest,
   uploadMedicalTestImage,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface AddMedicalTestProps {
@@ -21,6 +24,7 @@ const AddMedicalTest = ({
   onCancel,
 }: AddMedicalTestProps) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmitForm = async (
     data: TablesInsert<"medical_tests">,
@@ -58,20 +62,35 @@ const AddMedicalTest = ({
     }
   };
 
+  const onCancelForm = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      try {
+        navigate(-1);
+      } catch (error: any) {
+        console.error("CANNOT GO BACK");
+        console.error(error.message);
+
+        navigate(MedicalTestsRoute.path, { replace: true });
+      }
+    }
+  };
+
   return (
     <div>
       {displayHeader && (
-        <div>
-          <h2>{MedicalTestsData.add.title}</h2>
-          <p>{MedicalTestsData.add.description}</p>
-        </div>
+        <PageHeadline
+          title={MedicalTestsData.add.title}
+          description={MedicalTestsData.add.description}
+        />
       )}
 
       <div className="px-4 mb-5">
         <MedicalTestForm
           mode="create"
           onSubmit={onSubmitForm}
-          onCancel={onCancel}
+          onCancel={onCancelForm}
         />
       </div>
     </div>
