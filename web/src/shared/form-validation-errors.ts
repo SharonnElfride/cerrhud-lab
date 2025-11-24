@@ -1,4 +1,4 @@
-export const COMMON_ERRORS = {
+export const COMMON_FORM_ERRORS = {
   REQUIRED: "Champ requis",
   INVALID_FORMAT: "Format invalide",
   INVALID_FILE_TYPE: "⚠️ Type de fichier non valide",
@@ -11,7 +11,7 @@ export const COMMON_ERRORS = {
   INVALID_LOWERCASE: "La valeur doit être en minuscules",
 };
 
-export const MEDICAL_TEST_ERRORS = {
+export const MEDICAL_TEST_FORM_ERRORS = {
   TITLE_REQUIRED: "Le titre de l'examen est requis.",
   DESCRIPTION_REQUIRED: "La description de l'examen est requise.",
   PRICE_REQUIRED: "Le prix de l'examen est requis.",
@@ -26,7 +26,7 @@ export const MEDICAL_TEST_ERRORS = {
     "Ajoutez au moins une valeur pour ce détail.",
 };
 
-export const USER_ERRORS = {
+export const USER_FORM_ERRORS = {
   FIRSTNAME_REQUIRED: "Le prénom est requis.",
   LASTNAME_REQUIRED: "Le nom est requis.",
   EMAIL_REQUIRED: "L'adresse email est requise.",

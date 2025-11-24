@@ -1,6 +1,6 @@
 import MedicalTestsMasterDetail from "@/components/medical-tests/MasterDetail";
 import { MedicalTestsColumns } from "@/components/medical-tests/TableColumns";
-import ListTitle from "@/components/shared/ListTitle";
+import PageHeadline from "@/components/shared/PageHeadline";
 import { DataTable } from "@/components/ui/custom/data-table/data-table";
 import { useAuth } from "@/context/AuthContext";
 import type { Tables } from "@/lib/supabase/supabase";
@@ -51,9 +51,10 @@ const MedicalTests = ({}) => {
 
   return (
     <div className="p-5 space-y-5">
-      <ListTitle
+      <PageHeadline
         title={MedicalTestsData.title}
         description={MedicalTestsData.description}
+        variant={"list"}
       />
 
       <div className="mx-auto overflow-y-hidden">

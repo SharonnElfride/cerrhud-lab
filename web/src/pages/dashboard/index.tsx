@@ -1,5 +1,5 @@
 import EntityCard from "@/components/dashboard/EntityCard";
-import ListTitle from "@/components/shared/ListTitle";
+import PageHeadline from "@/components/shared/PageHeadline";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,9 +38,10 @@ const Dashboard = ({}) => {
 
   return (
     <div className="p-5 space-y-5">
-      <ListTitle
+      <PageHeadline
         title="Tableau de bord"
         description="Vue d'ensemble des statistiques et activités récentes de Cerrhud Lab."
+        variant={"list"}
       />
 
       <Item variant="outline" className="md:w-1/2">

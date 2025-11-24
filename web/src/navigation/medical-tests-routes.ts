@@ -21,10 +21,10 @@ import {
 } from "lucide-react";
 import { createLeafRoute, createRouteWithChildren } from "./app-route-factory";
 
-const MEDICAL_TESTS_ROOT_PATH = "/medical-tests";
+export const MEDICAL_TESTS_ROOT_PATH = "/medical-tests";
 
 export const AddMedicalTestRoute = createLeafRoute<AddMedicalTestProps>({
-  path: `${MEDICAL_TESTS_ROOT_PATH}/new`,
+  path: "new",
   label: MedicalTestsData.add.title,
   icon: PlusSquareIcon,
   route: AddMedicalTest,
@@ -34,7 +34,7 @@ export const AddMedicalTestRoute = createLeafRoute<AddMedicalTestProps>({
 });
 
 export const ViewMedicalTestRoute = createLeafRoute<ViewMedicalTestProps>({
-  path: `${MEDICAL_TESTS_ROOT_PATH}/:id`,
+  path: ":id",
   label: "Medical Test Details",
   icon: EyeIcon,
   route: ViewMedicalTest,
@@ -44,7 +44,7 @@ export const ViewMedicalTestRoute = createLeafRoute<ViewMedicalTestProps>({
 });
 
 export const UpdateMedicalTestRoute = createLeafRoute<EditMedicalTestProps>({
-  path: `${MEDICAL_TESTS_ROOT_PATH}/edit/:id`,
+  path: "edit/:id",
   label: MedicalTestsData.edit.title,
   icon: EditIcon,
   route: EditMedicalTest,
@@ -54,7 +54,7 @@ export const UpdateMedicalTestRoute = createLeafRoute<EditMedicalTestProps>({
 });
 
 export const ListMedicalTestsRoute = createLeafRoute({
-  path: MEDICAL_TESTS_ROOT_PATH,
+  path: "",
   label: MedicalTestsData.title,
   icon: MicroscopeIcon,
   route: MedicalTests,
@@ -74,7 +74,7 @@ export const MedicalTestsRoute = createRouteWithChildren({
   children: [
     ListMedicalTestsRoute,
     AddMedicalTestRoute,
-    ViewMedicalTestRoute,
     UpdateMedicalTestRoute,
+    ViewMedicalTestRoute,
   ],
 });
