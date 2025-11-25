@@ -14,6 +14,7 @@ import {
   getMedicalTests,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
+import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AddMedicalTest } from "./AddMedicalTest";
@@ -41,9 +42,13 @@ const MedicalTests = ({}) => {
     let deleted = await deleteMedicalTests(ids);
 
     if (deleted) {
-      toast.success("Les examens sélectionnés ont été supprimés.");
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_DELETION
+      );
     } else {
-      toast.error("Impossible de supprimer les examens sélectionnés.");
+      toast.error(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_DELETION
+      );
     }
 
     await loadData();

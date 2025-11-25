@@ -9,6 +9,10 @@ import {
   uploadMedicalTestImage,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
+import {
+  MEDICAL_TESTS_VALIDATION_MESSAGES,
+  SHARED_VALIDATION_MESSAGES,
+} from "@/shared/page-validation-messages";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -53,11 +57,13 @@ const AddMedicalTest = ({
 
       onSubmit?.();
 
-      toast.success("L'examen a bien été ajouté.");
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_CREATION
+      );
     } catch (error: any) {
       toast.error(
         error.message ??
-          "Une erreur est survenue lors de l'ajout de l'examen médical."
+          MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_CREATION
       );
     }
   };
@@ -69,7 +75,7 @@ const AddMedicalTest = ({
       try {
         navigate(-1);
       } catch (error: any) {
-        console.error("CANNOT GO BACK");
+        console.error(SHARED_VALIDATION_MESSAGES.ERROR.CANNOT_USE_GO_BACK);
         console.error(error.message);
 
         navigate(MedicalTestsRoute.path, { replace: true });

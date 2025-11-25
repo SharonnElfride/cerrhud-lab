@@ -70,6 +70,9 @@ export const MedicalTestsColumns = (
         <DataTableViewDialog
           title={row.original.title}
           description={row.original.description}
+          dialogContentClassName={
+            "md:!max-w-5xl md:h-[70vh] overflow-x-hidden flex flex-col"
+          }
         >
           <ViewMedicalTest displayHeader={false} medicalTest={row.original} />
         </DataTableViewDialog>
