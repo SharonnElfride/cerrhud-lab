@@ -4,6 +4,7 @@ import {
 } from "@/forms/profileSchema";
 import { updateSingleProfile, uploadAvatar } from "@/services/ProfilesService";
 import type { AuthProps } from "@/shared/AuthProps";
+import { USERS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CameraIcon } from "lucide-react";
 import { useState } from "react";
@@ -44,19 +45,24 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
   };
 
   const handleUploadAvatar = async (data: AvatarUploadFormValues) => {
-    if (!user || !data.avatar) return toast.error("Utilisateur ou image introuvable.");
+    if (!user || !data.avatar)
+      return toast.error(
+        USERS_VALIDATION_MESSAGES.ERROR.NO_USER_OR_AVATAR_FOUND
+      );
     const file = data.avatar[0];
 
     try {
       const url = await uploadAvatar(user.id, file);
       await updateSingleProfile(user.id, { avatar: url });
-      toast.success("Avatar mis à jour avec succès !");
+      toast.success(USERS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_AVATAR_UPDATE);
       reset();
       setOpen(false);
       setPreview(`${url}?v=${Date.now()}`);
     } catch (err: any) {
       console.error(err);
-      toast.error(`Échec de la mise à jour de l'avatar : ${err.message}`);
+      toast.error(
+        `${USERS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_AVATAR_UPDATE} ${err.message}`
+      );
     }
   };
 
@@ -111,7 +117,8 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
           <DialogHeader>
             <DialogTitle>Téléverser un avatar</DialogTitle>
             <DialogDescription>
-              Extensions de fichiers autorisées : <b>.png, .jpg, .jpeg, .svg, .webp</b>
+              Extensions de fichiers autorisées :{" "}
+              <b>.png, .jpg, .jpeg, .svg, .webp</b>
               <br />
               Taille maximale du fichier : <b>1 Mo</b>
             </DialogDescription>

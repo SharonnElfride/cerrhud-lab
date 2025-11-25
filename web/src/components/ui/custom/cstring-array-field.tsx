@@ -107,6 +107,7 @@ const CStringArrayField = ({
         <div className="flex flex-wrap gap-2 mt-5">
           {values.map((kw) => (
             <Item
+              key={kw}
               variant="muted"
               size="2xs"
               className={hasSentences ? "w-full" : ""}

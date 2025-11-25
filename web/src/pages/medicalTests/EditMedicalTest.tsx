@@ -92,11 +92,13 @@ const EditMedicalTest = ({
       await updateSingleMedicalTest(formMedicalTest!.id, data);
       onSubmit();
 
-      toast.success("L'examen a été mis à jour.");
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_UPDATE
+      );
     } catch (error: any) {
       toast.error(
         error.message ??
-          "Une erreur est survenue lors de la mise à jour de l'examen médical."
+          MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_UPDATE
       );
     }
   };

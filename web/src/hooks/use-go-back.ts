@@ -1,3 +1,4 @@
+import { SHARED_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useNavigate } from "react-router-dom";
 
 export function useGoBack() {
@@ -11,7 +12,7 @@ export function useGoBack() {
         navigate(fallbackPath, { replace });
       }
     } catch (error: any) {
-      console.error("CANNOT USE GO BACK");
+      console.error(SHARED_VALIDATION_MESSAGES.ERROR.CANNOT_USE_GO_BACK);
       console.error(error.message);
 
       navigate(fallbackPath, { replace });

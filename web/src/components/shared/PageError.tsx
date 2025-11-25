@@ -1,6 +1,7 @@
 import { useGoBack } from "@/hooks/use-go-back";
 import { cn } from "@/lib/utils";
 import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
+import { SHARED_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ArrowLeftIcon, RefreshCwIcon } from "lucide-react";
 import type React from "react";
@@ -15,7 +16,7 @@ interface PageErrorProps {
 }
 
 const PageError = ({
-  errorTitle = "Une erreur est survenue.",
+  errorTitle = SHARED_VALIDATION_MESSAGES.ERROR.AN_ERROR_OCCURRED,
   errorMessage,
   onRetry,
   showBackButton = true,
