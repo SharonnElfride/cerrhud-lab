@@ -31,12 +31,12 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
             <CardTitle>{MedicalTestsData.view.overviewCardTitle}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+            <div className="aspect-video rounded-lg overflow-hidden">
               <img
                 src={medicalTest.image ?? ImagePlaceholder(medicalTest.title)}
                 loading="lazy"
                 alt={medicalTest.title}
-                className="w-full h-full rounded-lg"
+                className=" w-full h-full object-cover"
               />
             </div>
 
@@ -92,16 +92,18 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
                 {MedicalTestFormFieldsInfo.sample_instructions.label}
               </CEntityDetailItemTitle>
 
-              <ul className="space-y-1 list-disc list-inside">
-                {medicalTest.sample_instructions?.map((si) => (
-                  <li
-                    key={si.toKeyCase()}
-                    className="text-sm text-muted-foreground"
-                  >
-                    {si}
-                  </li>
-                ))}
-              </ul>
+              {medicalTest.sample_instructions && (
+                <ul className="space-y-1 list-disc list-inside">
+                  {medicalTest.sample_instructions.map((si) => (
+                    <li
+                      key={si.toKeyCase()}
+                      className="text-sm text-muted-foreground"
+                    >
+                      {si}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </CEntityDetailItem>
 
             <Separator />
@@ -111,7 +113,9 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
                 {MedicalTestFormFieldsInfo.custom_details.label}
               </CEntityDetailItemTitle>
 
-              <CustomDetailsOverview customDetails={customDetails} />
+              {customDetails.length > 0 && (
+                <CustomDetailsOverview customDetails={customDetails} />
+              )}
             </CEntityDetailItem>
           </CardContent>
         </Card>

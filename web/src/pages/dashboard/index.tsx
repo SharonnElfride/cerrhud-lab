@@ -13,7 +13,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
 import { displayUserRole } from "@/helpers/user_role_helper";
-import { canAccessRoute } from "@/navigation/guards";
+import { canAccessRoute, hasRequiredPermissions } from "@/navigation/guards";
 import { ProfileRoute } from "@/navigation/profile-routes";
 import { UsersRoute } from "@/navigation/users-routes";
 import { getUserLastConnectionById } from "@/services/SupabaseService";
@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = ({}) => {
-  const { user, loading } = useAuth();
+  const { user, loading, userPermissions } = useAuth();
   const navigate = useNavigate();
 
   const [lastSignedIn, setLastSignedIn] = useState<string>();
@@ -63,9 +63,9 @@ const Dashboard = ({}) => {
           <ItemTitle>
             {user?.first_name} {user?.surname}
           </ItemTitle>
-          {/* <ItemDescription>Dernière connexion : {lastSignedIn}</ItemDescription> */}
           <ItemDescription>
-            Rôle : {displayUserRole(user?.role ?? "user")}
+            Rôle : {displayUserRole(user?.role ?? "user")} <br />
+            Dernière connexion : {lastSignedIn}
           </ItemDescription>
         </ItemContent>
         <ItemActions>
@@ -83,8 +83,18 @@ const Dashboard = ({}) => {
       </Item>
 
       <div className="w-full flex flex-col md:flex-row gap-2">
-        <EntityCard entityType="medical_tests" />
-        {canAccessRoute(UsersRoute, user) && <EntityCard entityType="users" />}
+        <EntityCard
+          entityType="medical_tests"
+          canAdd={hasRequiredPermissions(userPermissions, [
+            "medical_tests.create",
+          ])}
+        />
+        {canAccessRoute(UsersRoute, user) && (
+          <EntityCard
+            entityType="users"
+            canAdd={hasRequiredPermissions(userPermissions, ["users.create"])}
+          />
+        )}
       </div>
     </div>
   );

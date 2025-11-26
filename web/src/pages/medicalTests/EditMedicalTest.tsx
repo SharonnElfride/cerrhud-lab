@@ -61,7 +61,7 @@ const EditMedicalTest = ({
           const test = await getMedicalTestById(id);
           setFormMedicalTest(test);
         } catch (error: any) {
-          console.error(
+          console.log(
             MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.CANNOT_FETCH_MEDICAL_TEST
           );
           console.error(error.message);

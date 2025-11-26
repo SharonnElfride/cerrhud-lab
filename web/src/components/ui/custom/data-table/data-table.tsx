@@ -132,8 +132,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-5 py-2">
-      <div className="flex w-full justify-between">
-        <div className="flex gap-2">
+      <div className="flex flex-wrap w-full justify-between gap-2">
+        <div className="flex flex-wrap gap-2">
           {canAdd && addForm && (
             <Button size={"sm"} onClick={() => setOpenAddSheet(true)}>
               <ListPlusIcon />

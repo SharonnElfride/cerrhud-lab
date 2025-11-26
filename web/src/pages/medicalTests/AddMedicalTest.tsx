@@ -1,6 +1,7 @@
 import MedicalTestForm from "@/components/medical-tests/MedicalTestForm";
 import PageHeadline from "@/components/shared/PageHeadline";
 import { useAuth } from "@/context/AuthContext";
+import { useGoBack } from "@/hooks/use-go-back";
 import type { TablesInsert } from "@/lib/supabase/supabase";
 import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
 import {
@@ -9,10 +10,7 @@ import {
   uploadMedicalTestImage,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
-import {
-  MEDICAL_TESTS_VALIDATION_MESSAGES,
-  SHARED_VALIDATION_MESSAGES,
-} from "@/shared/page-validation-messages";
+import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -29,6 +27,7 @@ const AddMedicalTest = ({
 }: AddMedicalTestProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const onSubmitForm = async (
     data: TablesInsert<"medical_tests">,
@@ -72,14 +71,7 @@ const AddMedicalTest = ({
     if (onCancel) {
       onCancel();
     } else {
-      try {
-        navigate(-1);
-      } catch (error: any) {
-        console.error(SHARED_VALIDATION_MESSAGES.ERROR.CANNOT_USE_GO_BACK);
-        console.error(error.message);
-
-        navigate(MedicalTestsRoute.path, { replace: true });
-      }
+      goBack(MedicalTestsRoute.path);
     }
   };
 
