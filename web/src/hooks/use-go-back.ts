@@ -12,7 +12,7 @@ export function useGoBack() {
         navigate(fallbackPath, { replace });
       }
     } catch (error: any) {
-      console.error(SHARED_VALIDATION_MESSAGES.ERROR.CANNOT_USE_GO_BACK);
+      console.log(SHARED_VALIDATION_MESSAGES.ERROR.CANNOT_USE_GO_BACK);
       console.error(error.message);
 
       navigate(fallbackPath, { replace });

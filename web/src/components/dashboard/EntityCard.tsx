@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import {
   AddMedicalTestRoute,
-  ListMedicalTestsRoute,
+  MedicalTestsRoute,
 } from "@/navigation/medical-tests-routes";
-import { AddUserRoute, ListUsersRoute } from "@/navigation/users-routes";
+import { AddUserRoute, UsersRoute } from "@/navigation/users-routes";
 import { getMedicalTests } from "@/services/MedicalTestsService";
 import { getProfiles } from "@/services/ProfilesService";
 import {
@@ -27,9 +27,10 @@ import { Spinner } from "../ui/spinner";
 
 interface EntityCardProps {
   entityType: "medical_tests" | "users";
+  canAdd: boolean;
 }
 
-const EntityCard = ({ entityType }: EntityCardProps) => {
+const EntityCard = ({ entityType, canAdd }: EntityCardProps) => {
   const [loading, setLoading] = useState(false);
   const [totalData, setTotalData] = useState<number>();
   const entityData: EntityData =
@@ -60,7 +61,12 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
   }, []);
 
   return (
-    <Card className="w-full pb-0 justify-between border-t-4 border-t-accent">
+    <Card
+      className={cn(
+        "w-full justify-between border-t-4 border-t-accent",
+        canAdd ? "pb-0" : ""
+      )}
+    >
       <CardHeader>
         <CardTitle>{entityData.title}</CardTitle>
         <CardDescription>{entityData.description}</CardDescription>
@@ -68,8 +74,8 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
           <Link
             to={
               entityType === "medical_tests"
-                ? ListMedicalTestsRoute.path
-                : ListUsersRoute.path
+                ? MedicalTestsRoute.path
+                : UsersRoute.path
             }
             className={cn(buttonVariants({ variant: "default", size: "sm" }))}
           >
@@ -82,24 +88,26 @@ const EntityCard = ({ entityType }: EntityCardProps) => {
           Total d'éléments : {loading ? <Spinner /> : totalData}
         </p>
       </CardContent>
-      <CardFooter className="bg-muted rounded-b-md">
-        <Link
-          to={
-            entityType === "medical_tests"
-              ? AddMedicalTestRoute.path
-              : AddUserRoute.path
-          }
-          className={cn(
-            buttonVariants({
-              variant: "link",
-              size: "sm",
-              className: "px-0 py-2",
-            })
-          )}
-        >
-          <entityData.icon /> {entityData.add.title}
-        </Link>
-      </CardFooter>
+      {canAdd && (
+        <CardFooter className="bg-muted rounded-b-md">
+          <Link
+            to={
+              entityType === "medical_tests"
+                ? `${MedicalTestsRoute.path}/${AddMedicalTestRoute.path}`
+                : AddUserRoute.path
+            }
+            className={cn(
+              buttonVariants({
+                variant: "link",
+                size: "sm",
+                className: "px-0 py-2",
+              })
+            )}
+          >
+            <entityData.icon /> {entityData.add.title}
+          </Link>
+        </CardFooter>
+      )}
     </Card>
   );
 };

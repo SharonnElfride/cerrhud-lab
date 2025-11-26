@@ -4,6 +4,12 @@ export const SHARED_VALIDATION_MESSAGES = {
     AN_ERROR_OCCURRED: "Une erreur est survenue.",
     CANNOT_USE_GO_BACK: "Impossible de faire un retour en arrière.",
   },
+  DIALOG: {
+    LIST_DELETION:
+      "Elle supprimera définitivement les éléments sélectionnés et les retirera de la base de données.",
+    SINGLE_DELETION:
+      "Elle supprimera définitivement l'élément et le retirera de la base de données.",
+  },
 };
 
 export const MEDICAL_TESTS_VALIDATION_MESSAGES = {
@@ -11,6 +17,7 @@ export const MEDICAL_TESTS_VALIDATION_MESSAGES = {
     SUCCESSFUL_CREATION: "L'examen a bien été ajouté.",
     SUCCESSFUL_UPDATE: "L'examen a été mis à jour.",
     SUCCESSFUL_DELETION: "Les examens sélectionnés ont été supprimés.",
+    SUCCESSFUL_SINGLE_DELETION: "L'examen a été supprimé.",
   },
   ERROR: {
     UNSUCCESSFUL_CREATION:
@@ -19,6 +26,7 @@ export const MEDICAL_TESTS_VALIDATION_MESSAGES = {
       "Une erreur est survenue lors de la mise à jour de l'examen médical.",
     UNSUCCESSFUL_DELETION:
       "Impossible de supprimer tous les examens sélectionnés.",
+    UNSUCCESSFUL_SINGLE_DELETION: "Impossible de supprimer l'examen.",
     MISSING_ID:
       "L'identifiant de l'examen médical est requis. L'URL devrait se conformer à ceci :",
     CANNOT_FETCH_MEDICAL_TEST: "Examen médical introuvable!",

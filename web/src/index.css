@@ -180,4 +180,8 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  li::marker {
+    @apply text-accent;
+  }
 }

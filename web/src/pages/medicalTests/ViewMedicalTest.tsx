@@ -1,27 +1,25 @@
 import MedicalTestOverview from "@/components/medical-tests/MedicalTestOverview";
 import PageHeadline from "@/components/shared/PageHeadline";
+import PageOverview from "@/components/shared/PageOverview";
 import PageStateWrapper from "@/components/shared/PageStateWrapper";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/context/AuthContext";
 import { usePageSoftReload } from "@/hooks/use-soft-reload";
 import type { Tables } from "@/lib/supabase/supabase";
+import { hasRequiredPermissions } from "@/navigation/guards";
 import {
   MEDICAL_TESTS_ROOT_PATH,
+  MedicalTestsRoute,
   UpdateMedicalTestRoute,
   ViewMedicalTestRoute,
 } from "@/navigation/medical-tests-routes";
-import { getMedicalTestById } from "@/services/MedicalTestsService";
+import {
+  deleteMedicalTests,
+  getMedicalTestById,
+} from "@/services/MedicalTestsService";
 import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
-import { Edit, MoreHorizontal, Share2Icon, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 interface ViewMedicalTestProps {
   displayHeader?: boolean;
@@ -34,8 +32,8 @@ const ViewMedicalTest = ({
 }: ViewMedicalTestProps) => {
   const { id } = useParams();
   const softReload = usePageSoftReload();
-  const isMobile = useIsMobile();
-
+  const { userPermissions } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorTitle, setErrorTitle] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -45,6 +43,30 @@ const ViewMedicalTest = ({
   >(medicalTest);
 
   const baseHref = `${window.location.origin}/${MEDICAL_TESTS_ROOT_PATH}`;
+
+  const canEdit = hasRequiredPermissions(userPermissions, [
+    "medical_tests.update",
+  ]);
+
+  const canDelete = hasRequiredPermissions(userPermissions, [
+    "medical_tests.update",
+    "medical_tests.delete",
+  ]);
+
+  const onDelete = async () => {
+    const hasBeenDeleted = await deleteMedicalTests([currentMedicalTest!.id]);
+
+    if (hasBeenDeleted) {
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_SINGLE_DELETION
+      );
+      navigate(MedicalTestsRoute.path);
+    } else {
+      toast.error(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_SINGLE_DELETION
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchMedicalTest = async () => {
@@ -63,7 +85,7 @@ const ViewMedicalTest = ({
           const test = await getMedicalTestById(id);
           setCurrentMedicalTest(test);
         } catch (error: any) {
-          console.error(
+          console.log(
             MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.CANNOT_FETCH_MEDICAL_TEST
           );
           console.error(error.message);
@@ -102,40 +124,18 @@ const ViewMedicalTest = ({
             />
           )}
 
-          <div className="px-4 mb-5 space-y-5">
-            <div className="flex gap-2">
-              <Button>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </Button>
-              {isMobile && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem className="group">
-                      <Share2Icon className="mr-2 h-4 w-4 group-hover:text-white" />
-                      Share
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                    <DropdownMenuItem>Export</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive group group-hover:bg-destructive">
-                      <Trash2 className="mr-2 h-4 w-4 text-destructive group-hover:text-white" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
-
-            <div className="flex w-full gap-2">
-              <MedicalTestOverview medicalTest={currentMedicalTest} />
-            </div>
-          </div>
+          <PageOverview
+            canEdit={canEdit}
+            canDelete={canDelete}
+            entityId={currentMedicalTest.id}
+            deleteFunction={onDelete}
+            deletionErrorMessage={
+              MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR
+                .UNSUCCESSFUL_SINGLE_DELETION
+            }
+          >
+            <MedicalTestOverview medicalTest={currentMedicalTest} />
+          </PageOverview>
         </>
       )}
     </PageStateWrapper>
