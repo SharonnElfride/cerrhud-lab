@@ -20,6 +20,7 @@ import {
   getSortedRowModel,
   type SortingState,
   useReactTable,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import {
   Edit3Icon,
@@ -97,6 +98,7 @@ export function DataTable<TData, TValue>({
   const [openEditSheet, setOpenEditSheet] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -107,6 +109,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnPinning,
       expanded,
+      columnVisibility,
     },
     initialState: {
       columnPinning: {
@@ -123,6 +126,7 @@ export function DataTable<TData, TValue>({
     onColumnPinningChange: setColumnPinning,
     getExpandedRowModel: getExpandedRowModel(),
     onExpandedChange: setExpanded,
+    onColumnVisibilityChange: setColumnVisibility,
   });
 
   function refreshTable() {
@@ -178,6 +182,15 @@ export function DataTable<TData, TValue>({
               return (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
+                    let display = true;
+                    if (header.column.columnDef.meta) {
+                      const metaData = header.column.columnDef.meta as any;
+
+                      display = metaData.display ?? display;
+
+                      if (!display) header.column.toggleVisibility(false);
+                    }
+
                     return (
                       <TableHead key={header.id} data-col={header.column.id}>
                         {header.isPlaceholder
@@ -241,9 +254,7 @@ export function DataTable<TData, TValue>({
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <Fragment key={row.id}>
-                  <TableRow
-                    data-state={row.getIsSelected() && "selected"}
-                  >
+                  <TableRow data-state={row.getIsSelected() && "selected"}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} data-col={cell.column.id}>
                         {flexRender(

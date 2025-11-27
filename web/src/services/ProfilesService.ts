@@ -5,6 +5,7 @@ import {
   PROFILES_TABLENAME,
   STORAGE_BUCKET_ID,
 } from "@/shared/constants";
+import { deleteStorageImage } from "./SupabaseService";
 
 export async function getProfiles() {
   let { data: profiles, error } = await supabase
@@ -74,18 +75,7 @@ export async function uploadAvatar(userId: string, file: File) {
   const ext = file.name.split(".").pop();
   const filePath = `${PROFILES_STORAGE_PATH}/${userId}/${baseFileName}.${ext}`;
 
-  const { data: existing, error: listError } = await supabase.storage
-    .from(STORAGE_BUCKET_ID)
-    .list(`${PROFILES_STORAGE_PATH}/${userId}`);
-
-  if (listError) console.error("Error listing files:", listError);
-
-  const oldAvatar = existing?.find((f) => f.name.startsWith(baseFileName));
-  if (oldAvatar) {
-    await supabase.storage
-      .from(STORAGE_BUCKET_ID)
-      .remove([`${PROFILES_STORAGE_PATH}/${userId}/${oldAvatar.name}`]);
-  }
+  await deleteStorageImage(`${PROFILES_STORAGE_PATH}/${userId}`, baseFileName);
 
   const { error: uploadError } = await supabase.storage
     .from(STORAGE_BUCKET_ID)

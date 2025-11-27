@@ -23,7 +23,7 @@ import { toast } from "sonner";
 interface EditMedicalTestProps {
   displayHeader?: boolean;
   medicalTest?: Tables<"medical_tests">;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   onCancel?: () => void;
 }
 
@@ -90,7 +90,7 @@ const EditMedicalTest = ({
       };
 
       await updateSingleMedicalTest(formMedicalTest!.id, data);
-      onSubmit();
+      onSubmit?.();
 
       toast.success(
         MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_UPDATE

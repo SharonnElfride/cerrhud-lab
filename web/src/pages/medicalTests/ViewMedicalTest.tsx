@@ -32,7 +32,7 @@ const ViewMedicalTest = ({
 }: ViewMedicalTestProps) => {
   const { id } = useParams();
   const softReload = usePageSoftReload();
-  const { userPermissions } = useAuth();
+  const { user, userPermissions } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorTitle, setErrorTitle] = useState<string>();
@@ -134,7 +134,10 @@ const ViewMedicalTest = ({
                 .UNSUCCESSFUL_SINGLE_DELETION
             }
           >
-            <MedicalTestOverview medicalTest={currentMedicalTest} />
+            <MedicalTestOverview
+              medicalTest={currentMedicalTest}
+              isUser={!user || user.role === "user"}
+            />
           </PageOverview>
         </>
       )}

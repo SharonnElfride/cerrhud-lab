@@ -116,21 +116,24 @@ export type Database = {
           changed_at: string | null
           changed_by: string | null
           id: string
-          medical_test_id: string | null
+          medical_test_id: string
+          medical_test_title: string | null
           operation: Database["public"]["Enums"]["change_operation"]
         }
         Insert: {
           changed_at?: string | null
           changed_by?: string | null
           id?: string
-          medical_test_id?: string | null
+          medical_test_id: string
+          medical_test_title?: string | null
           operation: Database["public"]["Enums"]["change_operation"]
         }
         Update: {
           changed_at?: string | null
           changed_by?: string | null
           id?: string
-          medical_test_id?: string | null
+          medical_test_id?: string
+          medical_test_title?: string | null
           operation?: Database["public"]["Enums"]["change_operation"]
         }
         Relationships: [
@@ -139,13 +142,6 @@ export type Database = {
             columns: ["changed_by"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "medical_tests_changes_medical_test_id_fkey"
-            columns: ["medical_test_id"]
-            isOneToOne: false
-            referencedRelation: "medical_tests"
             referencedColumns: ["id"]
           },
         ]
@@ -197,7 +193,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      current_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
     }
     Enums: {
       change_operation: "insert" | "update" | "delete"

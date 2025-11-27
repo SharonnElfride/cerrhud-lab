@@ -64,7 +64,7 @@ const MedicalTests = ({}) => {
 
       <div className="mx-auto overflow-y-hidden">
         <DataTable
-          columns={MedicalTestsColumns(true)}
+          columns={MedicalTestsColumns(user?.role === "user", true)}
           data={medicalTests}
           isDataLoading={isLoading}
           appRoute={ListMedicalTestsRoute}

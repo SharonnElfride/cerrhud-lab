@@ -18,9 +18,13 @@ import CustomDetailsOverview from "./CustomDetailsOverview";
 
 interface MedicalTestOverviewProps {
   medicalTest: Tables<"medical_tests">;
+  isUser: boolean;
 }
 
-const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
+const MedicalTestOverview = ({
+  medicalTest,
+  isUser,
+}: MedicalTestOverviewProps) => {
   const customDetails = toCustomDetailObject(medicalTest.custom_details);
 
   return (
@@ -67,7 +71,7 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
                 <CEntityDetailItemTitle typo={"medium"}>
                   {MedicalTestFormFieldsInfo.mobile_id.label}
                 </CEntityDetailItemTitle>
-                <CEntityDetailItemValue typo={"muted"}>
+                <CEntityDetailItemValue typo={"mono"}>
                   {medicalTest.mobile_id}
                 </CEntityDetailItemValue>
               </CEntityDetailItem>
@@ -137,14 +141,16 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
                 </CEntityDetailItemValue>
               </CEntityDetailItem>
 
-              <CEntityDetailItem>
-                <CEntityDetailItemTitle>
-                  {SharedEntityData.createdBy}
-                </CEntityDetailItemTitle>
-                <CEntityDetailItemValue>
-                  {displayUserName(medicalTest.created_by!)}
-                </CEntityDetailItemValue>
-              </CEntityDetailItem>
+              {!isUser && (
+                <CEntityDetailItem>
+                  <CEntityDetailItemTitle>
+                    {SharedEntityData.createdBy}
+                  </CEntityDetailItemTitle>
+                  <CEntityDetailItemValue>
+                    {displayUserName(medicalTest.created_by!)}
+                  </CEntityDetailItemValue>
+                </CEntityDetailItem>
+              )}
 
               <CEntityDetailItem>
                 <CEntityDetailItemTitle>
@@ -155,14 +161,16 @@ const MedicalTestOverview = ({ medicalTest }: MedicalTestOverviewProps) => {
                 </CEntityDetailItemValue>
               </CEntityDetailItem>
 
-              <CEntityDetailItem>
-                <CEntityDetailItemTitle>
-                  {SharedEntityData.updatedBy}
-                </CEntityDetailItemTitle>
-                <CEntityDetailItemValue>
-                  {displayUserName(medicalTest.updated_by!)}
-                </CEntityDetailItemValue>
-              </CEntityDetailItem>
+              {!isUser && (
+                <CEntityDetailItem>
+                  <CEntityDetailItemTitle>
+                    {SharedEntityData.updatedBy}
+                  </CEntityDetailItemTitle>
+                  <CEntityDetailItemValue>
+                    {displayUserName(medicalTest.updated_by!)}
+                  </CEntityDetailItemValue>
+                </CEntityDetailItem>
+              )}
 
               <CEntityDetailItem displaySeparator={false}>
                 <CEntityDetailItemTitle>

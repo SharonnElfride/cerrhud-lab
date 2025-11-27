@@ -9,6 +9,7 @@ import {
   MEDICAL_TESTS_TABLENAME,
   STORAGE_BUCKET_ID,
 } from "@/shared/constants";
+import { deleteStorageImage } from "./SupabaseService";
 
 function fromDatabase(data: any): Tables<"medical_tests"> {
   return {
@@ -35,7 +36,6 @@ export async function getMedicalTests() {
   let { data: medicalTests, error } = await supabase
     .from(MEDICAL_TESTS_TABLENAME)
     .select("*")
-    .eq("deleted", false)
     .order("updated_at", {
       ascending: false,
     });
@@ -60,16 +60,30 @@ export async function getMedicalTestById(id: string) {
 export async function addSingleMedicalTest(
   medicalTestData: TablesInsert<"medical_tests">
 ) {
-  let { data: medicalTest, error } = await supabase
-    .from(MEDICAL_TESTS_TABLENAME)
-    .insert(medicalTestData)
-    .select()
-    // .eq("id", medicalTestData.id)
-    .single();
+  // let { data: medicalTest, error } = await supabase
+  //   .from(MEDICAL_TESTS_TABLENAME)
+  //   .insert(medicalTestData)
+  //   .select()
+  //   .single();
 
-  if (error) throw error;
+  // if (error) throw error;
 
-  return fromDatabase(medicalTest);
+  // return fromDatabase(medicalTest);
+
+  try {
+    const { data: medicalTest, error } = await supabase
+      .from(MEDICAL_TESTS_TABLENAME)
+      .insert(medicalTestData)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return fromDatabase(medicalTest);
+  } catch (err: any) {
+    console.error("Failed to add medical test:", err.message);
+    throw err;
+  }
 }
 
 export async function updateSingleMedicalTest(
@@ -89,24 +103,29 @@ export async function updateSingleMedicalTest(
 }
 
 export async function deleteMedicalTests(medicalTestIds: string[]) {
+  let { data: medicalTestWithImageIds } = await supabase
+    .from(MEDICAL_TESTS_TABLENAME)
+    .select("id")
+    .in("id", medicalTestIds)
+    // .or("image.is.null,image.eq.'',image.eq.'null'")
+    .not("image", "is", null)
+    .neq("image", "");
+
   const { error } = await supabase
     .from(MEDICAL_TESTS_TABLENAME)
-    .update({ deleted: true })
+    .delete()
     .in("id", medicalTestIds);
 
   if (error) throw error;
 
+  if (medicalTestWithImageIds) {
+    for (const test of medicalTestWithImageIds) {
+      await deleteStorageImage(MEDICAL_TESTS_STORAGE_PATH, test.id);
+    }
+  }
+
   return true;
 }
-
-// async function deleteMedicalTests(medicalTestIds: string[]) {
-//   const { error } = await supabase
-//     .from(MEDICAL_TESTS_TABLENAME)
-//     .delete()
-//     .in("id", medicalTestIds);
-//   if (error) throw error;
-//   return true;
-// }
 
 export async function uploadMedicalTestImage(
   medicalTestId: string,
@@ -115,18 +134,7 @@ export async function uploadMedicalTestImage(
   const ext = file.name.split(".").pop();
   const filePath = `${MEDICAL_TESTS_STORAGE_PATH}/${medicalTestId}.${ext}`;
 
-  const { data: existing, error: listError } = await supabase.storage
-    .from(STORAGE_BUCKET_ID)
-    .list(`${MEDICAL_TESTS_STORAGE_PATH}`);
-
-  if (listError) console.error("Error listing files:", listError);
-
-  const oldAvatar = existing?.find((f) => f.name.startsWith(medicalTestId));
-  if (oldAvatar) {
-    await supabase.storage
-      .from(STORAGE_BUCKET_ID)
-      .remove([`${MEDICAL_TESTS_STORAGE_PATH}/${oldAvatar.name}`]);
-  }
+  await deleteStorageImage(MEDICAL_TESTS_STORAGE_PATH, medicalTestId);
 
   const { error: uploadError } = await supabase.storage
     .from(STORAGE_BUCKET_ID)
