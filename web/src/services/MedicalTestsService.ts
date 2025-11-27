@@ -60,30 +60,15 @@ export async function getMedicalTestById(id: string) {
 export async function addSingleMedicalTest(
   medicalTestData: TablesInsert<"medical_tests">
 ) {
-  // let { data: medicalTest, error } = await supabase
-  //   .from(MEDICAL_TESTS_TABLENAME)
-  //   .insert(medicalTestData)
-  //   .select()
-  //   .single();
+  const { data: medicalTest, error } = await supabase
+    .from(MEDICAL_TESTS_TABLENAME)
+    .insert(medicalTestData)
+    .select()
+    .single();
 
-  // if (error) throw error;
+  if (error) throw error;
 
-  // return fromDatabase(medicalTest);
-
-  try {
-    const { data: medicalTest, error } = await supabase
-      .from(MEDICAL_TESTS_TABLENAME)
-      .insert(medicalTestData)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return fromDatabase(medicalTest);
-  } catch (err: any) {
-    console.error("Failed to add medical test:", err.message);
-    throw err;
-  }
+  return fromDatabase(medicalTest);
 }
 
 export async function updateSingleMedicalTest(
@@ -107,7 +92,6 @@ export async function deleteMedicalTests(medicalTestIds: string[]) {
     .from(MEDICAL_TESTS_TABLENAME)
     .select("id")
     .in("id", medicalTestIds)
-    // .or("image.is.null,image.eq.'',image.eq.'null'")
     .not("image", "is", null)
     .neq("image", "");
 
