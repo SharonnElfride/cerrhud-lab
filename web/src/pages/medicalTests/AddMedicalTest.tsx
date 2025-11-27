@@ -11,7 +11,6 @@ import {
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
 import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface AddMedicalTestProps {
@@ -26,7 +25,6 @@ const AddMedicalTest = ({
   onCancel,
 }: AddMedicalTestProps) => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const goBack = useGoBack();
 
   const onSubmitForm = async (

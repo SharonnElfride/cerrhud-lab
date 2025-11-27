@@ -10,7 +10,8 @@ import { Checkbox } from "../ui/checkbox";
 import DataTableViewDialog from "../ui/custom/data-table/view-dialog";
 
 export const MedicalTestsColumns = (
-  enableMasterDetail?: boolean
+  isUser: boolean,
+  enableMasterDetail?: boolean,
 ): ColumnDef<Tables<"medical_tests">>[] => [
   {
     id: "select",
@@ -122,5 +123,6 @@ export const MedicalTestsColumns = (
     },
     enableColumnFilter: false,
     enableSorting: false,
+    meta: { display: !isUser },
   },
 ];
