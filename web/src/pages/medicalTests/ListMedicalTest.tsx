@@ -1,6 +1,6 @@
 import MedicalTestsMasterDetail from "@/components/medical-tests/MasterDetail";
 import { MedicalTestsColumns } from "@/components/medical-tests/TableColumns";
-import ListTitle from "@/components/shared/ListTitle";
+import PageHeadline from "@/components/shared/PageHeadline";
 import { DataTable } from "@/components/ui/custom/data-table/data-table";
 import { useAuth } from "@/context/AuthContext";
 import type { Tables } from "@/lib/supabase/supabase";
@@ -14,6 +14,7 @@ import {
   getMedicalTests,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
+import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AddMedicalTest } from "./AddMedicalTest";
@@ -41,9 +42,13 @@ const MedicalTests = ({}) => {
     let deleted = await deleteMedicalTests(ids);
 
     if (deleted) {
-      toast.success("Les examens sélectionnés ont été supprimés.");
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_DELETION
+      );
     } else {
-      toast.error("Impossible de supprimer les examens sélectionnés.");
+      toast.error(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_DELETION
+      );
     }
 
     await loadData();
@@ -51,14 +56,15 @@ const MedicalTests = ({}) => {
 
   return (
     <div className="p-5 space-y-5">
-      <ListTitle
+      <PageHeadline
         title={MedicalTestsData.title}
         description={MedicalTestsData.description}
+        variant={"list"}
       />
 
       <div className="mx-auto overflow-y-hidden">
         <DataTable
-          columns={MedicalTestsColumns(true)}
+          columns={MedicalTestsColumns(user?.role === "user", true)}
           data={medicalTests}
           isDataLoading={isLoading}
           appRoute={ListMedicalTestsRoute}

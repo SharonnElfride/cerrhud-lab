@@ -56,6 +56,6 @@ export const UsersRoute = createRouteWithChildren({
   type: "protected",
   requiredRoles: ["admin", "super_admin"],
   requiredPermissions: ["users.read"],
-  children: [ListUsersRoute, AddUserRoute, ViewUserRoute, UpdateUserRoute],
+  children: [ListUsersRoute, AddUserRoute, UpdateUserRoute, ViewUserRoute],
   layout: UsersLayout,
 });

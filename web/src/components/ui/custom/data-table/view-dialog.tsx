@@ -12,12 +12,14 @@ interface DataTableViewDialogProps {
   children: ReactNode;
   title: string;
   description?: string | null;
+  dialogContentClassName?: string;
 }
 
 const DataTableViewDialog = ({
   children,
   title,
   description,
+  dialogContentClassName,
 }: DataTableViewDialogProps) => {
   return (
     <Dialog>
@@ -26,7 +28,7 @@ const DataTableViewDialog = ({
           {title}
         </p>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className={dialogContentClassName}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

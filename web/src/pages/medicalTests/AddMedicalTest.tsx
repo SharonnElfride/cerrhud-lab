@@ -1,12 +1,16 @@
 import MedicalTestForm from "@/components/medical-tests/MedicalTestForm";
+import PageHeadline from "@/components/shared/PageHeadline";
 import { useAuth } from "@/context/AuthContext";
+import { useGoBack } from "@/hooks/use-go-back";
 import type { TablesInsert } from "@/lib/supabase/supabase";
+import { MedicalTestsRoute } from "@/navigation/medical-tests-routes";
 import {
   addSingleMedicalTest,
   updateSingleMedicalTest,
   uploadMedicalTestImage,
 } from "@/services/MedicalTestsService";
 import { MedicalTestsData } from "@/shared/entity-data";
+import { MEDICAL_TESTS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { toast } from "sonner";
 
 interface AddMedicalTestProps {
@@ -21,6 +25,7 @@ const AddMedicalTest = ({
   onCancel,
 }: AddMedicalTestProps) => {
   const { user } = useAuth();
+  const goBack = useGoBack();
 
   const onSubmitForm = async (
     data: TablesInsert<"medical_tests">,
@@ -49,29 +54,39 @@ const AddMedicalTest = ({
 
       onSubmit?.();
 
-      toast.success("L'examen a bien été ajouté.");
+      toast.success(
+        MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_CREATION
+      );
     } catch (error: any) {
       toast.error(
         error.message ??
-          "Une erreur est survenue lors de l'ajout de l'examen médical."
+          MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_CREATION
       );
+    }
+  };
+
+  const onCancelForm = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      goBack(MedicalTestsRoute.path);
     }
   };
 
   return (
     <div>
       {displayHeader && (
-        <div>
-          <h2>{MedicalTestsData.add.title}</h2>
-          <p>{MedicalTestsData.add.description}</p>
-        </div>
+        <PageHeadline
+          title={MedicalTestsData.add.title}
+          description={MedicalTestsData.add.description}
+        />
       )}
 
       <div className="px-4 mb-5">
         <MedicalTestForm
           mode="create"
           onSubmit={onSubmitForm}
-          onCancel={onCancel}
+          onCancel={onCancelForm}
         />
       </div>
     </div>

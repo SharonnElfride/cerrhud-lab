@@ -1,3 +1,4 @@
+import { SHARED_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { Button } from "../../button";
 import {
   Dialog,
@@ -15,6 +16,7 @@ interface DataTableDeleteDialogProps {
   onOpenChange: (open: boolean) => void;
   isUpdating: boolean;
   deleteFunction: () => Promise<void>;
+  isList?: boolean;
 }
 
 const DataTableDeleteDialog = ({
@@ -22,6 +24,7 @@ const DataTableDeleteDialog = ({
   onOpenChange,
   isUpdating,
   deleteFunction,
+  isList = true,
 }: DataTableDeleteDialogProps) => {
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
@@ -30,8 +33,10 @@ const DataTableDeleteDialog = ({
           <DialogTitle>Suppression définitive</DialogTitle>
           <DialogDescription>
             En êtes-vous absolument sûr ? <br /> Cette action ne peut pas être
-            annulée. Elle supprimera définitivement les éléments sélectionnés et
-            les retirera de la base de données.
+            annulée.{" "}
+            {isList
+              ? SHARED_VALIDATION_MESSAGES.DIALOG.LIST_DELETION
+              : SHARED_VALIDATION_MESSAGES.DIALOG.SINGLE_DELETION}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

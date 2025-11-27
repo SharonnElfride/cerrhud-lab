@@ -1,4 +1,4 @@
-import type { AppRoute } from "@/navigation/app-routes";
+import type { AppRoute } from "@/navigation/app-route-types";
 import type { JSX } from "react";
 import { Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";

@@ -13,6 +13,9 @@ interface EntityData {
   >;
   add: EntitySubPageData;
   edit: EntitySubPageData;
+  view: {
+    overviewCardTitle: string;
+  };
 }
 
 const MedicalTestsData: EntityData = {
@@ -28,6 +31,9 @@ const MedicalTestsData: EntityData = {
     title: "Éditer un examen",
     description:
       "Modifiez les détails d'un examen médical existant, mettez à jour ses informations ou ajustez son prix.",
+  },
+  view: {
+    overviewCardTitle: "Informations relatives à l'examen médical",
   },
 };
 
@@ -46,6 +52,18 @@ const AdminsData: EntityData = {
     description:
       "Mettez à jour les informations d'un administrateur existant ou ajustez ses rôles et permissions.",
   },
+  view: {
+    overviewCardTitle: "Informations relatives à l'administrateur",
+  },
 };
 
-export { AdminsData, MedicalTestsData, type EntityData };
+const SharedEntityData = {
+  id: "Identifiant",
+  metadata: "Métadonnées",
+  createdAt: "Créé le",
+  createdBy: "Créé par",
+  updatedAt: "Dernière modification le",
+  updatedBy: "Modifié par",
+};
+
+export { AdminsData, MedicalTestsData, SharedEntityData, type EntityData };
