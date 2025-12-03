@@ -1,4 +1,4 @@
-import type { AppRouteBase } from "@/navigation/app-routes";
+import type { AppRouteBase } from "@/navigation/app-route-types";
 import { Grid2X2XIcon } from "lucide-react";
 import type { MouseEventHandler } from "react";
 import { Button } from "../button";

@@ -1,4 +1,4 @@
-import type { AppRouteBase } from "@/navigation/app-routes";
+import type { AppRouteBase } from "@/navigation/app-route-types";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import {
   Empty,

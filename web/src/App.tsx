@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import AppSidebar from "./components/navigation/AppSidebar";
-import AppSidebarTrigger from "./components/navigation/AppSidebarTrigger";
-import RenderRoutes from "./components/routing/RenderRoutes";
+import AppSidebar from "./components/navigation/app-sidebar";
+import AppSidebarTrigger from "./components/navigation/app-sidebar-trigger";
+import RenderRoutes from "./components/routing/render-routes";
 import { SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "./components/ui/sonner";
 import { appRoutes } from "./navigation/app-routes";
-import { findCurrentRoute } from "./navigation/find_current_route";
+import { findCurrentRoute } from "./navigation/find-current-route";
 
 function App() {
   const { pathname } = useLocation();

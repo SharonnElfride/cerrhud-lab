@@ -1,7 +1,7 @@
 import ParentRouteLayoutTemplate from "@/components/routing/parent-route-layout-template";
 
-const MedicalTestsLayout = () => {
+const AdminsLayout = ({}) => {
   return <ParentRouteLayoutTemplate />;
 };
 
-export default MedicalTestsLayout;
+export default AdminsLayout;

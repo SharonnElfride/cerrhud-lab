@@ -1,10 +1,10 @@
-import ProfileAvatar from "@/components/profile/ProfileAvatar";
-import ProfileForm from "@/components/profile/ProfileForm";
+import ProfileAvatar from "@/components/profile/profile-avatar";
+import ProfileForm from "@/components/profile/profile-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/context/AuthContext";
-import { displayUserRole } from "@/helpers/user_role_helper";
+import { useAuth } from "@/context/auth-context";
+import { displayUserRole } from "@/helpers/admin-role-helper";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DashboardRoute } from "@/navigation/dashboard-routes";
 import { BadgeCheckIcon, LogOutIcon } from "lucide-react";
