@@ -1,5 +1,5 @@
-import EntityCard from "@/components/dashboard/EntityCard";
-import PageHeadline from "@/components/shared/PageHeadline";
+import EntityCard from "@/components/dashboard/entity-card";
+import PageHeadline from "@/components/shared/page-headline";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +11,12 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Spinner } from "@/components/ui/spinner";
-import { useAuth } from "@/context/AuthContext";
-import { displayUserRole } from "@/helpers/user_role_helper";
+import { useAuth } from "@/context/auth-context";
+import { displayUserRole } from "@/helpers/admin-role-helper";
 import { canAccessRoute, hasRequiredPermissions } from "@/navigation/guards";
 import { ProfileRoute } from "@/navigation/profile-routes";
-import { UsersRoute } from "@/navigation/users-routes";
-import { getUserLastConnectionById } from "@/services/SupabaseService";
+import { AdminsRoute } from "@/navigation/admins-routes";
+import { getUserLastConnectionById } from "@/services/supabase-service";
 import { UserCogIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +89,7 @@ const Dashboard = ({}) => {
             "medical_tests.create",
           ])}
         />
-        {canAccessRoute(UsersRoute, user) && (
+        {canAccessRoute(AdminsRoute, user) && (
           <EntityCard
             entityType="users"
             canAdd={hasRequiredPermissions(userPermissions, ["users.create"])}

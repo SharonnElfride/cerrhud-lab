@@ -2,16 +2,16 @@ import MedicalTestsLayout from "@/pages/medicalTests";
 import {
   type AddMedicalTestProps,
   AddMedicalTest,
-} from "@/pages/medicalTests/AddMedicalTest";
+} from "@/pages/medicalTests/add-medical-test";
 import {
-  type EditMedicalTestProps,
-  EditMedicalTest,
-} from "@/pages/medicalTests/EditMedicalTest";
-import MedicalTests from "@/pages/medicalTests/ListMedicalTest";
+  type UpdateMedicalTestProps,
+  UpdateMedicalTest,
+} from "@/pages/medicalTests/update-medical-test";
+import MedicalTests from "@/pages/medicalTests/list-medical-test";
 import {
   type ViewMedicalTestProps,
   ViewMedicalTest,
-} from "@/pages/medicalTests/ViewMedicalTest";
+} from "@/pages/medicalTests/view-medical-test";
 import { MedicalTestsData } from "@/shared/entity-data";
 import {
   EditIcon,
@@ -43,11 +43,11 @@ export const ViewMedicalTestRoute = createLeafRoute<ViewMedicalTestProps>({
   requiredPermissions: ["medical_tests.read"],
 });
 
-export const UpdateMedicalTestRoute = createLeafRoute<EditMedicalTestProps>({
+export const UpdateMedicalTestRoute = createLeafRoute<UpdateMedicalTestProps>({
   path: "edit/:id",
   label: MedicalTestsData.edit.title,
   icon: EditIcon,
-  route: EditMedicalTest,
+  route: UpdateMedicalTest,
   type: "protected",
   requiredRoles: ["admin", "super_admin"],
   requiredPermissions: ["medical_tests.update"],

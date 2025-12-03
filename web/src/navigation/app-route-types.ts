@@ -1,5 +1,5 @@
 import type { Enums } from "@/lib/supabase/supabase";
-import type { PermissionKey } from "@/models/UserPermissions";
+import type { PermissionKey } from "@/models/user-permissions";
 
 type RouteType = "auth" | "public" | "protected";
 
