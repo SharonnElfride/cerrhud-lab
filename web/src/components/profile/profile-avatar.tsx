@@ -2,7 +2,7 @@ import {
   avatarUploadSchema,
   type AvatarUploadFormValues,
 } from "@/forms/profile-schema";
-import { updateSingleProfile, uploadAvatar } from "@/services/profiles-service";
+import { updateProfileById, uploadProfileAvatar } from "@/services/profiles-service";
 import type { AuthProps } from "@/shared/auth-props";
 import { USERS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,8 +52,8 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
     const file = data.avatar[0];
 
     try {
-      const url = await uploadAvatar(user.id, file);
-      await updateSingleProfile(user.id, { avatar: url });
+      const url = await uploadProfileAvatar(user.id, file);
+      await updateProfileById(user.id, { avatar: url });
       toast.success(USERS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_AVATAR_UPDATE);
       reset();
       setOpen(false);

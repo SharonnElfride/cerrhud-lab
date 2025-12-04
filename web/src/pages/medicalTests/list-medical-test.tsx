@@ -72,7 +72,7 @@ const MedicalTests = ({}) => {
           canAccessMoreButton={canAccessRoute(AddMedicalTestRoute, user)}
           enableMasterDetail
           masterDetail={MedicalTestsMasterDetail}
-          refreshFunction={() => loadData()}
+          refreshFunction={loadData}
           canAdd={hasRequiredPermissions(userPermissions, [
             "medical_tests.create",
           ])}

@@ -13,6 +13,7 @@ import { deleteStorageImage } from "./supabase-service";
 
 function fromDatabase(data: any): Tables<"medical_tests"> {
   return {
+    id: data.id,
     acronym: data.acronym,
     conditions: data.conditions,
     created_at: data.created_at,
@@ -20,7 +21,6 @@ function fromDatabase(data: any): Tables<"medical_tests"> {
     custom_details: data.custom_details,
     deleted: data.deleted,
     description: data.description,
-    id: data.id,
     image: data.image,
     keywords: data.keywords,
     mobile_id: data.mobile_id,
