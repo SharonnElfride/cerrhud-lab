@@ -14,5 +14,6 @@ export const ImagePlaceholder = (text?: string) =>
 export const STORAGE_BUCKET_ID = "cerrhud_lab";
 export const PROFILES_TABLENAME = "profiles";
 export const PROFILES_STORAGE_PATH = "users";
+export const ADMINS_TABLENAME = "profiles";
 export const MEDICAL_TESTS_TABLENAME = "medical_tests";
 export const MEDICAL_TESTS_STORAGE_PATH = "medical_tests";

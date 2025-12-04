@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
+import { AddAdminRoute, AdminsRoute } from "@/navigation/admins-routes";
 import {
   AddMedicalTestRoute,
   MedicalTestsRoute,
 } from "@/navigation/medical-tests-routes";
-import { AddAdminRoute, AdminsRoute } from "@/navigation/admins-routes";
+import { getAdmins } from "@/services/admins-service";
 import { getMedicalTests } from "@/services/medical-tests-service";
-import { getProfiles } from "@/services/profiles-service";
 import {
   AdminsData,
   MedicalTestsData,
@@ -47,7 +47,7 @@ const EntityCard = ({ entityType, canAdd }: EntityCardProps) => {
           data = await getMedicalTests();
           break;
         case "users":
-          data = await getProfiles();
+          data = await getAdmins();
           break;
         default:
           break;

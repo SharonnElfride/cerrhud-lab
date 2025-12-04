@@ -1,5 +1,5 @@
 import { profileSchema, type ProfileFormValues } from "@/forms/profile-schema";
-import { updateSingleProfile } from "@/services/profiles-service";
+import { updateProfileById } from "@/services/profiles-service";
 import {
   updateSupabaseAuthUser,
   type SupabaseAuthUser,
@@ -84,7 +84,7 @@ const ProfileForm = ({
       // } = modifiedData;
 
       if (Object.keys(modifiedData).length > 0) {
-        await updateSingleProfile(user.id, modifiedData);
+        await updateProfileById(user.id, modifiedData);
       }
 
       toast.success(

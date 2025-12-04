@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import type { TablesInsert, TablesUpdate } from "@/lib/supabase/supabase";
+import type { TablesUpdate } from "@/lib/supabase/supabase";
 import {
   PROFILES_STORAGE_PATH,
   PROFILES_TABLENAME,
@@ -7,43 +7,7 @@ import {
 } from "@/shared/constants";
 import { deleteStorageImage } from "./supabase-service";
 
-export async function getProfiles() {
-  let { data: profiles, error } = await supabase
-    .from(PROFILES_TABLENAME)
-    .select("*");
-
-  if (error) throw error;
-
-  return profiles;
-}
-
-export async function getProfileById(userId: string) {
-  let { data: profile, error } = await supabase
-    .from(PROFILES_TABLENAME)
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error) throw error;
-
-  return profile;
-}
-
-export async function addSingleProfile(profileData: TablesInsert<"profiles">) {
-  let { data: profiles, error } = await supabase
-    .from(PROFILES_TABLENAME)
-    // .insert([profileData])
-    .insert(profileData)
-    .select()
-    .eq("id", profileData.id)
-    .single();
-
-  if (error) throw error;
-
-  return profiles;
-}
-
-export async function updateSingleProfile(
+export async function updateProfileById(
   userId: string,
   profileData: TablesUpdate<"profiles">
 ) {
@@ -59,18 +23,7 @@ export async function updateSingleProfile(
   return profile;
 }
 
-export async function deleteProfiles(profileIds: string[]) {
-  const { error } = await supabase
-    .from(PROFILES_TABLENAME)
-    .delete()
-    .in("id", profileIds);
-
-  if (error) throw error;
-
-  return true;
-}
-
-export async function uploadAvatar(userId: string, file: File) {
+export async function uploadProfileAvatar(userId: string, file: File) {
   const baseFileName = "avatar";
   const ext = file.name.split(".").pop();
   const filePath = `${PROFILES_STORAGE_PATH}/${userId}/${baseFileName}.${ext}`;
