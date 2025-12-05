@@ -5,7 +5,7 @@ import type {
   TablesUpdate,
 } from "@/lib/supabase/supabase";
 import { ADMINS_TABLENAME, PROFILES_STORAGE_PATH } from "@/shared/constants";
-import { deleteStorageImage } from "./supabase-service";
+import { deleteStorageFolder, deleteStorageImage } from "./supabase-service";
 
 function fromDatabase(data: any): Tables<"profiles"> {
   return {
@@ -38,7 +38,7 @@ export async function getAdminById(adminId: string) {
     .from(ADMINS_TABLENAME)
     .select("*")
     .eq("id", adminId)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
 
@@ -50,7 +50,7 @@ export async function addAdmin(adminData: TablesInsert<"profiles">) {
     .from(ADMINS_TABLENAME)
     .insert(adminData)
     .select()
-    .eq("id", adminData.id)
+    // .eq("id", adminData.id)
     .maybeSingle();
 
   if (error) throw error;
@@ -90,10 +90,12 @@ export async function deleteAdminsById(adminIds: string[]) {
   if (error) throw error;
 
   if (adminWithAvatarIds) {
-    for (const test of adminWithAvatarIds) {
-      await deleteStorageImage(PROFILES_STORAGE_PATH, test.id);
+    for (const admin of adminWithAvatarIds) {
+      await deleteStorageFolder(PROFILES_STORAGE_PATH, admin.id);
     }
   }
+
+  // TODO Delete auth user
 
   return true;
 }

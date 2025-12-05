@@ -23,6 +23,28 @@ export async function getUserLastConnectionById() {
   return cFormatDate(data.user.last_sign_in_at ?? "");
 }
 
+export async function deleteStorageFolder(
+  storagePath: string,
+  folderName: string
+) {
+  const { data: existing, error: listError } = await supabase.storage
+    .from(STORAGE_BUCKET_ID)
+    .list(`${storagePath}/${folderName}`);
+
+  if (listError) console.error("Error listing files:", listError);
+
+  if (existing) {
+    await supabase.storage
+      .from(STORAGE_BUCKET_ID)
+      .remove([`${storagePath}/${folderName}`]);
+  } else {
+    console.error(`There isn't any folder with the name: ${folderName}`);
+    return false;
+  }
+
+  return true;
+}
+
 export async function deleteStorageImage(
   storagePath: string,
   imageName: string
