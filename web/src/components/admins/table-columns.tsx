@@ -1,6 +1,4 @@
-import { displayUserName } from "@/helpers/admin-by-id-helper";
 import type { Tables } from "@/lib/supabase/supabase";
-import { cFormatDate } from "@/utils/formatting";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
@@ -24,7 +22,7 @@ import { Checkbox } from "../ui/checkbox";
 
 export const AdminsColumns = (
   isUser: boolean,
-  enableMasterDetail?: boolean,
+  enableMasterDetail?: boolean
 ): ColumnDef<Tables<"profiles">>[] => [
   {
     id: "select",
@@ -90,16 +88,6 @@ export const AdminsColumns = (
     header: "role",
     enableSorting: false,
   },
-  {
-    accessorKey: "permissions",
-    header: "permissions",
-    enableSorting: false,
-  },
-  {
-    accessorKey: "profile_color",
-    header: "profile_color",
-    enableSorting: false,
-  },
   // {
   //   accessorKey: "title",
   //   header: "Titre",
@@ -145,22 +133,4 @@ export const AdminsColumns = (
   //   enableColumnFilter: false,
   //   enableSorting: false,
   // },
-  {
-    accessorKey: "created_at",
-    header: "Mis à jour le",
-    cell: ({ row }) => {
-      return (row.original.created_at && <p>{cFormatDate(row.original.created_at!)}</p>);
-    },
-    meta: { filterType: "date" },
-  },
-  {
-    accessorKey: "created_by",
-    header: "Mis à jour par",
-    cell: ({ row }) => {
-      return (row.original.created_by && <p>{displayUserName(row.original.created_by!)}</p>);
-    },
-    enableColumnFilter: false,
-    enableSorting: false,
-    meta: { display: !isUser },
-  },
 ];

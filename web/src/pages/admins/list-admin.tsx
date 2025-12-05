@@ -1,7 +1,13 @@
+import { AdminsColumns } from "@/components/admins/table-columns";
 import PageHeadline from "@/components/shared/page-headline";
+import { DataTable } from "@/components/ui/custom/data-table/data-table";
 import { useAuth } from "@/context/auth-context";
 import type { Tables } from "@/lib/supabase/supabase";
-import { AddAdminRoute, ListAdminsRoute, UpdateAdminRoute } from "@/navigation/admins-routes";
+import {
+  AddAdminRoute,
+  ListAdminsRoute,
+  UpdateAdminRoute,
+} from "@/navigation/admins-routes";
 import { canAccessRoute, hasRequiredPermissions } from "@/navigation/guards";
 import { deleteAdminsById, getAdmins } from "@/services/admins-service";
 import { AdminsData } from "@/shared/entity-data";
@@ -9,9 +15,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import AddAdmin from "./add-admin";
 import UpdateAdmin from "./update-admin";
-import { AdminsColumns } from "@/components/admins/table-columns";
-import { DataTable } from "@/components/ui/custom/data-table/data-table";
-import AdminsMasterDetail from "@/components/admins/master-detail";
 
 const Admins = ({}) => {
   const { user, userPermissions } = useAuth();
@@ -57,21 +60,19 @@ const Admins = ({}) => {
 
       <div className="mx-auto overflow-y-hidden">
         <DataTable
-          columns={AdminsColumns(user?.role === "user", true)}
+          columns={AdminsColumns(user?.role === "user", false)}
           data={admins}
           isDataLoading={isLoading}
           appRoute={ListAdminsRoute}
           addDataButtonText={AdminsData.add.title}
           canAccessMoreButton={canAccessRoute(AddAdminRoute, user)}
-          enableMasterDetail
-          masterDetail={AdminsMasterDetail}
           refreshFunction={loadData}
           canAdd={canAccessRoute(AddAdminRoute, user)}
           addForm={(onSubmit, onCancel) => (
             <AddAdmin
-              // displayHeader={false}
-              // onSubmit={onSubmit}
-              // onCancel={onCancel}
+            // displayHeader={false}
+            // onSubmit={onSubmit}
+            // onCancel={onCancel}
             />
           )}
           addSheet={{
@@ -81,10 +82,10 @@ const Admins = ({}) => {
           canEdit={canAccessRoute(UpdateAdminRoute, user)}
           editForm={(row, onSubmit, onCancel) => (
             <UpdateAdmin
-              // displayHeader={false}
-              // admin={row}
-              // onSubmit={onSubmit}
-              // onCancel={onCancel}
+            // displayHeader={false}
+            // admin={row}
+            // onSubmit={onSubmit}
+            // onCancel={onCancel}
             />
           )}
           editSheet={{
