@@ -115,9 +115,8 @@ const ViewAdmin = ({ displayHeader = true, admin }: ViewAdminProps) => {
               ADMINS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_SINGLE_DELETION
             }
           >
-            {/* <MedicalTestOverview
-              medicalTest={currentAdmin}
-              isUser={!user || user.role === "user"}
+            {/* <AdminOverview
+              admin={currentAdmin}
             /> */}
             <p>Overview</p>
           </PageOverview>

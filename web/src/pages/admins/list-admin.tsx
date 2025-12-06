@@ -55,7 +55,7 @@ const Admins = ({}) => {
 
       <div className="mx-auto overflow-y-hidden">
         <DataTable
-          columns={AdminsColumns(user?.role === "user", false)}
+          columns={AdminsColumns(false)}
           data={admins}
           isDataLoading={isLoading}
           appRoute={ListAdminsRoute}

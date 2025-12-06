@@ -134,7 +134,7 @@ const UpdateAdmin = ({
           )}
 
           <div className="px-4 mb-5">
-            {/* <MedicalTestForm
+            {/* <AdminForm
               mode="edit"
               initialData={formAdmin}
               onSubmit={onSubmitForm}

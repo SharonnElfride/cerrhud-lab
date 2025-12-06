@@ -85,7 +85,7 @@ const AddAdmin = ({
       )}
 
       <div className="px-4 mb-5">
-        {/* <MedicalTestForm
+        {/* <AdminForm
           mode="create"
           onSubmit={onSubmitForm}
           onCancel={onCancelForm}
