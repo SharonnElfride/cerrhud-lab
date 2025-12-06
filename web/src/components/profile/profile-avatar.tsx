@@ -4,7 +4,7 @@ import {
 } from "@/forms/profile-schema";
 import { updateProfileById, uploadProfileAvatar } from "@/services/profiles-service";
 import type { AuthProps } from "@/shared/auth-props";
-import { USERS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
+import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CameraIcon } from "lucide-react";
 import { useState } from "react";
@@ -47,21 +47,21 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
   const handleUploadAvatar = async (data: AvatarUploadFormValues) => {
     if (!user || !data.avatar)
       return toast.error(
-        USERS_VALIDATION_MESSAGES.ERROR.NO_USER_OR_AVATAR_FOUND
+        ADMINS_VALIDATION_MESSAGES.ERROR.NO_USER_OR_AVATAR_FOUND
       );
     const file = data.avatar[0];
 
     try {
       const url = await uploadProfileAvatar(user.id, file);
       await updateProfileById(user.id, { avatar: url });
-      toast.success(USERS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_AVATAR_UPDATE);
+      toast.success(ADMINS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_AVATAR_UPDATE);
       reset();
       setOpen(false);
       setPreview(`${url}?v=${Date.now()}`);
     } catch (err: any) {
       console.error(err);
       toast.error(
-        `${USERS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_AVATAR_UPDATE} ${err.message}`
+        `${ADMINS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_AVATAR_UPDATE} ${err.message}`
       );
     }
   };

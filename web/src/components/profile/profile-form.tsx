@@ -5,7 +5,7 @@ import {
   type SupabaseAuthUser,
 } from "@/services/supabase-service";
 import type { AuthProps } from "@/shared/auth-props";
-import { USERS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
+import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -88,13 +88,13 @@ const ProfileForm = ({
       }
 
       toast.success(
-        USERS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_PROFILE_UPDATE
+        ADMINS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_PROFILE_UPDATE
       );
       reset(data);
     } catch (err: any) {
       toast.error(
         err.message ??
-          USERS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_PROFILE_UPDATE
+          ADMINS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_PROFILE_UPDATE
       );
     }
   };

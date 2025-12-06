@@ -7,10 +7,10 @@ import { AdminsData } from "@/shared/entity-data";
 import { EditIcon, EyeIcon, PlusSquareIcon, UsersIcon } from "lucide-react";
 import { createLeafRoute, createRouteWithChildren } from "./app-route-factory";
 
-const USERS_ROOT_PATH = "/users";
+export const ADMINS_ROOT_PATH = "/users";
 
 export const AddAdminRoute = createLeafRoute({
-  path: `${USERS_ROOT_PATH}/new`,
+  path: `${ADMINS_ROOT_PATH}/new`,
   label: AdminsData.add.title,
   icon: PlusSquareIcon,
   route: AddAdmin,
@@ -20,7 +20,7 @@ export const AddAdminRoute = createLeafRoute({
 });
 
 export const ViewAdminRoute = createLeafRoute({
-  path: `${USERS_ROOT_PATH}/:id`,
+  path: `${ADMINS_ROOT_PATH}/:id`,
   label: "User's Details",
   icon: EyeIcon,
   route: ViewAdmin,
@@ -30,7 +30,7 @@ export const ViewAdminRoute = createLeafRoute({
 });
 
 export const UpdateAdminRoute = createLeafRoute({
-  path: `${USERS_ROOT_PATH}/edit/:id`,
+  path: `${ADMINS_ROOT_PATH}/edit/:id`,
   label: AdminsData.edit.title,
   icon: EditIcon,
   route: UpdateAdmin,
@@ -40,7 +40,7 @@ export const UpdateAdminRoute = createLeafRoute({
 });
 
 export const ListAdminsRoute = createLeafRoute({
-  path: USERS_ROOT_PATH,
+  path: ADMINS_ROOT_PATH,
   label: AdminsData.title,
   icon: UsersIcon,
   route: Admins,
@@ -50,7 +50,7 @@ export const ListAdminsRoute = createLeafRoute({
 });
 
 export const AdminsRoute = createRouteWithChildren({
-  path: USERS_ROOT_PATH,
+  path: ADMINS_ROOT_PATH,
   label: AdminsData.title,
   icon: UsersIcon,
   type: "protected",
