@@ -34,7 +34,7 @@ export const MEDICAL_TESTS_VALIDATION_MESSAGES = {
   },
 };
 
-export const USERS_VALIDATION_MESSAGES = {
+export const ADMINS_VALIDATION_MESSAGES = {
   SUCCESS: {
     SUCCESSFUL_AVATAR_UPDATE: "Avatar mis à jour avec succès !",
     SUCCESSFUL_PROFILE_UPDATE: "Profil mis à jour avec succès !",

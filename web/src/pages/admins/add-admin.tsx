@@ -35,7 +35,9 @@ const AddAdmin = ({
         Confirmation sent at
         Confirmed at
       */
-      // Get id and pass it down
+      // Get id and all when confirmed (?) then create profile (?) 
+      // but the admins can't see that the person has been created so maybe add a variable 'confirmed_at' OR 'Invited at' 
+      // idk
 
       const now = new Date().toDateString();
       data = {
