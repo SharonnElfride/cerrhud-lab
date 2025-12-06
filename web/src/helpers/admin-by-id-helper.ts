@@ -9,7 +9,7 @@ function displayUserName(userId: string) {
       const user = await getAdminById(userId);
       setName(
         user && !user.hidden
-          ? `${user.first_name ?? ""} ${user.surname ?? ""}`
+          ? `${user.firstname ?? ""} ${user.surname ?? ""}`
           : "SYSTÈME"
       );
     })();

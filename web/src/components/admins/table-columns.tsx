@@ -10,7 +10,7 @@ import { Checkbox } from "../ui/checkbox";
   created_at: string | null;
   created_by: string | null;
   email: string;
-  first_name: string;
+  firstname: string;
   hidden: boolean | null;
   id: string;
   permissions: Json;
@@ -69,7 +69,7 @@ export const AdminsColumns = (
     },
   },
   {
-    accessorKey: "first_name",
+    accessorKey: "firstname",
     header: "FN",
     enableSorting: false,
   },

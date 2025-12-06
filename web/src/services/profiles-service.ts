@@ -5,7 +5,7 @@ import {
   PROFILES_TABLENAME,
   STORAGE_BUCKET_ID,
 } from "@/shared/constants";
-import { deleteStorageImage } from "./supabase-service";
+import { deleteStorageImage } from "./supabase-storage-service";
 
 export async function updateProfileById(
   userId: string,

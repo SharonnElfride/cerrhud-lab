@@ -9,7 +9,8 @@ import {
   AdminsRoute,
   UpdateAdminRoute,
 } from "@/navigation/admins-routes";
-import { getAdminById } from "@/services/admins-service";
+import { getAdminById, updateAdminById } from "@/services/admins-service";
+import { updateAuthUserById } from "@/services/supabase-auth-service";
 import { AdminsData } from "@/shared/entity-data";
 import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ const UpdateAdmin = ({
   const [errorMessage, setErrorMessage] = useState<string>();
 
   useEffect(() => {
-    const fetchMedicalTest = async () => {
+    const fetchAdmin = async () => {
       setLoading(true);
 
       if (!id) {
@@ -70,22 +71,31 @@ const UpdateAdmin = ({
       setLoading(false);
     };
 
-    fetchMedicalTest();
+    fetchAdmin();
   }, [id]);
 
   const onSubmitForm = async (data: TablesUpdate<"profiles">) => {
     try {
-      // data = {
-      //   ...data,
-      //   updated_at: new Date().toDateString(),
-      //   updated_by: user?.id,
-      // };
+      data = {
+        ...data,
+        updated_at: new Date().toDateString(),
+        updated_by: user?.id,
+      };
 
-      // If the email has been changed, update the auth user's email & resend confirmation email & log out user's
-      // If confirmed, then update the profile and make it possible to log in again
-      // OR update the email already and set confirmed_at to null and wait until confirmed before being able to log in
+      const { email, ...updatedData } = data;
 
-      // await updateSingleMedicalTest(formMedicalTest!.id, data);
+      if (email) {
+        await updateAuthUserById(formAdmin!.id, email);
+
+        data = {
+          email: email,
+          confirmed_at: null,
+          email_change_pending: true,
+          ...updatedData,
+        };
+      }
+
+      await updateAdminById(formAdmin!.id, data);
       onSubmit?.();
 
       toast.success(ADMINS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_UPDATE);
@@ -137,4 +147,4 @@ const UpdateAdmin = ({
   );
 };
 
-export default UpdateAdmin;
+export { UpdateAdmin, type UpdateAdminProps };

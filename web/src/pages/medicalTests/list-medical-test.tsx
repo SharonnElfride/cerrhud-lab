@@ -103,7 +103,6 @@ const MedicalTests = ({}) => {
             description: MedicalTestsData.edit.description,
           }}
           canDelete={hasRequiredPermissions(userPermissions, [
-            "medical_tests.update",
             "medical_tests.delete",
           ])}
           deleteFunction={handleDelete}

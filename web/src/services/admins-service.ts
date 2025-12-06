@@ -5,7 +5,7 @@ import type {
   TablesUpdate,
 } from "@/lib/supabase/supabase";
 import { ADMINS_TABLENAME, PROFILES_STORAGE_PATH } from "@/shared/constants";
-import { deleteStorageFolder, deleteStorageImage } from "./supabase-service";
+import { deleteStorageFolder } from "./supabase-storage-service";
 
 function fromDatabase(data: any): Tables<"profiles"> {
   return {
@@ -14,12 +14,17 @@ function fromDatabase(data: any): Tables<"profiles"> {
     created_at: data.created_at,
     created_by: data.created_by,
     email: data.email,
-    first_name: data.first_name,
+    firstname: data.firstname,
     surname: data.surname,
     hidden: data.hidden,
     permissions: data.permissions,
     profile_color: data.profile_color,
     role: data.role,
+    confirmed_at: data.confirmed_at,
+    email_change_pending: data.email_change_pending,
+    invited_at: data.invited_at,
+    updated_at: data.updated_at,
+    updated_by: data.updated_by,
   };
 }
 

@@ -16,7 +16,7 @@ import { displayUserRole } from "@/helpers/admin-role-helper";
 import { canAccessRoute, hasRequiredPermissions } from "@/navigation/guards";
 import { ProfileRoute } from "@/navigation/profile-routes";
 import { AdminsRoute } from "@/navigation/admins-routes";
-import { getUserLastConnectionById } from "@/services/supabase-service";
+import { getUserLastConnectionById } from "@/services/supabase-auth-service";
 import { UserCogIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,13 +55,13 @@ const Dashboard = ({}) => {
                 fontWeight: 500,
               }}
             >
-              {loading ? <Spinner /> : user?.first_name?.charAt(0) ?? "X"}
+              {loading ? <Spinner /> : user?.firstname?.charAt(0) ?? "X"}
             </AvatarFallback>
           </Avatar>
         </ItemMedia>
         <ItemContent>
           <ItemTitle>
-            {user?.first_name} {user?.surname}
+            {user?.firstname} {user?.surname}
           </ItemTitle>
           <ItemDescription>
             Rôle : {displayUserRole(user?.role ?? "user")} <br />

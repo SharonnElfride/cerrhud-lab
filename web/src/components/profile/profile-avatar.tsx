@@ -91,7 +91,7 @@ const ProfileAvatar = ({ user, loading }: AuthProps) => {
                 fontWeight: 500,
               }}
             >
-              {loading ? <Spinner /> : user?.first_name?.charAt(0) ?? "X"}
+              {loading ? <Spinner /> : user?.firstname?.charAt(0) ?? "X"}
             </AvatarFallback>
           </Avatar>
 

@@ -9,7 +9,7 @@ import {
   MEDICAL_TESTS_TABLENAME,
   STORAGE_BUCKET_ID,
 } from "@/shared/constants";
-import { deleteStorageImage } from "./supabase-service";
+import { deleteStorageImage } from "./supabase-storage-service";
 
 function fromDatabase(data: any): Tables<"medical_tests"> {
   return {
