@@ -5,7 +5,9 @@ import type { TablesInsert } from "@/lib/supabase/supabase";
 import { AdminsRoute } from "@/navigation/admins-routes";
 import { addAdmin, updateAdminById } from "@/services/admins-service";
 import { uploadProfileAvatar } from "@/services/profiles-service";
+import { inviteAuthUserByEmail } from "@/services/supabase-auth-service";
 import { AdminsData } from "@/shared/entity-data";
+import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { toast } from "sonner";
 
 interface AddAdminProps {
@@ -27,25 +29,25 @@ const AddAdmin = ({
     images?: FileList
   ) => {
     try {
-      // TODO Add auth user and invite him (has no password and with wait for confirmation)
-      // TODO Send password setting link !
-      // Gotta verify the following: (Even before creating the profile maybe !)
-      /*
-        Invited at
-        Confirmation sent at
-        Confirmed at
-      */
-      // Get id and all when confirmed (?) then create profile (?) 
-      // but the admins can't see that the person has been created so maybe add a variable 'confirmed_at' OR 'Invited at' 
-      // idk
+      const now = new Date().toISOString();
+      const email = data.email;
 
-      const now = new Date().toDateString();
+      // Supabase auth
+      const createdUser = await inviteAuthUserByEmail(email);
+
+      // Profiles (admins)
       data = {
         ...data,
-        id: "",
-        created_at: now,
+        id: createdUser.id,
+        email: email,
+        created_at: createdUser.created_at,
         created_by: user?.id,
+        invited_at: createdUser.invited_at ?? now,
+        confirmed_at: null,
+        updated_at: createdUser.updated_at ?? now,
+        updated_by: user?.id,
       };
+
       const admin = await addAdmin(data);
 
       if (images) {
@@ -57,15 +59,10 @@ const AddAdmin = ({
 
       onSubmit?.();
 
-      toast.success(
-        // MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_CREATION
-        ""
-      );
+      toast.success(ADMINS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_CREATION);
     } catch (error: any) {
       toast.error(
-        error.message ??
-          // MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_CREATION
-          ""
+        error.message ?? ADMINS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_CREATION
       );
     }
   };
@@ -88,7 +85,7 @@ const AddAdmin = ({
       )}
 
       <div className="px-4 mb-5">
-        {/* <MedicalTestForm
+        {/* <AdminForm
           mode="create"
           onSubmit={onSubmitForm}
           onCancel={onCancelForm}
@@ -98,4 +95,4 @@ const AddAdmin = ({
   );
 };
 
-export default AddAdmin;
+export { AddAdmin, type AddAdminProps };

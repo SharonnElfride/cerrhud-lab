@@ -31,7 +31,7 @@ const AppSidebarProfile = ({}) => {
               <Avatar className="w-8 h-8">
                 <AvatarImage
                   src={user?.avatar ?? ""}
-                  alt={`Avatar de l'utilisateur ${user?.first_name ?? ""}`}
+                  alt={`Avatar de l'utilisateur ${user?.firstname ?? ""}`}
                 />
                 <AvatarFallback
                   style={{
@@ -41,13 +41,13 @@ const AppSidebarProfile = ({}) => {
                     fontWeight: 500,
                   }}
                 >
-                  {loading ? <Spinner /> : user?.first_name.charAt(0) ?? "X"}
+                  {loading ? <Spinner /> : user?.firstname.charAt(0) ?? "X"}
                 </AvatarFallback>
               </Avatar>
 
               <div className="group-data-[collapsible=icon]:hidden">
                 <p className="capitalize text-sm text-white w-fit">
-                  {user?.first_name}
+                  {user?.firstname}
                 </p>
                 <p className="lowercase text-gray-50 text-[10px] w-fit">
                   {user?.email}

@@ -1,9 +1,7 @@
 import { profileSchema, type ProfileFormValues } from "@/forms/profile-schema";
 import { updateProfileById } from "@/services/profiles-service";
-import {
-  updateSupabaseAuthUser,
-  type SupabaseAuthUser,
-} from "@/services/supabase-service";
+import { type SupabaseAuthUser } from "@/services/supabase-auth-service";
+import { updateCurrentAuthUser } from "@/services/supabase-auth-service";
 import type { AuthProps } from "@/shared/auth-props";
 import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,7 +44,7 @@ const ProfileForm = ({
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      first_name: user?.first_name ?? "",
+      firstname: user?.firstname ?? "",
       surname: user?.surname ?? "",
       email: user?.email ?? "",
       profile_color: user?.profile_color ?? "#6e4596",
@@ -72,7 +70,7 @@ const ProfileForm = ({
         // if (modifiedData.password) userData.password = modifiedData.password;
 
         if (Object.keys(authUserData).length > 0) {
-          await updateSupabaseAuthUser(authUserData);
+          await updateCurrentAuthUser(authUserData);
           logout();
         }
       }
@@ -107,24 +105,24 @@ const ProfileForm = ({
           <FieldGroup className="gap-3">
             <Field
               className={fieldClassName}
-              data-invalid={!!errors.first_name || !!errors.surname}
+              data-invalid={!!errors.firstname || !!errors.surname}
             >
               <ProfileFormFieldInfo>
-                <FieldLabel htmlFor="first_name">Nom complet</FieldLabel>
+                <FieldLabel htmlFor="firstname">Nom complet</FieldLabel>
               </ProfileFormFieldInfo>
 
               <div className="flex flex-col w-full gap-2 md:flex-row md:gap-5">
                 <div>
                   <Input
-                    id="first_name"
+                    id="firstname"
                     type="text"
-                    defaultValue={user?.first_name}
+                    defaultValue={user?.firstname}
                     className="border-gray-400"
-                    {...register("first_name")}
-                    aria-invalid={!!errors.first_name}
+                    {...register("firstname")}
+                    aria-invalid={!!errors.firstname}
                   />
-                  {errors.first_name && (
-                    <FieldError>{errors.first_name.message}</FieldError>
+                  {errors.firstname && (
+                    <FieldError>{errors.firstname.message}</FieldError>
                   )}
                 </div>
 

@@ -4,24 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 
-/*
-{
-  avatar: string | null;
-  created_at: string | null;
-  created_by: string | null;
-  email: string;
-  first_name: string;
-  hidden: boolean | null;
-  id: string;
-  permissions: Json;
-  profile_color: string | null;
-  role: Database["public"]["Enums"]["user_role"];
-  surname: string | null;
-}
-*/
-
 export const AdminsColumns = (
-  isUser: boolean,
   enableMasterDetail?: boolean
 ): ColumnDef<Tables<"profiles">>[] => [
   {
@@ -69,7 +52,7 @@ export const AdminsColumns = (
     },
   },
   {
-    accessorKey: "first_name",
+    accessorKey: "firstname",
     header: "FN",
     enableSorting: false,
   },

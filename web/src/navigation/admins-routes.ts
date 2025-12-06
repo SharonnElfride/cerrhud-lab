@@ -1,16 +1,19 @@
 import AdminsLayout from "@/pages/admins";
-import AddAdmin from "@/pages/admins/add-admin";
-import UpdateAdmin from "@/pages/admins/update-admin";
+import { type AddAdminProps, AddAdmin } from "@/pages/admins/add-admin";
 import Admins from "@/pages/admins/list-admin";
-import ViewAdmin from "@/pages/admins/view-admin";
+import {
+  type UpdateAdminProps,
+  UpdateAdmin,
+} from "@/pages/admins/update-admin";
+import { type ViewAdminProps, ViewAdmin } from "@/pages/admins/view-admin";
 import { AdminsData } from "@/shared/entity-data";
 import { EditIcon, EyeIcon, PlusSquareIcon, UsersIcon } from "lucide-react";
 import { createLeafRoute, createRouteWithChildren } from "./app-route-factory";
 
 export const ADMINS_ROOT_PATH = "/users";
 
-export const AddAdminRoute = createLeafRoute({
-  path: `${ADMINS_ROOT_PATH}/new`,
+export const AddAdminRoute = createLeafRoute<AddAdminProps>({
+  path: `new`,
   label: AdminsData.add.title,
   icon: PlusSquareIcon,
   route: AddAdmin,
@@ -19,8 +22,8 @@ export const AddAdminRoute = createLeafRoute({
   requiredPermissions: ["users.create"],
 });
 
-export const ViewAdminRoute = createLeafRoute({
-  path: `${ADMINS_ROOT_PATH}/:id`,
+export const ViewAdminRoute = createLeafRoute<ViewAdminProps>({
+  path: `:id`,
   label: "User's Details",
   icon: EyeIcon,
   route: ViewAdmin,
@@ -29,8 +32,8 @@ export const ViewAdminRoute = createLeafRoute({
   requiredPermissions: ["users.read"],
 });
 
-export const UpdateAdminRoute = createLeafRoute({
-  path: `${ADMINS_ROOT_PATH}/edit/:id`,
+export const UpdateAdminRoute = createLeafRoute<UpdateAdminProps>({
+  path: `edit/:id`,
   label: AdminsData.edit.title,
   icon: EditIcon,
   route: UpdateAdmin,
@@ -40,7 +43,7 @@ export const UpdateAdminRoute = createLeafRoute({
 });
 
 export const ListAdminsRoute = createLeafRoute({
-  path: ADMINS_ROOT_PATH,
+  path: "",
   label: AdminsData.title,
   icon: UsersIcon,
   route: Admins,
@@ -56,6 +59,6 @@ export const AdminsRoute = createRouteWithChildren({
   type: "protected",
   requiredRoles: ["admin", "super_admin"],
   requiredPermissions: ["users.read"],
-  children: [ListAdminsRoute, AddAdminRoute, UpdateAdminRoute, ViewAdminRoute],
   layout: AdminsLayout,
+  children: [ListAdminsRoute, AddAdminRoute, UpdateAdminRoute, ViewAdminRoute],
 });

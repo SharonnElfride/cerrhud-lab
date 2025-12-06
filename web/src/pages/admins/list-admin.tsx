@@ -11,10 +11,11 @@ import {
 import { canAccessRoute, hasRequiredPermissions } from "@/navigation/guards";
 import { deleteAdminsById, getAdmins } from "@/services/admins-service";
 import { AdminsData } from "@/shared/entity-data";
+import { ADMINS_VALIDATION_MESSAGES } from "@/shared/page-validation-messages";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import AddAdmin from "./add-admin";
-import UpdateAdmin from "./update-admin";
+import { AddAdmin } from "./add-admin";
+import { UpdateAdmin } from "./update-admin";
 
 const Admins = ({}) => {
   const { user, userPermissions } = useAuth();
@@ -36,15 +37,9 @@ const Admins = ({}) => {
     let deleted = await deleteAdminsById(ids);
 
     if (deleted) {
-      toast.success(
-        // MEDICAL_TESTS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_DELETION
-        ""
-      );
+      toast.success(ADMINS_VALIDATION_MESSAGES.SUCCESS.SUCCESSFUL_DELETION);
     } else {
-      toast.error(
-        // MEDICAL_TESTS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_DELETION
-        ""
-      );
+      toast.error(ADMINS_VALIDATION_MESSAGES.ERROR.UNSUCCESSFUL_DELETION);
     }
 
     await loadData();
@@ -60,7 +55,7 @@ const Admins = ({}) => {
 
       <div className="mx-auto overflow-y-hidden">
         <DataTable
-          columns={AdminsColumns(user?.role === "user", false)}
+          columns={AdminsColumns(false)}
           data={admins}
           isDataLoading={isLoading}
           appRoute={ListAdminsRoute}
@@ -70,9 +65,9 @@ const Admins = ({}) => {
           canAdd={canAccessRoute(AddAdminRoute, user)}
           addForm={(onSubmit, onCancel) => (
             <AddAdmin
-            // displayHeader={false}
-            // onSubmit={onSubmit}
-            // onCancel={onCancel}
+              displayHeader={false}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
             />
           )}
           addSheet={{
@@ -82,20 +77,17 @@ const Admins = ({}) => {
           canEdit={canAccessRoute(UpdateAdminRoute, user)}
           editForm={(row, onSubmit, onCancel) => (
             <UpdateAdmin
-            // displayHeader={false}
-            // admin={row}
-            // onSubmit={onSubmit}
-            // onCancel={onCancel}
+              displayHeader={false}
+              admin={row}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
             />
           )}
           editSheet={{
             title: AdminsData.edit.title,
             description: AdminsData.edit.description,
           }}
-          canDelete={hasRequiredPermissions(userPermissions, [
-            "users.update",
-            "users.delete",
-          ])}
+          canDelete={hasRequiredPermissions(userPermissions, ["users.delete"])}
           deleteFunction={handleDelete}
         />
       </div>
