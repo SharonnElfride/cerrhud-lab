@@ -50,3 +50,49 @@ export const MedicalTestFormFieldsInfo = {
     hint: "Ajoutez des informations complémentaires spécifiques à cet examen. Ajoutez des sections comme « Préparation avant le test » avec leurs instructions.",
   },
 };
+
+export const AdminFormFieldsInfo = {
+  avatar: {
+    label: "Avatar",
+    placeholder: "Sélectionner une image",
+    hint: "Image de profil de l'utilisateur.",
+    shortHint: "Image de profil.",
+  },
+  email: {
+    label: "Adresse email",
+    placeholder: "nom@exemple.com",
+    hint: "Adresse email utilisée pour la connexion et la communication.",
+    shortHint: "Adresse email de connexion.",
+  },
+  email_change_pending: {
+    label: "Changement d'email en attente",
+    hint: "Indique si une demande de changement d'adresse email est en attente.",
+  },
+  firstname: {
+    label: "Prénom",
+    placeholder: "Jean",
+    hint: "Prénom de l'utilisateur.",
+  },
+  permissions: {
+    label: "Permissions",
+    placeholder: "{}",
+    hint: "Droits et permissions associés à l'utilisateur.",
+    shortHint: "Droits et permissions.",
+  },
+  profile_color: {
+    label: "Couleur du profil",
+    placeholder: "#6e4596",
+    hint: "Couleur personnalisée du profil, servant d'avatar en l'absence d'une image choisie.",
+    shortHint: "Couleur utilisée en absence d'avatar.",
+  },
+  role: {
+    label: "Rôle",
+    placeholder: "admin / user / ...",
+    hint: "Rôle attribué à l'utilisateur dans l'application.",
+  },
+  surname: {
+    label: "Nom de famille",
+    placeholder: "Agbassi",
+    hint: "Nom de famille de l'utilisateur.",
+  },
+};

@@ -5,9 +5,12 @@ import type {
   TablesUpdate,
 } from "@/lib/supabase/supabase";
 import { ADMINS_TABLENAME, PROFILES_STORAGE_PATH } from "@/shared/constants";
+import { deleteAuthUserById } from "./supabase-auth-service";
 import { deleteStorageFolder } from "./supabase-storage-service";
 
 function fromDatabase(data: any): Tables<"profiles"> {
+  if (!data) return data;
+
   return {
     id: data.id,
     avatar: data.avatar,
@@ -31,7 +34,8 @@ function fromDatabase(data: any): Tables<"profiles"> {
 export async function getAdmins() {
   let { data: admins, error } = await supabase
     .from(ADMINS_TABLENAME)
-    .select("*");
+    .select("*")
+    .eq("hidden", false);
 
   if (error) throw error;
 
@@ -42,6 +46,7 @@ export async function getAdminById(adminId: string) {
   let { data: admin, error } = await supabase
     .from(ADMINS_TABLENAME)
     .select("*")
+    .eq("hidden", false)
     .eq("id", adminId)
     .maybeSingle();
 
@@ -90,6 +95,7 @@ export async function deleteAdminsById(adminIds: string[]) {
   const { error } = await supabase
     .from(ADMINS_TABLENAME)
     .delete()
+    .eq("hidden", false)
     .in("id", adminIds);
 
   if (error) throw error;
@@ -100,7 +106,11 @@ export async function deleteAdminsById(adminIds: string[]) {
     }
   }
 
-  // TODO Delete auth user
+  let allDeleted = true;
+  for (const adminId of adminIds) {
+    const del = await deleteAuthUserById(adminId);
+    allDeleted = allDeleted && del;
+  }
 
-  return true;
+  return allDeleted;
 }

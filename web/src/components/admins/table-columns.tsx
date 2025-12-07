@@ -1,8 +1,15 @@
+import { displayUserName } from "@/helpers/admin-by-id-helper";
+import { displayUserRole } from "@/helpers/admin-role-helper";
 import type { Tables } from "@/lib/supabase/supabase";
+import { SharedEntityData } from "@/shared/entity-data";
+import { AdminFormFieldsInfo } from "@/shared/form-fields-info";
+import { cFormatDate } from "@/utils/formatting";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import CDisplayBoolean from "../ui/custom/cboolean-display";
 
 export const AdminsColumns = (
   enableMasterDetail?: boolean
@@ -52,68 +59,82 @@ export const AdminsColumns = (
     },
   },
   {
+    accessorKey: "avatar",
+    header: AdminFormFieldsInfo.avatar.label,
+    cell: ({ row }) => {
+      return (
+        <Avatar>
+          {/* AvatarImage + full screen */}
+          <AvatarImage src={row.original.avatar ?? undefined} alt="avatar" />
+          <AvatarFallback
+            style={{
+              backgroundColor:
+                row.original.profile_color ?? "var(--color-primary)",
+              color: "white",
+              fontWeight: 500,
+            }}
+          >
+            {row.original.firstname?.charAt(0) ?? "X"}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
+    enableColumnFilter: false,
+    enableSorting: false,
+  },
+  {
     accessorKey: "firstname",
-    header: "FN",
+    header: AdminFormFieldsInfo.firstname.label,
     enableSorting: false,
   },
   {
     accessorKey: "surname",
-    header: "SN",
+    header: AdminFormFieldsInfo.surname.label,
     enableSorting: false,
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: AdminFormFieldsInfo.email.label,
     enableSorting: false,
   },
   {
+    accessorKey: "email_change_pending",
+    header: AdminFormFieldsInfo.email_change_pending.label,
+    cell: ({ row }) => {
+      return <CDisplayBoolean bool={row.original.email_change_pending} />;
+    },
+    enableSorting: false,
+    meta: { filterType: "boolean" },
+  },
+  {
     accessorKey: "role",
-    header: "role",
+    header: AdminFormFieldsInfo.role.label,
+    cell: ({ row }) => {
+      return <p>{displayUserRole(row.original.role)}</p>;
+    },
     enableSorting: false,
   },
-  // {
-  //   accessorKey: "title",
-  //   header: "Titre",
-  //   enableSorting: false,
-  //   cell: ({ row }) => {
-  //     return (
-  //       <DataTableViewDialog
-  //         title={row.original.title}
-  //         description={row.original.description}
-  //         dialogContentClassName={
-  //           "md:!max-w-5xl md:h-[70vh] overflow-x-hidden flex flex-col"
-  //         }
-  //       >
-  //         <ViewMedicalTest displayHeader={false} medicalTest={row.original} />
-  //       </DataTableViewDialog>
-  //     );
-  //   },
-  // },
-  // {
-  //   accessorKey: "price",
-  //   header: "Prix",
-  //   filterFn: "includesString",
-  //   meta: { filterType: "number" },
-  // },
-  // {
-  //   accessorKey: "keywords",
-  //   header: "Mots clés",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="w-[350px] flex flex-wrap items-center gap-1">
-  //         {row.original.keywords?.map((kw) => (
-  //           <Badge
-  //             key={kw.toKeyCase()}
-  //             variant={"outline"}
-  //             className="capitalize"
-  //           >
-  //             {kw}
-  //           </Badge>
-  //         ))}
-  //       </div>
-  //     );
-  //   },
-  //   enableColumnFilter: false,
-  //   enableSorting: false,
-  // },
+  {
+    accessorKey: "created_at",
+    header: SharedEntityData.createdAt,
+    cell: ({ row }) => {
+      return (
+        row.original.created_at && <p>{cFormatDate(row.original.created_at)}</p>
+      );
+    },
+    meta: { filterType: "date" },
+  },
+  {
+    accessorKey: "created_by",
+    header: SharedEntityData.createdBy,
+    cell: ({ row }) => {
+      return (
+        row.original.created_by && (
+          <p>{displayUserName(row.original.created_by)}</p>
+        )
+      );
+    },
+    enableColumnFilter: false,
+    enableSorting: false,
+  },
 ];
