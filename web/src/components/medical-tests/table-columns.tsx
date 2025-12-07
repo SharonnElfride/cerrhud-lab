@@ -1,6 +1,8 @@
 import { displayUserName } from "@/helpers/admin-by-id-helper";
 import type { Tables } from "@/lib/supabase/supabase";
 import { ViewMedicalTest } from "@/pages/medicalTests/view-medical-test";
+import { SharedEntityData } from "@/shared/entity-data";
+import { MedicalTestFormFieldsInfo } from "@/shared/form-fields-info";
 import { cFormatDate } from "@/utils/formatting";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
@@ -11,7 +13,7 @@ import DataTableViewDialog from "../ui/custom/data-table/view-dialog";
 
 export const MedicalTestsColumns = (
   isUser: boolean,
-  enableMasterDetail?: boolean,
+  enableMasterDetail?: boolean
 ): ColumnDef<Tables<"medical_tests">>[] => [
   {
     id: "select",
@@ -59,12 +61,12 @@ export const MedicalTestsColumns = (
   },
   {
     accessorKey: "acronym",
-    header: "Acronyme",
+    header: MedicalTestFormFieldsInfo.acronym.label,
     enableSorting: false,
   },
   {
     accessorKey: "title",
-    header: "Titre",
+    header: MedicalTestFormFieldsInfo.title.label,
     enableSorting: false,
     cell: ({ row }) => {
       return (
@@ -82,13 +84,13 @@ export const MedicalTestsColumns = (
   },
   {
     accessorKey: "price",
-    header: "Prix",
+    header: MedicalTestFormFieldsInfo.price.label,
     filterFn: "includesString",
     meta: { filterType: "number" },
   },
   {
     accessorKey: "keywords",
-    header: "Mots clés",
+    header: MedicalTestFormFieldsInfo.keywords.label,
     cell: ({ row }) => {
       return (
         <div className="w-[350px] flex flex-wrap items-center gap-1">
@@ -109,17 +111,23 @@ export const MedicalTestsColumns = (
   },
   {
     accessorKey: "updated_at",
-    header: "Mis à jour le",
+    header: SharedEntityData.updatedAt,
     cell: ({ row }) => {
-      return <p>{cFormatDate(row.original.updated_at!)}</p>;
+      return (
+        row.original.updated_at && <p>{cFormatDate(row.original.updated_at)}</p>
+      );
     },
     meta: { filterType: "date" },
   },
   {
     accessorKey: "updated_by",
-    header: "Mis à jour par",
+    header: SharedEntityData.updatedBy,
     cell: ({ row }) => {
-      return <p>{displayUserName(row.original.updated_by!)}</p>;
+      return (
+        row.original.updated_by && (
+          <p>{displayUserName(row.original.updated_by)}</p>
+        )
+      );
     },
     enableColumnFilter: false,
     enableSorting: false,

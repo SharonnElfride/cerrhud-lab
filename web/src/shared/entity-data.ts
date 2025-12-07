@@ -64,6 +64,8 @@ const SharedEntityData = {
   createdBy: "Créé par",
   updatedAt: "Dernière modification le",
   updatedBy: "Modifié par",
+  invited_at: "Invité le",
+  confirmed_at: "Confirmé le",
 };
 
 export { AdminsData, MedicalTestsData, SharedEntityData, type EntityData };

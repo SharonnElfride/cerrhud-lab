@@ -12,6 +12,8 @@ import {
 import { deleteStorageImage } from "./supabase-storage-service";
 
 function fromDatabase(data: any): Tables<"medical_tests"> {
+  if (!data) return data;
+
   return {
     id: data.id,
     acronym: data.acronym,
