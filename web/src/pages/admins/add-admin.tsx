@@ -1,3 +1,4 @@
+import AdminForm from "@/components/admins/admin-form";
 import PageHeadline from "@/components/shared/page-headline";
 import { useAuth } from "@/context/auth-context";
 import { useGoBack } from "@/hooks/use-go-back";
@@ -85,11 +86,11 @@ const AddAdmin = ({
       )}
 
       <div className="px-4 mb-5">
-        {/* <AdminForm
+        <AdminForm
           mode="create"
           onSubmit={onSubmitForm}
           onCancel={onCancelForm}
-        /> */}
+        />
       </div>
     </div>
   );
