@@ -1,3 +1,4 @@
+import AdminForm from "@/components/admins/admin-form";
 import PageHeadline from "@/components/shared/page-headline";
 import PageStateWrapper from "@/components/shared/page-state-wrapper";
 import { useAuth } from "@/context/auth-context";
@@ -134,12 +135,12 @@ const UpdateAdmin = ({
           )}
 
           <div className="px-4 mb-5">
-            {/* <AdminForm
+            <AdminForm
               mode="edit"
               initialData={formAdmin}
               onSubmit={onSubmitForm}
               onCancel={onCancelForm}
-            /> */}
+            />
           </div>
         </>
       )}
