@@ -4,11 +4,13 @@ import type {
   TablesInsert,
   TablesUpdate,
 } from "@/lib/supabase/supabase";
+import { AdminFormFieldsInfo } from "@/shared/form-fields-info";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import ProfileFormFieldInfo from "../profile/profile-form-field-info";
 import { Button } from "../ui/button";
+import CFieldHint from "../ui/custom/cfield-hint";
+import CFieldLabel from "../ui/custom/cfield-label";
 import {
   Field,
   FieldContent,
@@ -68,7 +70,7 @@ const AdminForm = ({
         ? {
             avatar: undefined,
             firstname: initialData.firstname,
-            surname: initialData.surname ?? undefined,
+            lastname: initialData.lastname ?? undefined,
             email: initialData.email,
             profile_color: initialData.profile_color ?? "#6e4596",
             role: initialData.role,
@@ -82,10 +84,6 @@ const AdminForm = ({
     initialData?.avatar ?? null
   );
 
-  //   const [keywords, setKeywords] = useState<string[]>(
-  //     initialData?.keywords ?? []
-  //   );
-
   //   const [customDetails, setCustomDetails] = useState<CustomDetail[]>(
   //     initialData ? toCustomDetailObject(initialData.custom_details) : []
   //   );
@@ -97,8 +95,6 @@ const AdminForm = ({
     shouldTouch: true,
     shouldValidate: true,
   };
-
-  const fieldClassName = "flex flex-col md:flex-row md:gap-5";
 
   const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -185,86 +181,91 @@ const AdminForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)}>
+    <form className="max-w-2xl mx-auto" onSubmit={handleSubmit(onSubmitForm)}>
       <FieldGroup>
         <FieldSeparator />
 
         <FieldSet className="gap-3">
-          <FieldLegend>General Information</FieldLegend>
+          <FieldLegend>Informations générales</FieldLegend>
           <FieldDescription>
-            The billing address associated with your payment method
+            Saisissez les informations de base d'un administrateur.
           </FieldDescription>
 
           <FieldGroup>
-            <FieldGroup className="gap-3">
-              <Field
-                className={fieldClassName}
-                data-invalid={!!errors.firstname || !!errors.surname}
+            {/* Avatar with preview */}
+
+            <Field data-invalid={!!errors.lastname}>
+              <CFieldLabel
+                htmlFor="lastname"
+                aria-invalid={!!errors.lastname}
+                required
               >
-                <ProfileFormFieldInfo>
-                  <FieldLabel htmlFor="firstname">Nom complet</FieldLabel>
-                </ProfileFormFieldInfo>
-
-                <div className="flex flex-col w-full gap-2 md:flex-row md:gap-5">
-                  <div>
-                    <Input
-                      id="firstname"
-                      type="text"
-                      className="border-gray-400"
-                      {...register("firstname")}
-                      aria-invalid={!!errors.firstname}
-                    />
-                    {errors.firstname && (
-                      <FieldError>{errors.firstname.message}</FieldError>
-                    )}
-                  </div>
-
-                  <div>
-                    <Input
-                      id="surname"
-                      type="text"
-                      placeholder="Nom de famille"
-                      className="border-gray-400"
-                      {...register("surname")}
-                      aria-invalid={!!errors.surname}
-                    />
-                    {errors.surname && (
-                      <FieldError>{errors.surname.message}</FieldError>
-                    )}
-                  </div>
-                </div>
-              </Field>
-            </FieldGroup>
-
-            <Field className={fieldClassName} data-invalid={!!errors.email}>
-              <ProfileFormFieldInfo>
-                <FieldLabel htmlFor="mail">Email</FieldLabel>
-              </ProfileFormFieldInfo>
-
-              <div>
-                <Input
-                  id="mail"
-                  type="email"
-                  className="border-gray-400"
-                  {...register("email")}
-                  aria-invalid={!!errors.email}
-                />
-                {errors.email && (
-                  <FieldError>{errors.email.message}</FieldError>
-                )}
-              </div>
+                {AdminFormFieldsInfo.lastname.label}
+              </CFieldLabel>
+              <CFieldHint>{AdminFormFieldsInfo.lastname.hint}</CFieldHint>
+              <Input
+                {...register("lastname")}
+                id="lastname"
+                placeholder={AdminFormFieldsInfo.lastname.placeholder}
+                type="text"
+                aria-invalid={!!errors.lastname}
+              />
+              {errors.lastname && (
+                <FieldError>{errors.lastname.message}</FieldError>
+              )}
             </Field>
 
-            <Field
-              className={fieldClassName}
-              data-invalid={!!errors.profile_color}
-            >
-              <ProfileFormFieldInfo>
-                <FieldLabel htmlFor="profile_tint">Profile tint</FieldLabel>
-              </ProfileFormFieldInfo>
+            <Field data-invalid={!!errors.firstname}>
+              <CFieldLabel
+                htmlFor="firstname"
+                aria-invalid={!!errors.firstname}
+                required
+              >
+                {AdminFormFieldsInfo.firstname.label}
+              </CFieldLabel>
+              <CFieldHint>{AdminFormFieldsInfo.firstname.hint}</CFieldHint>
+              <Input
+                {...register("firstname")}
+                id="firstname"
+                placeholder={AdminFormFieldsInfo.firstname.placeholder}
+                type="text"
+                aria-invalid={!!errors.firstname}
+              />
+              {errors.firstname && (
+                <FieldError>{errors.firstname.message}</FieldError>
+              )}
+            </Field>
+
+            <Field data-invalid={!!errors.email}>
+              <CFieldLabel
+                htmlFor="email"
+                aria-invalid={!!errors.email}
+                required
+              >
+                {AdminFormFieldsInfo.email.label}
+              </CFieldLabel>
+              <CFieldHint>{AdminFormFieldsInfo.email.hint}</CFieldHint>
+              <Input
+                {...register("email")}
+                id="email"
+                placeholder={AdminFormFieldsInfo.email.placeholder}
+                type="email"
+                aria-invalid={!!errors.email}
+              />
+              {errors.email && <FieldError>{errors.email.message}</FieldError>}
+            </Field>
+
+            <Field data-invalid={!!errors.profile_color}>
+              <CFieldLabel
+                htmlFor="profile_color"
+                aria-invalid={!!errors.profile_color}
+              >
+                {AdminFormFieldsInfo.profile_color.label}
+              </CFieldLabel>
+              <CFieldHint>{AdminFormFieldsInfo.profile_color.hint}</CFieldHint>
 
               <ColorPicker
-                id="profile_tint"
+                id="profile_color"
                 className={`rounded-md border bg-background p-4 shadow-sm ${
                   !errors.profile_color ? "" : "border-red-500"
                 }`}
@@ -287,6 +288,8 @@ const AdminForm = ({
                   <ColorPickerFormat />
                 </div>
               </ColorPicker>
+
+              {errors.email && <FieldError>{errors.email.message}</FieldError>}
             </Field>
           </FieldGroup>
         </FieldSet>
@@ -294,10 +297,10 @@ const AdminForm = ({
         <FieldSeparator />
 
         <FieldSet>
-          <FieldLabel htmlFor="compute-environment-p8w">Role</FieldLabel>
-          <FieldDescription>
-            Select the compute environment for your cluster.
-          </FieldDescription>
+          <FieldLabel htmlFor="compute-environment-p8w">
+            {AdminFormFieldsInfo.role.label}
+          </FieldLabel>
+          <FieldDescription>{AdminFormFieldsInfo.role.hint}</FieldDescription>
           <RadioGroup defaultValue="kubernetes">
             <FieldLabel htmlFor="kubernetes-r2h">
               <Field orientation="horizontal">
@@ -321,18 +324,27 @@ const AdminForm = ({
                 <RadioGroupItem value="vm" id="vm-z4k" />
               </Field>
             </FieldLabel>
+            <FieldLabel htmlFor="vm-z5k">
+              <Field orientation="horizontal">
+                <FieldContent>
+                  <FieldTitle>Loop Kitsh</FieldTitle>
+                  <FieldDescription>Access a Kitsh.</FieldDescription>
+                </FieldContent>
+                <RadioGroupItem value="vm" id="vm-z5k" />
+              </Field>
+            </FieldLabel>
           </RadioGroup>
         </FieldSet>
 
         <FieldSeparator />
 
         <FieldSet className="gap-3">
-          <FieldLegend>Permissions</FieldLegend>
+          <FieldLegend>{AdminFormFieldsInfo.permissions.label}</FieldLegend>
           <FieldDescription>
-            The billing address associated with your payment method
+            {AdminFormFieldsInfo.permissions.hint}
           </FieldDescription>
 
-          {/*  */}
+          {/* TODO */}
         </FieldSet>
 
         <Field orientation="horizontal">

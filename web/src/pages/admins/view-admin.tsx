@@ -102,7 +102,7 @@ const ViewAdmin = ({ displayHeader = true, admin }: ViewAdminProps) => {
           {displayHeader && (
             <PageHeadline
               title={currentAdmin.firstname}
-              description={currentAdmin.surname}
+              description={currentAdmin.lastname}
             />
           )}
 

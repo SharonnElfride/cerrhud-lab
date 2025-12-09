@@ -18,7 +18,7 @@ function fromDatabase(data: any): Tables<"profiles"> {
     created_by: data.created_by,
     email: data.email,
     firstname: data.firstname,
-    surname: data.surname,
+    lastname: data.lastname,
     hidden: data.hidden,
     permissions: data.permissions,
     profile_color: data.profile_color,

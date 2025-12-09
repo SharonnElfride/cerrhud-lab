@@ -61,7 +61,7 @@ const Dashboard = ({}) => {
         </ItemMedia>
         <ItemContent>
           <ItemTitle>
-            {user?.firstname} {user?.surname}
+            {user?.firstname} {user?.lastname}
           </ItemTitle>
           <ItemDescription>
             Rôle : {displayUserRole(user?.role ?? "user")} <br />

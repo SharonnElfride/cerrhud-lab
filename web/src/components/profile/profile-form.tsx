@@ -45,7 +45,7 @@ const ProfileForm = ({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       firstname: user?.firstname ?? "",
-      surname: user?.surname ?? "",
+      lastname: user?.lastname ?? "",
       email: user?.email ?? "",
       profile_color: user?.profile_color ?? "#6e4596",
     },
@@ -105,7 +105,7 @@ const ProfileForm = ({
           <FieldGroup className="gap-3">
             <Field
               className={fieldClassName}
-              data-invalid={!!errors.firstname || !!errors.surname}
+              data-invalid={!!errors.firstname || !!errors.lastname}
             >
               <ProfileFormFieldInfo>
                 <FieldLabel htmlFor="firstname">Nom complet</FieldLabel>
@@ -128,16 +128,16 @@ const ProfileForm = ({
 
                 <div>
                   <Input
-                    id="surname"
+                    id="lastname"
                     type="text"
-                    defaultValue={user?.surname ?? undefined}
+                    defaultValue={user?.lastname ?? undefined}
                     placeholder="Nom de famille"
                     className="border-gray-400"
-                    {...register("surname")}
-                    aria-invalid={!!errors.surname}
+                    {...register("lastname")}
+                    aria-invalid={!!errors.lastname}
                   />
-                  {errors.surname && (
-                    <FieldError>{errors.surname.message}</FieldError>
+                  {errors.lastname && (
+                    <FieldError>{errors.lastname.message}</FieldError>
                   )}
                 </div>
               </div>
