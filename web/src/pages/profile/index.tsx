@@ -70,7 +70,7 @@ const Profile = () => {
       <div className="mt-5">
         <p>
           <span className="font-bold text-lg">{user?.firstname}</span>{" "}
-          {user?.surname}
+          {user?.lastname}
         </p>
         <p className="text-gray-500 text-[10px]">{user?.email}</p>
       </div>

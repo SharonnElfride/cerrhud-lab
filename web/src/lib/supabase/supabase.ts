@@ -158,10 +158,10 @@ export type Database = {
           hidden: boolean | null
           id: string
           invited_at: string | null
+          lastname: string
           permissions: Json
           profile_color: string | null
           role: Database["public"]["Enums"]["user_role"]
-          surname: string | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -176,10 +176,10 @@ export type Database = {
           hidden?: boolean | null
           id?: string
           invited_at?: string | null
+          lastname: string
           permissions?: Json
           profile_color?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          surname?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -194,10 +194,10 @@ export type Database = {
           hidden?: boolean | null
           id?: string
           invited_at?: string | null
+          lastname?: string
           permissions?: Json
           profile_color?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          surname?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }

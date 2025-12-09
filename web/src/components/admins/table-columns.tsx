@@ -88,8 +88,8 @@ export const AdminsColumns = (
     enableSorting: false,
   },
   {
-    accessorKey: "surname",
-    header: AdminFormFieldsInfo.surname.label,
+    accessorKey: "lastname",
+    header: AdminFormFieldsInfo.lastname.label,
     enableSorting: false,
   },
   {

@@ -77,7 +77,6 @@ export const AdminFormFieldsInfo = {
     label: "Permissions",
     placeholder: "{}",
     hint: "Droits et permissions associés à l'utilisateur.",
-    shortHint: "Droits et permissions.",
   },
   profile_color: {
     label: "Couleur du profil",
@@ -87,10 +86,9 @@ export const AdminFormFieldsInfo = {
   },
   role: {
     label: "Rôle",
-    placeholder: "admin / user / ...",
     hint: "Rôle attribué à l'utilisateur dans l'application.",
   },
-  surname: {
+  lastname: {
     label: "Nom de famille",
     placeholder: "Agbassi",
     hint: "Nom de famille de l'utilisateur.",

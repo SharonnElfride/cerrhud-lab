@@ -82,6 +82,7 @@ const AddAdmin = ({
         <PageHeadline
           title={AdminsData.add.title}
           description={AdminsData.add.description}
+          className="max-w-2xl mx-auto px-0"
         />
       )}
 

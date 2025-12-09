@@ -131,6 +131,7 @@ const UpdateAdmin = ({
             <PageHeadline
               title={AdminsData.edit.title}
               description={AdminsData.edit.description}
+              className="max-w-2xl mx-auto px-0"
             />
           )}
 

@@ -1,14 +1,20 @@
+import { Constants } from "@/lib/supabase/supabase";
+import { ADMIN_FORM_ERRORS } from "@/shared/form-validation-errors";
 import { z } from "zod";
 import { zodImageChecker } from "./zod-image-checker";
-import { Constants } from "@/lib/supabase/supabase";
 
 export const adminSchema = z.object({
   avatar: zodImageChecker({ required: false }),
-  firstname: z.string().min(1, "First name is required"),
-  surname: z.string(),
-  email: z.email("Adresse e-mail invalide."),
-  profile_color: z.string().regex(/^#?[0-9a-fA-F]{6}$/, "Couleur invalide"),
-  role: z.enum(Constants.public.Enums.user_role, ""),
+  firstname: z.string().min(1, ADMIN_FORM_ERRORS.FIRSTNAME_REQUIRED),
+  lastname: z.string().min(1, ADMIN_FORM_ERRORS.LASTNAME_REQUIRED),
+  email: z.email(ADMIN_FORM_ERRORS.EMAIL_INVALID),
+  profile_color: z
+    .string()
+    .regex(/^#?[0-9a-fA-F]{6}$/, ADMIN_FORM_ERRORS.PROFILE_COLOUR_INVALID),
+  role: z.enum(
+    Constants.public.Enums.user_role,
+    ADMIN_FORM_ERRORS.ROLE_REQUIRED
+  ),
   // permissions: ,
 
   //   title: baseMedicalTestFields.title.min(1, MEDICAL_TEST_FORM_ERRORS.TITLE_REQUIRED),
