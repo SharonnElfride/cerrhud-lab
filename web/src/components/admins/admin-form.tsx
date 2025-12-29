@@ -301,7 +301,11 @@ const AdminForm = ({
             {AdminFormFieldsInfo.role.label}
           </FieldLabel>
           <FieldDescription>{AdminFormFieldsInfo.role.hint}</FieldDescription>
-          <RadioGroup defaultValue="kubernetes">
+          {/* {...register("email")} */}
+          {/* <RadioGroup defaultValue="kubernetes" {...register("role")}> */}
+          <RadioGroup defaultValue="kubernetes" {...register("role")} onChange={(e) => {
+            const vv = e.target
+          }}>
             <FieldLabel htmlFor="kubernetes-r2h">
               <Field orientation="horizontal">
                 <FieldContent>
@@ -313,6 +317,7 @@ const AdminForm = ({
                 <RadioGroupItem value="kubernetes" id="kubernetes-r2h" />
               </Field>
             </FieldLabel>
+
             <FieldLabel htmlFor="vm-z4k">
               <Field orientation="horizontal">
                 <FieldContent>
@@ -324,6 +329,7 @@ const AdminForm = ({
                 <RadioGroupItem value="vm" id="vm-z4k" />
               </Field>
             </FieldLabel>
+
             <FieldLabel htmlFor="vm-z5k">
               <Field orientation="horizontal">
                 <FieldContent>
