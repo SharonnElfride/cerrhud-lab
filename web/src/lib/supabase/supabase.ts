@@ -149,42 +149,57 @@ export type Database = {
       profiles: {
         Row: {
           avatar: string | null
+          confirmed_at: string | null
           created_at: string | null
           created_by: string | null
           email: string
-          first_name: string
+          email_change_pending: boolean
+          firstname: string
           hidden: boolean | null
           id: string
+          invited_at: string | null
+          lastname: string
           permissions: Json
           profile_color: string | null
           role: Database["public"]["Enums"]["user_role"]
-          surname: string | null
+          updated_at: string | null
+          updated_by: string | null
         }
         Insert: {
           avatar?: string | null
+          confirmed_at?: string | null
           created_at?: string | null
           created_by?: string | null
           email: string
-          first_name: string
+          email_change_pending?: boolean
+          firstname: string
           hidden?: boolean | null
           id?: string
+          invited_at?: string | null
+          lastname: string
           permissions?: Json
           profile_color?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          surname?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Update: {
           avatar?: string | null
+          confirmed_at?: string | null
           created_at?: string | null
           created_by?: string | null
           email?: string
-          first_name?: string
+          email_change_pending?: boolean
+          firstname?: string
           hidden?: boolean | null
           id?: string
+          invited_at?: string | null
+          lastname?: string
           permissions?: Json
           profile_color?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          surname?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }

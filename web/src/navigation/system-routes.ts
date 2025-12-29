@@ -1,6 +1,6 @@
-import Login from "@/pages/Login";
-import NotFound from "@/pages/NotFound";
-import Unauthorized from "@/pages/Unauthorized";
+import Login from "@/pages/login-p";
+import NotFound from "@/pages/not-found";
+import Unauthorized from "@/pages/unauthorized-p";
 import { LogInIcon, ShieldBanIcon, TriangleAlertIcon } from "lucide-react";
 import { createLeafRoute } from "./app-route-factory";
 import { MedicalTestsRoute } from "./medical-tests-routes";

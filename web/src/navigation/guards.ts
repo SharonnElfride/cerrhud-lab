@@ -1,10 +1,10 @@
 import type { Enums, Tables } from "@/lib/supabase/supabase";
-import type { BasePermission } from "@/models/Permission";
+import type { BasePermission } from "@/models/permission-f";
 import {
   FromJson,
   type PermissionKey,
   type UserPermissions,
-} from "@/models/UserPermissions";
+} from "@/models/user-permissions";
 import type { AppRouteBase } from "./app-route-types";
 
 const hasRequiredRole = (

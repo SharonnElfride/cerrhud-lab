@@ -26,12 +26,13 @@ export const MEDICAL_TEST_FORM_ERRORS = {
     "Ajoutez au moins une valeur pour ce détail.",
 };
 
-export const USER_FORM_ERRORS = {
+export const ADMIN_FORM_ERRORS = {
   FIRSTNAME_REQUIRED: "Le prénom est requis.",
   LASTNAME_REQUIRED: "Le nom est requis.",
   EMAIL_REQUIRED: "L'adresse email est requise.",
   EMAIL_INVALID: "Veuillez entrer une adresse email valide.",
   PASSWORD_REQUIRED: "Le mot de passe est requis.",
   PASSWORD_MIN: "Le mot de passe doit contenir au moins 8 caractères.",
+  PROFILE_COLOUR_INVALID: "Veuillez entrer une couleur valide.",
   ROLE_REQUIRED: "Le rôle de l'utilisateur est requis.",
 };

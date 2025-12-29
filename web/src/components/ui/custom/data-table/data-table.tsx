@@ -161,7 +161,9 @@ export function DataTable<TData, TValue>({
               variant={"destructive"}
               size={"sm"}
               onClick={() => setOpenDialog(true)}
-              disabled={!table.getIsSomeRowsSelected()}
+              disabled={
+                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+              }
             >
               <Trash2Icon />
               <p>Supprimer</p>
